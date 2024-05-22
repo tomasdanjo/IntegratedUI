@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FirebaseConnection</string>
+    <string name="client_id" translatable="false">625547035918-ge3s4hu30c0p5bd6i47oav0duhtrnb38.apps.googleusercontent.com</string>
 </resources>
