@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -79,9 +82,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    private void onCompleteRegistration(boolean isSuccessful, FirebaseUser user) {
+    private void onCompleteRegistration(boolean isSuccessful, FirebaseUser user, String username, String email, String name) {
         if (isSuccessful && user != null) {
-            addUserToFirestore(user.getUid(), "jeastel@gmail.com", "aizerner", "jeastel");
+            addUserToFirestore(user.getUid(), email, username, name);
             Intent intent = new Intent(SignUpActivity.this, LogInActivity.class);
             startActivity(intent);
         } else {
@@ -97,10 +100,10 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.d("TAG", "createUserWithEmail:success");
                         Toast.makeText(SignUpActivity.this, "Registration successful.", Toast.LENGTH_SHORT).show();
                         FirebaseUser user = mAuth.getCurrentUser();
-                        onCompleteRegistration(true, user);
+                        onCompleteRegistration(true, user, email, username, name);
                     } else {
                         Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                        onCompleteRegistration(false, null);
+                        onCompleteRegistration(false, null, null, null, null);
                     }
                 });
     }
@@ -112,9 +115,15 @@ public class SignUpActivity extends AppCompatActivity {
         userData.put("email", email);
         userData.put("username", username);
         userData.put("name", name);
-        userData.put("coins", 14);
-        userData.put("cats", new HashMap<String, String>());
-        userData.put("tasks", new HashMap<String, Object>());
+
+        List<HashMap<String, String>> catsList = new ArrayList<>();
+        userData.put("cats", catsList);
+        List<HashMap<String, Object>> taskList = new ArrayList<>();
+        userData.put("tasks", taskList);
+
+        ArrayList badgeList = new ArrayList();
+        userData.put("badge", badgeList);
+
 
         if (firebaseFirestore == null) {
             Log.e("TAG", "Firestore is not initialized");

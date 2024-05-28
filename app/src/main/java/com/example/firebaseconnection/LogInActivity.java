@@ -41,8 +41,6 @@ public class LogInActivity extends AppCompatActivity {
         loginUsername = findViewById(R.id.fieldInputUsername);
         loginPassword = findViewById(R.id.fieldInputPassword);
 
-
-
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
