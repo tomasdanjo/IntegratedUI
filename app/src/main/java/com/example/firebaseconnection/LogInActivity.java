@@ -1,5 +1,6 @@
 package com.example.firebaseconnection;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,7 @@ public class LogInActivity extends AppCompatActivity {
     LinearLayout btnLogin;
     TextView signUpRedirection;
     private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,6 @@ public class LogInActivity extends AppCompatActivity {
         });
 
         btnLogin = findViewById(R.id.btnSignUp);
-        btnLogin.isClickable();
         loginUsername = findViewById(R.id.fieldInputUsername);
         loginPassword = findViewById(R.id.fieldInputPassword);
 
@@ -47,7 +48,7 @@ public class LogInActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(v -> {
-            loginAccount(email, password);
+            loginAccount("jeastel@gmail.com", "jeastel");
         });
 
     }

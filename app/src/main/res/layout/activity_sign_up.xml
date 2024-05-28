@@ -2,42 +2,406 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SignUpActivity">
+    android:id="@+id/main"
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btnRegister"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/orange_gradient"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/screen_horizontal_padding"
+        android:paddingVertical="@dimen/screen_vertical_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btnLoginRedirect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btnLoginRedirect"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.594" />
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:src="@drawable/pawductive_logo_text" />
 
-    <Button
-        android:id="@+id/btnGoogleRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Google Register"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.405" />
+        <LinearLayout
+            android:id="@+id/fields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:orientation="vertical"
+            tools:ignore="DuplicateIds">
+
+            <LinearLayout
+                android:id="@+id/fields"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:orientation="horizontal"
+                tools:ignore="DuplicateIds">
+
+                <LinearLayout
+                    android:id="@+id/field"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/spacing_small"
+                    android:layout_weight="1"
+                    android:background="@drawable/shadow"
+                    android:orientation="horizontal"
+                    android:paddingRight="@dimen/border_width"
+                    android:paddingBottom="@dimen/border_width"
+                    tools:ignore="DuplicateIds">
+
+                    <ImageView
+                        android:id="@+id/fieldIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/negative_border_width"
+                        android:background="@drawable/input_icon"
+                        android:paddingHorizontal="@dimen/spacing_small"
+                        android:src="@drawable/icon_user"
+                        tools:ignore="DuplicateIds" />
+
+                    <EditText
+                        android:id="@+id/fieldInputName"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/input"
+                        android:ems="10"
+                        android:hint="Name"
+                        android:inputType="text"
+                        android:paddingHorizontal="@dimen/spacing_small"
+                        android:textColor="@color/blue_dark"
+                        android:textColorHint="@color/blue_dark"
+                        android:textSize="@dimen/font_size_small" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/field"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/input_height"
+                    android:layout_weight="1"
+                    android:background="@drawable/shadow"
+                    android:orientation="horizontal"
+                    android:paddingEnd="@dimen/border_width"
+                    android:paddingBottom="@dimen/border_width"
+                    tools:ignore="DuplicateIds">
+
+                    <EditText
+                        android:id="@+id/fieldInputUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/input_2"
+                        android:ems="10"
+                        android:hint="Username"
+                        android:inputType="text"
+                        android:paddingHorizontal="@dimen/spacing_small"
+                        android:textColor="@color/blue_dark"
+                        android:textColorHint="@color/blue_dark"
+                        android:textSize="@dimen/font_size_small" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/field"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/input_height"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:background="@drawable/shadow"
+                android:orientation="horizontal"
+                android:paddingEnd="@dimen/border_width"
+                android:paddingBottom="@dimen/border_width"
+                tools:ignore="DuplicateIds">
+
+                <ImageView
+                    android:id="@+id/fieldIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/negative_border_width"
+                    android:layout_weight="0"
+                    android:background="@drawable/input_icon"
+                    android:paddingHorizontal="@dimen/spacing_small"
+                    android:src="@drawable/icon_email"
+                    tools:ignore="DuplicateIds" />
+
+                <EditText
+                    android:id="@+id/fieldInputEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/input"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:paddingHorizontal="@dimen/spacing_small"
+                    android:textColorHint="@color/blue_dark" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/field"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/input_height"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:background="@drawable/shadow"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/border_width"
+                android:paddingBottom="@dimen/border_width"
+                tools:ignore="DuplicateIds">
+
+                <ImageView
+                    android:id="@+id/fieldIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/negative_border_width"
+                    android:layout_weight="0"
+                    android:background="@drawable/input_icon"
+                    android:paddingHorizontal="@dimen/spacing_small"
+                    android:src="@drawable/icon_password"
+                    tools:ignore="DuplicateIds" />
+
+                <EditText
+                    android:id="@+id/fieldInputPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/input"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:paddingHorizontal="@dimen/spacing_small"
+                    android:textColorHint="@color/blue_dark" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/field"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/input_height"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:background="@drawable/shadow"
+                android:orientation="horizontal"
+                android:paddingEnd="@dimen/border_width"
+                android:paddingBottom="@dimen/border_width"
+                tools:ignore="DuplicateIds">
+
+                <ImageView
+                    android:id="@+id/fieldIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/negative_border_width"
+                    android:layout_weight="0"
+                    android:background="@drawable/input_icon"
+                    android:paddingHorizontal="@dimen/spacing_small"
+                    android:src="@drawable/icon_password"
+                    tools:ignore="DuplicateIds" />
+
+                <EditText
+                    android:id="@+id/fieldInputConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/input"
+                    android:ems="10"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:paddingHorizontal="@dimen/spacing_small"
+                    android:textColorHint="@color/blue_dark" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/field"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/checkbox"
+                    android:layout_width="@dimen/input_height"
+                    android:layout_height="@dimen/input_height"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:background="@drawable/button_white" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I agree with the "
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="Privacy Policy"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="DuplicateIds">
+
+            <LinearLayout
+                android:id="@+id/btnSignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:background="@drawable/button_blue"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/spacing_medium"
+                android:paddingVertical="@dimen/spacing_small">
+
+                <TextView
+                    android:id="@+id/btnText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="Sign Up"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_size_medium" />
+
+                <ImageView
+                    android:id="@+id/btnIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_arrow_right_thin" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lblOtherOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/lineHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/border_width"
+                    android:layout_marginRight="@dimen/spacing_small"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_rectangle"
+                    tools:ignore="DuplicateIds" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/spacing_small"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="Or Sign Up With"
+                    android:textColor="@color/white" />
+
+                <View
+                    android:id="@+id/lineHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/border_width"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_rectangle"
+                    tools:ignore="DuplicateIds" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:orientation="horizontal"
+                tools:ignore="DuplicateIds">
+
+                <LinearLayout
+                    android:id="@+id/btnGoogle"
+                    android:layout_width="@dimen/sign_in_option_button_width"
+                    android:layout_height="@dimen/sign_in_option_button_height"
+                    android:layout_marginRight="@dimen/spacing_small"
+                    android:background="@drawable/button_white"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/btnIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/border_width"
+                        android:paddingBottom="@dimen/border_width"
+                        android:src="@drawable/icon_google" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnFacebook"
+                    android:layout_width="@dimen/sign_in_option_button_width"
+                    android:layout_height="@dimen/sign_in_option_button_height"
+                    android:layout_marginRight="@dimen/spacing_small"
+                    android:background="@drawable/button_white"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/btnIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/border_width"
+                        android:paddingBottom="@dimen/border_width"
+                        android:src="@drawable/icon_facebook" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnApple"
+                    android:layout_width="@dimen/sign_in_option_button_width"
+                    android:layout_height="@dimen/sign_in_option_button_height"
+                    android:background="@drawable/button_white"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/btnIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/border_width"
+                        android:paddingBottom="@dimen/border_width"
+                        android:src="@drawable/icon_apple" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lblSignIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Already have an account?"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/txtSignIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="Sign In!"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_size_regular" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

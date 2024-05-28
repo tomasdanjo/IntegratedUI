@@ -14,6 +14,7 @@ import android.provider.Contacts;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText signUpName, signUpEmail, signUpUsername, signUpPassword;
-    Button btnSignUp, btnLoginRedirect, btnGoogleRegister;
+    LinearLayout btnSignUp;
     FirebaseDatabase database;
     private FirebaseAuth mAuth;
     FirebaseFirestore firebaseFirestore;
@@ -60,27 +61,25 @@ public class SignUpActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         btnSignUp = findViewById(R.id.btnSignUp);
-        btnLoginRedirect = findViewById(R.id.btnLoginRedirect);
-        btnGoogleRegister = findViewById(R.id.btnGoogleRegister);
+        signUpName = findViewById(R.id.fieldInputName);
+        signUpUsername = findViewById(R.id.fieldInputUsername);
+        signUpEmail = findViewById(R.id.fieldInputEmail);
+        signUpPassword = findViewById(R.id.fieldInputPassword);
+
+
+
+
 
         btnSignUp.setOnClickListener(v -> {
-            registerAccount("jeastel", "aizerner", "jeastel@gmail.com", "jeastel");
+            String name,username,email,password;
+            name = signUpName.getText().toString();
+            username = signUpUsername.getText().toString();
+            email = signUpEmail.getText().toString();
+            password = signUpPassword.getText().toString();
+            registerAccount(name, username, email, password);
         });
 
-        btnLoginRedirect.setOnClickListener(v -> {
-            addUserToFirestore("123", "jeastel@gmail.com", "aizerner", "jeastel");
-            Intent intent =  new Intent(SignUpActivity.this, LogInActivity.class);
-            startActivity(intent);
-        });
 
-        btnGoogleRegister.setOnClickListener(v -> {
-            ThirdPartyAuth googleAuth = new ThirdPartyAuth();
-            googleAuth.googleAuth();
-            String googleEmail = googleAuth.getGoogleMail();
-            String googleDisplayName = googleAuth.getGoogleDisplayname();
-            String UID = googleAuth.getUID();
-            addUserToFirestore(UID, googleEmail, googleDisplayName, googleDisplayName);
-        });
     }
 
     private void onCompleteRegistration(boolean isSuccessful, FirebaseUser user) {
