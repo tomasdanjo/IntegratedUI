@@ -66,6 +66,10 @@ public class TaskListActivity extends AppCompatActivity {
         UID = mAuth.getCurrentUser().getUid();
 
 
+        //get scrollview(vertical)
+        //add all taskCards sa scrollview
+
+
         TaskName = findViewById(R.id.tvTaskName);
         TaskDate = findViewById(R.id.tvTaskDate);
         TaskMode = findViewById(R.id.tvTaskMode);
@@ -115,7 +119,7 @@ public class TaskListActivity extends AppCompatActivity {
                     // Create a Timestamp object from the parsed Date object
                     Timestamp taskDate = new Timestamp(Instant.ofEpochSecond(date.getTime()));
 
-                    addTaskToUser(UID,taskTitle,taskDuration,taskDate,taskMode);
+                    addTaskToUser(UID,taskTitle,taskDuration,taskDate,tbTaskMode.isChecked());
 
                 }
             });
@@ -210,7 +214,7 @@ public class TaskListActivity extends AppCompatActivity {
 
     }
 
-    private void addTaskToUser(String userId, String taskName, String duration, Timestamp taskDate, String taskMode) {
+    private void addTaskToUser(String userId, String taskName, String duration, Timestamp taskDate, boolean taskMode) {
         //map for the new task
         Map<String, Object> newTask = new HashMap<>();
         newTask.put("taskName", taskName);
