@@ -158,6 +158,8 @@
             android:orientation="vertical"
             tools:ignore="DuplicateIds">
 
+
+
             <LinearLayout
                 android:id="@+id/btnSignUp"
                 android:layout_width="wrap_content"

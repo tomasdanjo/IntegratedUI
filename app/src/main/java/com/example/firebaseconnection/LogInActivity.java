@@ -2,8 +2,10 @@ package com.example.firebaseconnection;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LogInActivity extends AppCompatActivity {
     EditText loginUsername, loginPassword;
-    Button btnLogin, btnSignUpRedirect;
+    LinearLayout btnLogin;
     TextView signUpRedirection;
     private FirebaseAuth mAuth;
     @Override
@@ -34,18 +36,18 @@ public class LogInActivity extends AppCompatActivity {
         });
 
         btnLogin = findViewById(R.id.btnSignUp);
-//        btnSignUpRedirect = findViewById(R.id.btnSignUpRedirect);
+        btnLogin.isClickable();
+        loginUsername = findViewById(R.id.fieldInputUsername);
+        loginPassword = findViewById(R.id.fieldInputPassword);
+
+        String email = loginUsername.getText().toString();
+        String password = loginPassword.getText().toString();
 
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(v -> {
-            loginAccount("jeastel@gmail.com", "jeastel");
-        });
-
-        btnSignUpRedirect.setOnClickListener(v -> {
-            Intent intent = new Intent(LogInActivity.this, SignUpActivity.class);
-            startActivity(intent);
+            loginAccount(email, password);
         });
 
     }
@@ -57,8 +59,8 @@ public class LogInActivity extends AppCompatActivity {
                         System.out.println("Log-in Successful!");
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(LogInActivity.this, "Log-in successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LogInActivity.this, TaskListActivity.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(LogInActivity.this, TaskListActivity.class);
+//                        startActivity(intent);
                     } else {
                         Toast.makeText(LogInActivity.this, "Log-in failed", Toast.LENGTH_SHORT).show();
                     }
