@@ -33,8 +33,8 @@ public class LogInActivity extends AppCompatActivity {
             return insets;
         });
 
-        btnLogin = findViewById(R.id.btnLogin);
-        btnSignUpRedirect = findViewById(R.id.btnSignUpRedirect);
+        btnLogin = findViewById(R.id.btnSignUp);
+//        btnSignUpRedirect = findViewById(R.id.btnSignUpRedirect);
 
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
