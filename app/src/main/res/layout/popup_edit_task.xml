@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/popup_header"
+            android:background="@drawable/popup_header_yellow"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/spacing_medium"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_extrabold"
-                android:text="Create Task"
+                android:text="Edit Task"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_large" />
 
@@ -65,7 +65,7 @@
                     android:id="@+id/textView12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/input_title_orange"
+                    android:background="@drawable/input_title_yellow"
                     android:fontFamily="@font/nunito_bold"
                     android:paddingLeft="@dimen/spacing_small"
                     android:paddingTop="@dimen/spacing_very_small"
@@ -75,7 +75,7 @@
                     android:textColor="@color/white" />
 
                 <EditText
-                    android:id="@+id/editTextMode"
+                    android:id="@+id/editTextTaskTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/negative_border_width"
@@ -85,7 +85,8 @@
                     android:hint="Enter task title"
                     android:inputType="text"
                     android:paddingLeft="@dimen/spacing_small"
-                    android:paddingRight="@dimen/spacing_small" />
+                    android:paddingRight="@dimen/spacing_small"
+                    android:text="Tomfoolery" />
             </LinearLayout>
 
             <LinearLayout
@@ -102,7 +103,7 @@
                     android:id="@+id/textView12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/input_title_orange"
+                    android:background="@drawable/input_title_yellow"
                     android:fontFamily="@font/nunito_bold"
                     android:paddingLeft="@dimen/spacing_small"
                     android:paddingTop="@dimen/spacing_very_small"
@@ -112,7 +113,7 @@
                     android:textColor="@color/white" />
 
                 <EditText
-                    android:id="@+id/editTextTaskDate"
+                    android:id="@+id/editTextDate"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/negative_border_width"
@@ -122,7 +123,8 @@
                     android:hint="Enter task date"
                     android:inputType="date"
                     android:paddingLeft="@dimen/spacing_small"
-                    android:paddingRight="@dimen/spacing_small" />
+                    android:paddingRight="@dimen/spacing_small"
+                    android:text="11/14/24" />
 
             </LinearLayout>
 
@@ -140,7 +142,7 @@
                     android:id="@+id/textView12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/input_title_orange"
+                    android:background="@drawable/input_title_yellow"
                     android:fontFamily="@font/nunito_bold"
                     android:paddingLeft="@dimen/spacing_small"
                     android:paddingTop="@dimen/spacing_very_small"
@@ -160,9 +162,11 @@
                     android:hint="Enter task duration"
                     android:inputType="time"
                     android:paddingLeft="@dimen/spacing_small"
-                    android:paddingRight="@dimen/spacing_small" />
+                    android:paddingRight="@dimen/spacing_small"
+                    android:text="30:00" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -177,7 +181,7 @@
                     android:id="@+id/textView12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/input_title_orange"
+                    android:background="@drawable/input_title_yellow"
                     android:fontFamily="@font/nunito_bold"
                     android:paddingLeft="@dimen/spacing_small"
                     android:paddingTop="@dimen/spacing_very_small"
@@ -187,7 +191,7 @@
                     android:textColor="@color/white" />
 
                 <ToggleButton
-                    android:id="@+id/toggleMode"
+                    android:id="@+id/toggleButtonTaskMode"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/negative_border_width"
@@ -198,11 +202,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/createTaskBtn"
+                android:id="@+id/btnEditSave"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:background="@drawable/button_orange"
+                android:background="@drawable/button_yellow"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="@dimen/spacing_small">
@@ -213,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/border_width"
                     android:fontFamily="@font/nunito_bold"
-                    android:text="Create"
+                    android:text="Done"
                     android:textColor="@color/white"
                     android:textSize="@dimen/font_size_medium" />
 
