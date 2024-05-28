@@ -73,7 +73,6 @@ public class TaskListActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAddTask);
         btnEdit = findViewById(R.id.btnEdit);
         btnDelete = findViewById(R.id.btnDelete);
-//        btnRedirectToShop = findViewById(R.id.btnRedirectToShop);
 
 
         tasksList = new ArrayList<>();
@@ -161,8 +160,9 @@ public class TaskListActivity extends AppCompatActivity {
                     // Create a Timestamp object from the parsed Date object
                     Timestamp newTaskDate = new Timestamp(Instant.ofEpochSecond(date.getTime()));
 
-//            get the oldtaskname
+
                     String oldTaskName = "Scooby Doo PAPA";
+
                     String newTaskName = etTaskTitle.getText().toString();
                     String taskDuration = etTaskDuration.getText().toString();
                     String newTaskMode = tbTaskMode.isChecked()?"Focus":"Chill";
