@@ -67,9 +67,6 @@ public class SignUpActivity extends AppCompatActivity {
         signUpPassword = findViewById(R.id.fieldInputPassword);
 
 
-
-
-
         btnSignUp.setOnClickListener(v -> {
             String name,username,email,password;
             name = signUpName.getText().toString();

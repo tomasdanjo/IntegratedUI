@@ -41,14 +41,15 @@ public class LogInActivity extends AppCompatActivity {
         loginUsername = findViewById(R.id.fieldInputUsername);
         loginPassword = findViewById(R.id.fieldInputPassword);
 
-        String email = loginUsername.getText().toString();
-        String password = loginPassword.getText().toString();
+
 
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(v -> {
-            loginAccount("jeastel@gmail.com", "jeastel");
+            String email = loginUsername.getText().toString();
+            String password = loginPassword.getText().toString();
+            loginAccount(email, password);
         });
 
     }

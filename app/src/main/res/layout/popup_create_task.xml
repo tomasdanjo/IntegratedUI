@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screen_horizontal_padding"
+        android:layout_marginTop="@dimen/screen_horizontal_padding"
+        android:layout_marginEnd="@dimen/screen_horizontal_padding"
+        android:layout_marginBottom="@dimen/screen_horizontal_padding"
+        android:background="@drawable/shadow"
+        android:orientation="vertical"
+        android:paddingRight="@dimen/border_width"
+        android:paddingBottom="@dimen/border_width">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/popup_header"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/spacing_medium"
+            android:paddingTop="@dimen/spacing_regular"
+            android:paddingRight="@dimen/spacing_medium"
+            android:paddingBottom="@dimen/spacing_regular">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_extrabold"
+                android:text="Create Task"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_large" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_close" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/negative_border_width"
+            android:background="@drawable/popup_body"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_medium">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shadow"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/border_width"
+                android:paddingBottom="@dimen/border_width">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/input_title_orange"
+                    android:fontFamily="@font/nunito_bold"
+                    android:paddingLeft="@dimen/spacing_small"
+                    android:paddingTop="@dimen/spacing_very_small"
+                    android:paddingRight="@dimen/spacing_small"
+                    android:paddingBottom="@dimen/spacing_very_small"
+                    android:text="Title"
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:id="@+id/editTextTaskTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/negative_border_width"
+                    android:layout_weight="1"
+                    android:background="@drawable/input"
+                    android:ems="10"
+                    android:hint="Enter task title"
+                    android:inputType="text"
+                    android:paddingLeft="@dimen/spacing_small"
+                    android:paddingRight="@dimen/spacing_small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:background="@drawable/shadow"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/border_width"
+                android:paddingBottom="@dimen/border_width">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/input_title_orange"
+                    android:fontFamily="@font/nunito_bold"
+                    android:paddingLeft="@dimen/spacing_small"
+                    android:paddingTop="@dimen/spacing_very_small"
+                    android:paddingRight="@dimen/spacing_small"
+                    android:paddingBottom="@dimen/spacing_very_small"
+                    android:text="Date"
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:id="@+id/editTextTaskDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/negative_border_width"
+                    android:layout_weight="1"
+                    android:background="@drawable/input"
+                    android:ems="10"
+                    android:hint="Enter task date"
+                    android:inputType="date"
+                    android:paddingLeft="@dimen/spacing_small"
+                    android:paddingRight="@dimen/spacing_small" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:background="@drawable/shadow"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/border_width"
+                android:paddingBottom="@dimen/border_width">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/input_title_orange"
+                    android:fontFamily="@font/nunito_bold"
+                    android:paddingLeft="@dimen/spacing_small"
+                    android:paddingTop="@dimen/spacing_very_small"
+                    android:paddingRight="@dimen/spacing_small"
+                    android:paddingBottom="@dimen/spacing_very_small"
+                    android:text="Duration"
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:id="@+id/editTextTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/negative_border_width"
+                    android:layout_weight="1"
+                    android:background="@drawable/input"
+                    android:ems="10"
+                    android:hint="Enter task duration"
+                    android:inputType="time"
+                    android:paddingLeft="@dimen/spacing_small"
+                    android:paddingRight="@dimen/spacing_small" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:background="@drawable/shadow"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/border_width"
+                android:paddingBottom="@dimen/border_width">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/input_title_orange"
+                    android:fontFamily="@font/nunito_bold"
+                    android:paddingLeft="@dimen/spacing_small"
+                    android:paddingTop="@dimen/spacing_very_small"
+                    android:paddingRight="@dimen/spacing_small"
+                    android:paddingBottom="@dimen/spacing_very_small"
+                    android:text="Mode"
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:id="@+id/editTextTaskTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/negative_border_width"
+                    android:layout_weight="1"
+                    android:background="@drawable/input"
+                    android:ems="10"
+                    android:hint="Enter task mode"
+                    android:inputType="text"
+                    android:paddingLeft="@dimen/spacing_small"
+                    android:paddingRight="@dimen/spacing_small" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:background="@drawable/shadow"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/border_width"
+                android:paddingBottom="@dimen/border_width">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/input_title_orange"
+                    android:fontFamily="@font/nunito_bold"
+                    android:paddingLeft="@dimen/spacing_small"
+                    android:paddingTop="@dimen/spacing_very_small"
+                    android:paddingRight="@dimen/spacing_small"
+                    android:paddingBottom="@dimen/spacing_very_small"
+                    android:text="Color"
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:id="@+id/editTextTaskTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/negative_border_width"
+                    android:layout_weight="1"
+                    android:background="@drawable/input"
+                    android:ems="10"
+                    android:hint="Enter task color"
+                    android:inputType="text"
+                    android:paddingLeft="@dimen/spacing_small"
+                    android:paddingRight="@dimen/spacing_small" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:background="@drawable/button_orange"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_small">
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/border_width"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="Create"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_size_medium" />
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_marginRight="@dimen/border_width"
+                    android:layout_marginBottom="@dimen/border_width"
+                    android:src="@drawable/icon_arrow_right_thin" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

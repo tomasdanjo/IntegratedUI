@@ -3,9 +3,15 @@ package com.example.firebaseconnection;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +41,8 @@ import java.util.Objects;
 public class TaskListActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
-    private TextView tvTaskName, tvTaskDate, tvTaskMode, tvTaskCoins;
-    private Button btnAdd, btnEdit, btnDelete, btnRedirectToShop;
+    private TextView TaskName, TaskDate, TaskMode, TaskCoins;
+    private LinearLayout btnAdd, btnEdit, btnDelete, btnRedirectToShop;
     private Map<String, Object> user;
     private String UID;
 
@@ -51,7 +57,7 @@ public class TaskListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_task_list);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.tasks), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -62,24 +68,38 @@ public class TaskListActivity extends AppCompatActivity {
         UID = mAuth.getCurrentUser().getUid();
 
 
-        tvTaskName = findViewById(R.id.tvTaskName);
-        tvTaskDate = findViewById(R.id.tvTaskDate);
-        tvTaskMode = findViewById(R.id.tvTaskMode);
-        tvTaskCoins = findViewById(R.id.tvTaskCoins);
-        btnAdd = findViewById(R.id.btnAdd);
+        TaskName = findViewById(R.id.tvTaskName);
+        TaskDate = findViewById(R.id.tvTaskDate);
+        TaskMode = findViewById(R.id.tvTaskMode);
+        TaskCoins = findViewById(R.id.tvTaskCoins);
+        btnAdd = findViewById(R.id.btnAddTask);
         btnEdit = findViewById(R.id.btnEdit);
         btnDelete = findViewById(R.id.btnDelete);
-        btnRedirectToShop = findViewById(R.id.btnRedirectToShop);
+//        btnRedirectToShop = findViewById(R.id.btnRedirectToShop);
 
 
         tasksList = new ArrayList<>();
 
         btnAdd.setOnClickListener(v -> {
-            Timestamp taskDate = Timestamp.now();
-            Log.d("TAG", "HERE1");
-            Log.d("TAG", UID);
-            addTaskToUser(UID, "Mhm", taskDate, true, 8);
-            Log.d("TAG", "HERE2");
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_create_task, null);
+
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            PopupWindow createTaskPopup = new PopupWindow(popupView, width, height, true);
+
+            createTaskPopup.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
+            EditText etTaskTitle, etTaskDate, etDuration, etTaskMode, etTaskColor;
+            etTaskTitle = findViewById(R.id.editTextTaskTitle);
+            etTaskDate = findViewById(R.id.editTextTaskDate);
+            etDuration = findViewById(R.id.editTextTime);
+            etTaskMode = findViewById(R.id.editText)
+
+//            Timestamp taskDate = Timestamp.now();
+//            Log.d("TAG", "HERE1");
+//            Log.d("TAG", UID);
+//            addTaskToUser(UID, "Mhm", taskDate, true, 8);
+//            Log.d("TAG", "HERE2");
 
         });
 
@@ -212,11 +232,11 @@ public class TaskListActivity extends AppCompatActivity {
 
     private void updateUIWithTasks() {
         if (!tasksList.isEmpty()) {
-            tvTaskName.setText(Objects.requireNonNull(tasksList.get(0).get("taskName")).toString());
+            TaskName.setText(Objects.requireNonNull(tasksList.get(0).get("taskName")).toString());
             Log.i("TAG", "SUCCESS");
         } else {
             Log.i("TAG", "EMPTY LIST");
-            tvTaskName.setText("wa uie");
+            TaskName.setText("wa uie");
         }
         Log.i("TAG", Integer.toString(tasksList.size()));
     }
