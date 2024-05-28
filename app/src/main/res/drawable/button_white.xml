@@ -1,0 +1,19 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item android:left="@dimen/border_width" android:top="@dimen/border_width">
+                <shape>
+                    <corners android:radius="@dimen/border_radius" />
+                    <solid android:color="@color/blue_dark" />
+                </shape>
+            </item>
+            <item android:bottom="@dimen/border_width" android:right="@dimen/border_width">
+                <shape>
+                    <solid android:color="@color/white"/>
+                    <stroke android:width="@dimen/border_width" android:color="@color/blue_dark" />
+                    <corners android:radius="@dimen/border_radius" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>
