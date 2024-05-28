@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">FirebaseConnection</string>
     <string name="client_id" translatable="false">625547035918-ge3s4hu30c0p5bd6i47oav0duhtrnb38.apps.googleusercontent.com</string>
+    <string name="btnRegister">Register</string>
+    <string name="btnLogin">Log-in</string>
+    <string name="btnGoogle">Google Authentication</string>
+    <string name="btnLoginRedirect">Log-in Redirect</string>
+    <string name="btnSignUpRedirect">Sign-Up Redirect</string>
+    <string name="btnEditProfile">Edit Profile</string>
 </resources>

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,9 +28,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 auth = FirebaseAuth.getInstance();
-                                //Glide.with(MainActivity.this).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).into(imageView);
                                 name.setText(auth.getCurrentUser().getDisplayName());
                                 mail.setText(auth.getCurrentUser().getEmail());
                                 Toast.makeText(MainActivity.this, "Signed in successfully!", Toast.LENGTH_SHORT).show();
@@ -92,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerAccount("Malt","moltsolon@gmail.com", "moltmalt");
+                Intent intent =  new Intent(MainActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         googleRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                googleLogin();
+                googleAuth();
             }
         });
 
@@ -131,42 +128,30 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         System.out.println("Success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null){
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(name)
-                                .build();
-                            user.updateProfile(profileUpdates)
-                                    .addOnCompleteListener(profileTask -> {
-                                        if (profileTask.isSuccessful()) {
-                                            System.out.println("User profile updated.");
-                                        }
-                                    });
-                        }
                         lbl.setText("You may now log-in");
                     } else {
                         System.out.println("Fail");
                         lbl.setText("Registration failed");
+                        Toast.makeText(MainActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     protected void loginAccount(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            System.out.println("Log-in Successful!");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            lbl.setText("Log-In Successful");
-                        } else {
-                            lbl.setText("Log-In Unsuccessful");
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        System.out.println("Log-in Successful!");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        lbl.setText("Log-In Successful");
+                    } else {
+                        lbl.setText("Log-In Unsuccessful");
+                        Toast.makeText(MainActivity.this, "Log-in failed", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    protected void googleLogin(){
+    protected void googleAuth(){
         Intent intent = googleSignInClient.getSignInIntent();
         activityResultLauncher.launch(intent);
     }
