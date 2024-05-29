@@ -1,8 +1,5 @@
 package com.example.firebaseconnection;
 
-import com.google.firebase.Timestamp;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -22,23 +18,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class TaskListActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -103,11 +95,13 @@ public class TaskListActivity extends AppCompatActivity {
             create_task.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String taskTitle, taskDateStr,taskDuration,taskMode;
+                    String taskTitle, taskDateStr,taskMode;
+
+                    Long taskDuration;
 
                     taskTitle = etTaskTitle.getText().toString();
                     taskDateStr = etTaskDate.getText().toString();
-                    taskDuration = etDuration.getText().toString();
+                    taskDuration = Long.valueOf(etDuration.getText().toString());
                     taskMode = tbTaskMode.isChecked()?"Focus":"Chill";
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -212,14 +206,14 @@ public class TaskListActivity extends AppCompatActivity {
 
     }
 
-    private void addTaskToUser(String userId, String taskName, String duration, Timestamp taskDate, boolean taskMode) {
+    private void addTaskToUser(String userId, String taskName, Long duration, String taskDate, boolean taskMode) {
         //map for the new task
         Map<String, Object> newTask = new HashMap<>();
         newTask.put("taskName", taskName);
         newTask.put("taskDate", taskDate);
         newTask.put("taskMode", taskMode);
         newTask.put("taskDuration",duration);
-        int coins = Integer.parseInt(duration)/2;
+        int coins = Integer.parseInt(String.valueOf(duration))/2;
         newTask.put("taskCoins", coins);
         newTask.put("taskIsDone",false);
 
