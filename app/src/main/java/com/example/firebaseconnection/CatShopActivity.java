@@ -321,7 +321,6 @@ public class CatShopActivity extends AppCompatActivity {
     }
 
     public void getUserBalance(String userID) {
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         DocumentReference userRef = firebaseFirestore.collection("users").document(userID);
 
         userRef.get()
