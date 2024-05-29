@@ -29,7 +29,7 @@ import com.google.firebase.storage.StorageReference;
 public class CatShopActivity extends AppCompatActivity {
 
     FirebaseFirestore firebaseFirestore;
-    private List<Map<String, Object>> catShopList, userCatsList;
+    private static List<Map<String, Object>> catShopList, userCatsList;
     private final String documentId = "xv6JGkDrmpJMylgUIeEz";
     private String UID;
     private TextView tvCatName;
@@ -53,14 +53,15 @@ public class CatShopActivity extends AppCompatActivity {
 //            return insets;
 //        });
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        catShopList  = new ArrayList<>();
-        fetchCats(documentId);
-
         cats = new ArrayList<>();
         catShop = findViewById(R.id.catShop);
         catsGrid = findViewById(R.id.catsGrid);
-        generateCats();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        catShopList  = new ArrayList<>();
+
+        fetchCats(documentId);
+
+//        generateCats();
 
         mAuth = FirebaseAuth.getInstance();
 //        UID = mAuth.getCurrentUser().getUid();
@@ -116,7 +117,7 @@ public class CatShopActivity extends AppCompatActivity {
                                 Log.d("TAG", "Cat Price: " + catPrice);
                                 Log.d("TAG", "Cat Rarity: " + catRarity);
                             }
-                            updateUIWithCats();
+                            generateCats();
                         } else {
                             Log.d("TAG", "No cats found");
                         }
@@ -132,24 +133,6 @@ public class CatShopActivity extends AppCompatActivity {
 
     private void updateUIWithCats() {
         if (!catShopList.isEmpty()) {
-//
-//            String catName = (String) catShopList.get(9).get("catName");
-//            String catImageUrl = (String) catShopList.get(9).get("catImageURL");
-//
-//            tvCatName.setText(catName);
-//
-//            FirebaseStorage storage = FirebaseStorage.getInstance();
-//            StorageReference storageRef = storage.getReference().child(catImageUrl);
-//
-//            storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                //if fails, check gradle / rebuild proj
-//                Glide.with(this)
-//                        .load(uri)
-//                        .into(ivCatImage);
-//            }).addOnFailureListener(exception -> {
-//                Log.e("TAG", "Error fetching image URL", exception);
-//                //ivCatImage.setImageResource(R.drawable.placeholder_image); //set a placeholder image
-//            });
 
         } else {
             Log.i("TAG", "EMPTY LIST");
