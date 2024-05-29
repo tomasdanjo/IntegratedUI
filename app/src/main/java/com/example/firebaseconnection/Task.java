@@ -248,7 +248,7 @@ public class Task extends AppCompatActivity {
         deleteButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_red));
         deleteButtonLayout.setClickable(true); // Make clickable
         deleteButtonLayout.setOnClickListener(v -> {
-            // Handle click event
+            // TODO delete button
         });
 
         ImageView deleteButtonImageView = new ImageView(context);
@@ -272,7 +272,7 @@ public class Task extends AppCompatActivity {
         editButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
         editButtonLayout.setClickable(true); // Make clickable
         editButtonLayout.setOnClickListener(v -> {
-            // Handle click event
+            // TODO edit button
         });
 
         ImageView editButtonImageView = new ImageView(context);
@@ -299,7 +299,7 @@ public class Task extends AppCompatActivity {
         startTextView.setText(("START TASK"));
         startButtonLayout.addView(startTextView);
         startButtonLayout.setOnClickListener(v -> {
-            // Handle click event
+            // TODO start button
         });
 
         bottomLayout.addView(deleteButtonLayout);
