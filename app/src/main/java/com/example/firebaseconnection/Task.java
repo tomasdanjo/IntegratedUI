@@ -32,12 +32,12 @@ public class Task extends AppCompatActivity {
 
     private boolean taskMode;
 
-    private String taskDuration;
+    private Long taskDuration;
     private int taskCoins;
-    private Timestamp taskDate;
+    private String taskDate;
 
 
-    public Task(String taskName, boolean taskMode, String taskDuration, int taskCoins, Timestamp taskDate) {
+    public Task(String taskName, boolean taskMode, Long taskDuration, int taskCoins, String taskDate) {
         this.taskName = taskName;
         this.taskMode = taskMode;
         this.taskDuration = taskDuration;
@@ -157,7 +157,7 @@ public class Task extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        durationTextView.setText(taskDuration);
+        durationTextView.setText(String.valueOf(taskDuration));
         durationTextView.setTypeface(ResourcesCompat.getFont(context, R.font.nunito_bold));
 
         durationLayout.addView(durationImageView);
@@ -262,9 +262,9 @@ public class Task extends AppCompatActivity {
         deleteButtonLayout.setClickable(true); // Make clickable
         deleteButtonLayout.setOnClickListener(v -> {
             // TODO delete button
-            firebaseFirestore = FirebaseFirestore.getInstance();
-            mAuth = FirebaseAuth.getInstance();
-            UID = mAuth.getCurrentUser().getUid();
+//            firebaseFirestore = FirebaseFirestore.getInstance();
+//            mAuth = FirebaseAuth.getInstance();
+//            UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
 
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -279,22 +279,22 @@ public class Task extends AppCompatActivity {
             LinearLayout btnYes = findViewById(R.id.btnDeleteYes);
             LinearLayout btnNo = findViewById(R.id.btnDeleteNo);
 
-            btnNo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteTaskPopUp.dismiss();
-                }
-            });
-            btnYes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String taskNameToDelete = "Updated Task Name";
-                    TaskListActivity.deleteTaskFromUser(UID, taskNameToDelete);
-                }
-
-
-
-        });
+//            btnNo.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    deleteTaskPopUp.dismiss();
+//                }
+//            });
+//            btnYes.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    String taskNameToDelete = "Updated Task Name";
+//                    TaskListActivity.deleteTaskFromUser(UID, taskNameToDelete);
+//                }
+//
+//
+//
+//        });
 
 
         });
