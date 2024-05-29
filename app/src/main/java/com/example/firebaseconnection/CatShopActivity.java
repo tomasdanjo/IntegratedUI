@@ -111,13 +111,12 @@ public class CatShopActivity extends AppCompatActivity {
 
                                 // Add the cat map to the catShopList
                                 catShopList.add(catMap);
-
+                                catsGrid.addView(new Cat(catImageUrl, catName, catPrice, catRarity).generate(catsGrid.getContext(), catShop));
                                 Log.d("TAG", "Cat Name: " + catName);
                                 Log.d("TAG", "Cat Image URL: " + catImageUrl);
                                 Log.d("TAG", "Cat Price: " + catPrice);
                                 Log.d("TAG", "Cat Rarity: " + catRarity);
                             }
-                            generateCats();
                         } else {
                             Log.d("TAG", "No cats found");
                         }

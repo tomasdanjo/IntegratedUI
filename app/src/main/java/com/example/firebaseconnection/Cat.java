@@ -50,11 +50,17 @@ public class Cat {
         linearLayout.addView(catNameTextView);
 
         // Cat Image ImageView
+
         ImageView catImageView = new ImageView(context);
         catImageView.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        Glide.with(parent).load(catImageURL).into(catImageView);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child(catImageURL);
+        storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            Glide.with(parent)
+                    .load(uri)
+                    .into(catImageView);});
         linearLayout.addView(catImageView);
 
         // Price and Rarity LinearLayout
