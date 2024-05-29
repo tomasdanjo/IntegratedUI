@@ -308,7 +308,7 @@ public class Task extends AppCompatActivity {
 
         deleteButtonLayout.addView(deleteButtonImageView);
 
-        // Second button
+        // TODO Edit Button
         LinearLayout editButtonLayout = new LinearLayout(context);
         editButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -319,6 +319,7 @@ public class Task extends AppCompatActivity {
         editButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
         editButtonLayout.setClickable(true); // Make clickable
         editButtonLayout.setOnClickListener(v -> {
+            // TODO Edit naa diri
             LayoutInflater inflater = LayoutInflater.from(context);
             View popupView = inflater.inflate(R.layout.popup_edit_task, null);
 
