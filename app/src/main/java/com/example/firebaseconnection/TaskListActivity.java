@@ -286,7 +286,7 @@ public class TaskListActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateTaskInUser(String userId, String oldTaskName, String newTaskName, String duration, String newTaskDate, String newTaskMode) {
+    public static void updateTaskInUser(String userId, String oldTaskName, String newTaskName, String duration, String newTaskDate, boolean newTaskMode) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
 
         userRef.get()
