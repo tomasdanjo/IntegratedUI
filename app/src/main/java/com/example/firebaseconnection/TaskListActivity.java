@@ -1,8 +1,5 @@
 package com.example.firebaseconnection;
 
-import com.google.firebase.Timestamp;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -22,23 +18,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class TaskListActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -49,7 +41,6 @@ public class TaskListActivity extends AppCompatActivity {
     private String UID;
 
     private static List<Map<String, Object>> tasksList;
-
     private static ArrayList<Task> tasks;
 
     static LinearLayout tasksLinearLayout;
@@ -123,7 +114,6 @@ public class TaskListActivity extends AppCompatActivity {
 
                 }
             });
-
 
 
 
@@ -212,7 +202,7 @@ public class TaskListActivity extends AppCompatActivity {
 
     }
 
-    private void addTaskToUser(String userId, String taskName, String duration, Timestamp taskDate, boolean taskMode) {
+    private void addTaskToUser(String userId, String taskName, String duration, String taskDate, boolean taskMode) {
         //map for the new task
         Map<String, Object> newTask = new HashMap<>();
         newTask.put("taskName", taskName);
