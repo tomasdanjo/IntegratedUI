@@ -63,6 +63,7 @@ public class Task extends AppCompatActivity {
         topInnerLayout.setClickable(true); // Make clickable
         topInnerLayout.setOnClickListener(v -> {
             // Handle click event
+
         });
 
         TextView titleTextView = new TextView(context);
