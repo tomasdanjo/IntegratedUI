@@ -55,6 +55,8 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                TODO add shop intent
+                Intent i = new Intent(Menu.this,CatShopActivity.class);
+                startActivity(i);
             }
         });
 

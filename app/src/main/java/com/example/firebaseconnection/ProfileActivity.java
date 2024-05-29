@@ -58,19 +58,10 @@ public class ProfileActivity extends AppCompatActivity {
 //        UID = mAuth.getCurrentUser().getUid();
         UID ="YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
-//        tvUserEmail = findViewById(R.id.username);
-//        tvUserUsername = findViewById(R.id.username);
 
-
-//        btnEditUserInformation = findViewById(R.id.btnEditUserInformation);
-
-//        btnEditUserInformation.setOnClickListener(v->{
-//            updateUsername(UID,"newUsername");
-//        });
 
         fetchUserInfo(UID);
         fetchUserCats(UID);
-//        fetchUserTasks(UID);
     }
 
     private void updateUsername(String userId, String newUsername) {
