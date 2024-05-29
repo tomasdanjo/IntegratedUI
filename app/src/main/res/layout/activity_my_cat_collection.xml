@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/catShop"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/orange_gradient"
-        android:gravity="center|right"
+        android:gravity="center|left"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/screen_horizontal_padding"
         android:paddingVertical="@dimen/screen_vertical_padding"
@@ -21,7 +21,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/btnMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_small"
@@ -82,30 +81,70 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_blue"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="@dimen/spacing_small">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView28"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/nunito_bold"
-                android:text="See Owned"
-                android:textColor="@color/white" />
+                android:background="@drawable/button_green"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_small">
 
-            <ImageView
-                android:id="@+id/imageView16"
+                <ImageView
+                    android:id="@+id/imageView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/border_width"
+                    android:layout_weight="1"
+                    android:src="@drawable/icon_arrow_left" />
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="Paw Shop"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_small"
-                android:layout_marginRight="@dimen/border_width"
-                android:layout_weight="1"
-                android:src="@drawable/icon_arrow_right_thin" />
+                android:background="@drawable/button_blue"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_small">
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nunito_bold"
+                    android:text="See Owned"
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    android:id="@+id/imageView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_marginRight="@dimen/border_width"
+                    android:layout_weight="1"
+                    android:src="@drawable/icon_arrow_right_thin" />
+            </LinearLayout>
         </LinearLayout>
 
         <ScrollView

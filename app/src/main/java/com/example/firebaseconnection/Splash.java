@@ -29,6 +29,5 @@ public class Splash extends AppCompatActivity {
         }
         Intent i = new Intent(Splash.this, SignUpActivity.class);
         startActivity(i);
-
     }
 }

@@ -6,15 +6,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -46,7 +49,7 @@ public class Task extends AppCompatActivity {
     }
 
     @SuppressLint("ResourceType")
-    public LinearLayout generate(Context context) {
+    public LinearLayout generate(Context context, View parentView) {
         // Define dimensions and other resources
         int spacingSmall = context.getResources().getDimensionPixelSize(R.dimen.spacing_small);
         int spacingMedium = context.getResources().getDimensionPixelSize(R.dimen.spacing_medium);
@@ -262,22 +265,23 @@ public class Task extends AppCompatActivity {
         deleteButtonLayout.setClickable(true); // Make clickable
         deleteButtonLayout.setOnClickListener(v -> {
             // TODO delete button
-            firebaseFirestore = FirebaseFirestore.getInstance();
-            mAuth = FirebaseAuth.getInstance();
-            UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+//            firebaseFirestore = FirebaseFirestore.getInstance();
+//            mAuth = FirebaseAuth.getInstance();
+//            UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
 
-            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = LayoutInflater.from(context);
             View popupView = inflater.inflate(R.layout.popup_delete_task, null);
 
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             PopupWindow deleteTaskPopUp = new PopupWindow(popupView, width, height, true);
 
-            deleteTaskPopUp.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
+            // TODO fix null findViewById(R.id.tasks)
+            deleteTaskPopUp.showAtLocation(parentView, Gravity.CENTER_VERTICAL, 0, 0);
 
-            LinearLayout btnYes = findViewById(R.id.btnDeleteYes);
-            LinearLayout btnNo = findViewById(R.id.btnDeleteNo);
+            LinearLayout btnYes = popupView.findViewById(R.id.btnDeleteYes);
+            LinearLayout btnNo = popupView.findViewById(R.id.btnDeleteNo);
 
             btnNo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -288,13 +292,12 @@ public class Task extends AppCompatActivity {
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String taskNameToDelete = "Updated Task Name";
-                    TaskListActivity.deleteTaskFromUser(UID, taskNameToDelete);
+                    TaskListActivity.deleteTaskFromUser("YkbW5nnkv1aLDXUvEYxZDMB1oj03", taskName);
+
+                    deleteTaskPopUp.dismiss();
                 }
+            });
 
-
-
-        });
 
 
         });
@@ -309,7 +312,7 @@ public class Task extends AppCompatActivity {
 
         deleteButtonLayout.addView(deleteButtonImageView);
 
-        // Second button
+        // TODO Edit Button
         LinearLayout editButtonLayout = new LinearLayout(context);
         editButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -320,7 +323,49 @@ public class Task extends AppCompatActivity {
         editButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
         editButtonLayout.setClickable(true); // Make clickable
         editButtonLayout.setOnClickListener(v -> {
-            // TODO edit button
+            firebaseFirestore = FirebaseFirestore.getInstance();
+            mAuth = FirebaseAuth.getInstance();
+//            UID = mAuth.getCurrentUser().getUid();
+            UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+            // TODO Edit naa diri
+
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View popupView = inflater.inflate(R.layout.popup_edit_task, null);
+
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            PopupWindow editTaskPopup = new PopupWindow(popupView, width, height, true);
+
+            editTaskPopup.showAtLocation(parentView, Gravity.CENTER_VERTICAL, 0, 0);
+
+            EditText etTaskTitle, etTaskDate,etTaskDuration;
+            ToggleButton tbTaskMode = popupView.findViewById(R.id.toggleButtonTaskMode);
+            etTaskTitle = popupView.findViewById(R.id.editTextTaskTitle);
+            etTaskDate = popupView.findViewById(R.id.editTextDate);
+            etTaskDuration = popupView.findViewById(R.id.editTextTime);
+
+            etTaskTitle.setText(taskName);
+            etTaskDate.setText(taskDate);
+            etTaskDuration.setText(String.valueOf(taskDuration));
+            tbTaskMode.setChecked(taskMode);
+
+            LinearLayout btnEditSave = popupView.findViewById(R.id.btnEditSave);
+            btnEditSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String newTaskName = etTaskTitle.getText().toString();
+                    String newTaskDate = etTaskDate.getText().toString();
+                    Long newDuration = Long.parseLong(etTaskDuration.getText().toString());
+                    boolean newTaskMode = tbTaskMode.isChecked();
+
+                    TaskListActivity.updateTaskInUser(UID, taskName, newTaskName, newDuration, newTaskDate,newTaskMode);
+
+                    editTaskPopup.dismiss();
+                    TaskListActivity.fetchTasks(UID);
+                }
+            });
+
+
         });
 
         ImageView editButtonImageView = new ImageView(context);
@@ -348,6 +393,8 @@ public class Task extends AppCompatActivity {
         startButtonLayout.addView(startTextView);
         startButtonLayout.setOnClickListener(v -> {
             // TODO start button
+            Intent i = new Intent(TaskListActivity.activity, Timer.class);
+
 
         });
 

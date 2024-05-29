@@ -1,5 +1,9 @@
 package com.example.firebaseconnection;
 
+import static com.example.firebaseconnection.ProfileActivity.userCoins;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,6 +18,7 @@ import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -33,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TaskListActivity extends AppCompatActivity {
+    public static Activity activity;
     private FirebaseAuth mAuth;
     private static FirebaseFirestore firebaseFirestore;
     private TextView TaskName, TaskDate, TaskMode, TaskCoins;
@@ -41,9 +47,14 @@ public class TaskListActivity extends AppCompatActivity {
     private String UID;
 
     private static List<Map<String, Object>> tasksList;
+
     private static ArrayList<Task> tasks;
 
-    static LinearLayout tasksLinearLayout;
+    public static ConstraintLayout tasksConstraintLayout;
+
+    public static LinearLayout tasksLinearLayout;
+
+    static  TextView txtCoin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,6 +62,7 @@ public class TaskListActivity extends AppCompatActivity {
         //create task (addTaskToUser), read task (fetchTasks),
         //update task (updateTaskInUser), delete task (deleteTaskFromUser)
         tasks = new ArrayList<>();
+
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -60,6 +72,20 @@ public class TaskListActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        activity = this;
+
+
+        LinearLayout btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(TaskListActivity.this, Menu.class);
+                startActivity(i);
+            }
+        });
+
+        tasksConstraintLayout = findViewById(R.id.tasks);
 
         btnAdd = findViewById(R.id.btnAddTask);
 
@@ -94,11 +120,13 @@ public class TaskListActivity extends AppCompatActivity {
             create_task.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String taskTitle, taskDateStr,taskDuration,taskMode;
+                    String taskTitle, taskDateStr,taskMode;
+
+                    Long taskDuration;
 
                     taskTitle = etTaskTitle.getText().toString();
                     taskDateStr = etTaskDate.getText().toString();
-                    taskDuration = etDuration.getText().toString();
+                    taskDuration = Long.valueOf(etDuration.getText().toString());
                     taskMode = tbTaskMode.isChecked()?"Focus":"Chill";
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -111,9 +139,11 @@ public class TaskListActivity extends AppCompatActivity {
 
                     // Create a Timestamp object from the parsed Date object
                     addTaskToUser(UID,taskTitle,taskDuration, taskDateStr, tbTaskMode.isChecked());
-
+                    fetchTasks(UID);
+                    createTaskPopup.dismiss();
                 }
             });
+
 
 
 
@@ -198,18 +228,22 @@ public class TaskListActivity extends AppCompatActivity {
 //
 //        });
 
-        fetchTasks("YkbW5nnkv1aLDXUvEYxZDMB1oj03");
+        fetchTasks(UID);
+
+        getUserBalance(UID);
+
+
 
     }
 
-    private void addTaskToUser(String userId, String taskName, String duration, String taskDate, boolean taskMode) {
+    private void addTaskToUser(String userId, String taskName, Long duration, String taskDate, boolean taskMode) {
         //map for the new task
         Map<String, Object> newTask = new HashMap<>();
         newTask.put("taskName", taskName);
         newTask.put("taskDate", taskDate);
         newTask.put("taskMode", taskMode);
         newTask.put("taskDuration",duration);
-        int coins = Integer.parseInt(duration)/2;
+        int coins = Integer.parseInt(String.valueOf(duration))/2;
         newTask.put("taskCoins", coins);
         newTask.put("taskIsDone",false);
 
@@ -224,7 +258,7 @@ public class TaskListActivity extends AppCompatActivity {
                 });
     }
 
-    private static void fetchTasks(String userId) {
+    public static void fetchTasks(String userId) {
         //user document reference
         DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
         //user document fetch
@@ -276,7 +310,7 @@ public class TaskListActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateTaskInUser(String userId, String oldTaskName, String newTaskName, String duration, String newTaskDate, String newTaskMode) {
+    public static void updateTaskInUser(String userId, String oldTaskName, String newTaskName, Long duration, String newTaskDate, boolean newTaskMode) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
 
         userRef.get()
@@ -292,7 +326,8 @@ public class TaskListActivity extends AppCompatActivity {
                                     task.put("taskName", newTaskName);
                                     task.put("taskDate", newTaskDate);
                                     task.put("taskMode", newTaskMode);
-                                    int newTaskCoins = Integer.parseInt(duration)/2;
+                                    int newTaskCoins = (int) (duration/2);
+                                    task.put("taskDuration",duration);
                                     task.put("taskCoins", newTaskCoins);
                                     break;
                                 }
@@ -361,6 +396,7 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
     public static void getTasks() {
+        tasks.clear();
         for (int i = 0; i < tasksList.size(); i++) {
             String taskName = tasksList.get(i).get("taskName").toString();
             boolean taskMode = (boolean) tasksList.get(i).get("taskMode");
@@ -374,9 +410,40 @@ public class TaskListActivity extends AppCompatActivity {
     public static void generateTasks() {
         tasksLinearLayout.removeAllViews();
 
-        System.out.println(tasks.size());
         for (Task task : tasks) {
-            tasksLinearLayout.addView(task.generate(tasksLinearLayout.getContext()));
+            tasksLinearLayout.addView(task.generate(tasksLinearLayout.getContext(), tasksConstraintLayout));
         }
+    }
+
+    public void getUserBalance(String userID) {
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference userRef = firebaseFirestore.collection("users").document(userID);
+
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        //get the "coins" field from the document
+
+                        userCoins = documentSnapshot.getLong("coins");
+                        if (userCoins != null) {
+                            updateCoinText();
+                            Log.d("TAG", "User has " + userCoins + " coins.");
+                        } else {
+                            Log.d("TAG", "Coins field is not found in the document.");
+                        }
+                        //update
+
+
+
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
+    }
+
+    private void updateCoinText(){
+        txtCoin =  findViewById(R.id.txtCoinBalance);
+        txtCoin.setText(String.valueOf(userCoins));
     }
 }

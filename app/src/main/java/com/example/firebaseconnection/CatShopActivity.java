@@ -1,19 +1,20 @@
 package com.example.firebaseconnection;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import androidx.gridlayout.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -31,46 +32,78 @@ import com.google.firebase.storage.StorageReference;
 
 public class CatShopActivity extends AppCompatActivity {
 
-    FirebaseFirestore firebaseFirestore;
-    private List<Map<String, Object>> catShopList, userCatsList;
+    static FirebaseFirestore firebaseFirestore;
+    private static List<Map<String, Object>> catShopList;
+    static List<Map<String, Object>> userCatsList;
     private final String documentId = "xv6JGkDrmpJMylgUIeEz";
-    private String UID;
+    private static String UID;
     private TextView tvCatName;
     private Button btnPurchaseCat, btnRedirectToProfile;
     private ImageView ivCatImage;
     private FirebaseAuth mAuth;
-    private Long userCoins, newUserCoins;
+    private static Long userCoins;
+    private static Long newUserCoins;
+
+    public static GridLayout catsGrid;
+    public static ConstraintLayout catShop;
+
+    public ArrayList<Cat> cats;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cat_shop);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.tasks), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
+        LinearLayout btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CatShopActivity.this, Menu.class);
+                startActivity(i);
+            }
+        });
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
+
+        cats = new ArrayList<>();
+        catShop = findViewById(R.id.catShop);
+        catsGrid = findViewById(R.id.catsGrid);
         firebaseFirestore = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        UID = mAuth.getCurrentUser().getUid();
-        //catShopList  = new ArrayList<>();
-        //ivCatImage = findViewById(R.id.ivCatImage);
+        catShopList  = new ArrayList<>();
+        userCatsList = new ArrayList<>();
 
-        //tvCatName = findViewById(R.id.tvCatName);
-        //btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
-
-        btnPurchaseCat.setOnClickListener(v->{
-            getUserCoins();
-        });
-
-        btnRedirectToProfile.setOnClickListener(v->{
-            Intent intent = new Intent(CatShopActivity.this, ProfileActivity.class);
-            startActivity(intent);
-        });
 
         fetchCats(documentId);
+
+//        generateCats();
+
+        mAuth = FirebaseAuth.getInstance();
+//        UID = mAuth.getCurrentUser().getUid();
+        UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+
         fetchUserCats();
+
+
+        getUserBalance(UID);
+
+//        ivCatImage = findViewById(R.id.ivCatImage);
+//
+//        tvCatName = findViewById(R.id.tvCatName);
+//        btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
+//        btnRedirectToProfile = findViewById(R.id.btnRedirectToProfile);
+//
+//        btnPurchaseCat.setOnClickListener(v->{
+//            getUserCoins();
+//        });
+//
+//        btnRedirectToProfile.setOnClickListener(v->{
+//            Intent intent = new Intent(CatShopActivity.this, ProfileActivity.class);
+//            startActivity(intent);
+//        });
+
     }
 
     private void fetchCats(String documentId) {
@@ -100,14 +133,13 @@ public class CatShopActivity extends AppCompatActivity {
                                 catMap.put("catRarity", catRarity);
 
                                 // Add the cat map to the catShopList
-                                catShopList.add(catMap);
 
+                                catsGrid.addView(new Cat(catImageUrl, catName, catPrice, catRarity).generate(catsGrid.getContext(), catShop));
                                 Log.d("TAG", "Cat Name: " + catName);
                                 Log.d("TAG", "Cat Image URL: " + catImageUrl);
                                 Log.d("TAG", "Cat Price: " + catPrice);
                                 Log.d("TAG", "Cat Rarity: " + catRarity);
                             }
-                            updateUIWithCats();
                         } else {
                             Log.d("TAG", "No cats found");
                         }
@@ -121,7 +153,7 @@ public class CatShopActivity extends AppCompatActivity {
                 });
     }
 
-    private void fetchUserCats(){
+    public static void fetchUserCats(){
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
         userRef.get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -143,7 +175,6 @@ public class CatShopActivity extends AppCompatActivity {
                                 Log.d("TAG", "catImageURL: " + catImageURL);
                                 Log.d("TAG", "catName: " + catName);
                             }
-                            updateUIDisableButton2();
                         } else {
                             Log.d("TAG", "No tasks found");
                         }
@@ -158,23 +189,6 @@ public class CatShopActivity extends AppCompatActivity {
 
     private void updateUIWithCats() {
         if (!catShopList.isEmpty()) {
-            String catName = (String) catShopList.get(9).get("catName");
-            String catImageUrl = (String) catShopList.get(9).get("catImageURL");
-
-            tvCatName.setText(catName);
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference().child(catImageUrl);
-
-            storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                //if fails, check gradle / rebuild proj
-                Glide.with(this)
-                        .load(uri)
-                        .into(ivCatImage);
-            }).addOnFailureListener(exception -> {
-                Log.e("TAG", "Error fetching image URL", exception);
-                //ivCatImage.setImageResource(R.drawable.placeholder_image); //set a placeholder image
-            });
 
         } else {
             Log.i("TAG", "EMPTY LIST");
@@ -183,7 +197,7 @@ public class CatShopActivity extends AppCompatActivity {
         Log.i("TAG", "Total cats: " + catShopList.size());
     }
 
-    private void getUserCoins() {
+    public static void getUserCoins(String catName) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         userRef.get()
@@ -196,7 +210,7 @@ public class CatShopActivity extends AppCompatActivity {
                         } else {
                             Log.d("TAG", "Coins field is not found in the document.");
                         }
-                        checkCoinBalance(userCoins, (Long) catShopList.get(0).get("catPrice"));
+                        checkCoinBalance(catName, userCoins, (Long) catShopList.get(0).get("catPrice"));
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }
@@ -204,13 +218,13 @@ public class CatShopActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
     }
 
-    private void checkCoinBalance(Long userCoins, Long catFee){
+    private static void checkCoinBalance(String catName, Long userCoins, Long catFee){
         assert userCoins >= catFee;
         newUserCoins = userCoins - catFee;
-        updateUserCoins(newUserCoins);
+        updateUserCoins(catName, newUserCoins);
     }
 
-    private void updateUserCoins(Long newUserCoins) {
+    private static void updateUserCoins(String catName, Long newUserCoins) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         userRef.get()
@@ -220,7 +234,7 @@ public class CatShopActivity extends AppCompatActivity {
                                 .addOnSuccessListener(aVoid -> {
                                     Log.d("TAG", "Username updated successfully");
 
-                                    addCatToUser(catShopList.get(0).get("catName").toString(), catShopList.get(0).get("catImageURL").toString());
+                                    addCatToUser(catName, catName + ".svg");
                                 })
                                 .addOnFailureListener(e -> Log.e("TAG", "Error updating username", e));
                     } else {
@@ -230,12 +244,12 @@ public class CatShopActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
     }
 
-    private void addCatToUser(String catName, String catImage) {
+    private static void addCatToUser(String catName, String catImage) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         Map<String, String> newCat = new HashMap<>();
         newCat.put("catName", catName);
-        newCat.put("catImage", catImage);
+        newCat.put("catImageURL", catImage);
 
         //update cats field
         userRef.update("cats", FieldValue.arrayUnion(newCat))
@@ -248,14 +262,14 @@ public class CatShopActivity extends AppCompatActivity {
                 });
     }
 
-    private void fetchUserInfo() {
+    private static void fetchUserInfo() {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         userRef.get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Log.d("TAG", "User document fetched successfully");
-                        updateUIDisableButton();
+//                        updateUIDisableButton();
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }
@@ -267,25 +281,69 @@ public class CatShopActivity extends AppCompatActivity {
 
 
 
-    private void updateUIDisableButton() {
-        //disable button for users' purchased cats
+//    private void updateUIDisableButton() {
+//        //disable button for users' purchased cats
+//
+//        //an array of buttons guro nya each index sa button kay same ug
+//        //index sa catShopList. if naa ang usersCatsList sacatShopList
+//        //then idisable ang button
+//
+//        Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
+//        btnPurchaseCat.setText("purchased");
+//        btnPurchaseCat.setEnabled(false);
+//    }
+//
+//    private void updateUIDisableButton2() {
+//        Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
+//        btnPurchaseCat.setText("purchased");
+//        btnPurchaseCat.setEnabled(false);
+//    }
 
-        //an array of buttons guro nya each index sa button kay same ug
-        //index sa catShopList. if naa ang usersCatsList sacatShopList
-        //then idisable ang button
 
-        //Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
-        btnPurchaseCat.setText("purchased");
-        btnPurchaseCat.setEnabled(false);
+    public void getCats() {
+        cats.clear();
+        for (int i = 0; i < catShopList.size(); i++) {
+            Log.d("SIMON", "Sasdd");
+            String catImageURL = (String) catShopList.get(i).get("catImageURL");
+            String catName = (String) catShopList.get(i).get("catImageURL");
+            Long catPrice = (Long) catShopList.get(i).get("catPrice");
+            Long catRarity = (Long) catShopList.get(i).get("catRarity");
+            cats.add(new Cat(catImageURL, catName, catPrice, catRarity));
+        }
     }
 
-    private void updateUIDisableButton2() {
-        //Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
-        btnPurchaseCat.setText("purchased");
-        btnPurchaseCat.setEnabled(false);
+    public void generateCats() {
+        getCats();
+        catsGrid.removeAllViews();
+        for (Cat cat : cats) {
+            catsGrid.addView(cat.generate(catsGrid.getContext(), catShop));
+        }
     }
 
+    public void getUserBalance(String userID) {
+        DocumentReference userRef = firebaseFirestore.collection("users").document(userID);
 
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        //get the "coins" field from the document
+                        userCoins = documentSnapshot.getLong("coins");
+                        if (userCoins != null) {
+                            updateCoinText();
+                            Log.d("TAG", "User has " + userCoins + " coins.");
+                        } else {
+                            Log.d("TAG", "Coins field is not found in the document.");
+                        }
+                        //update
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
+    }
 
-
+    private void updateCoinText(){
+        TextView txtCoin =  findViewById(R.id.txtCoinBalance);
+        txtCoin.setText(String.valueOf(userCoins));
+    }
 }

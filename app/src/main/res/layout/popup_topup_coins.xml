@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/popup_header_orange"
+            android:background="@drawable/popup_header_green"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/spacing_medium"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_extrabold"
-                android:text="Purrsue Later?"
+                android:text="Top-up Coins"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_large" />
@@ -49,17 +49,26 @@
             android:orientation="vertical"
             android:padding="@dimen/spacing_medium">
 
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_bold"
+                android:text="Purchase Starter bundle?"
+                android:textSize="@dimen/font_size_medium" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/btnPurrsueYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:layout_weight="1"
-                    android:background="@drawable/button_orange"
+                    android:background="@drawable/button_green"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="@dimen/spacing_small">
@@ -77,12 +86,12 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/btnPurrsueNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:layout_weight="1"
-                    android:background="@drawable/button_orange"
+                    android:background="@drawable/button_green"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="@dimen/spacing_small">

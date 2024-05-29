@@ -31,4 +31,6 @@
     <dimen name="sign_in_option_button_height">52dp</dimen>
 
     <dimen name="large_number">99999dp</dimen>
+
+    <dimen name="catDimension">100dp</dimen>
 </resources>

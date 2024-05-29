@@ -35,7 +35,7 @@ public class Timer extends AppCompatActivity {
     LinearLayout btnPurrsueLater;
     private CountDownTimer countDownTimer;
 
-    private long timeLeftInMillis;
+    private Long timeLeftInMillis, userCoins, newCoins;
     private boolean isTimerRunning;
     FirebaseFirestore firebaseFirestore;
     String UID;
@@ -90,8 +90,12 @@ public class Timer extends AppCompatActivity {
             });
         });
 
+        int time = 1;
 
-        Long milliseconds = timeLeftInMillis = 1 * 60 * 1000L;
+        newCoins = (long) ((time == 1) ? 1: time/2);
+
+
+        Long milliseconds = timeLeftInMillis = time * 60 * 1000L;
         startTimer();
         startLockTaskMode();
     }
@@ -108,6 +112,7 @@ public class Timer extends AppCompatActivity {
             public void onFinish() {
                 isTimerRunning = false;
                 timerTextView.setText("00:00");
+                getUserCoins();
                 onTimerFinish();
             }
         }.start();
@@ -143,8 +148,6 @@ public class Timer extends AppCompatActivity {
 
     private void onTimerFinish() {
         stopLockTaskMode();
-
-
     }
 
     private void pauseTimer() {
@@ -230,5 +233,43 @@ public class Timer extends AppCompatActivity {
                 });
     }
 
+    private void getUserCoins() {
+        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        //get the "coins" field from the document
+                        userCoins = documentSnapshot.getLong("coins");
+                        if (userCoins != null) {
+                            Log.d("TAG", "User has " + userCoins + " coins.");
+                        } else {
+                            Log.d("TAG", "Coins field is not found in the document.");
+                        }
+                        updateUserCoins();
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
+    }
+
+
+    private void updateUserCoins() {
+        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
+
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        userRef.update("coins", userCoins+newCoins)
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("TAG", "Username updated successfully");
+                                })
+                                .addOnFailureListener(e -> Log.e("TAG", "Error updating username", e));
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
+    }
 }

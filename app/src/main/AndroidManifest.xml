@@ -9,45 +9,47 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FirebaseConnection"
+        android:theme="@style/Theme.Pawductive"
         tools:targetApi="31">
         <activity
             android:name=".DashboardTotals"
             android:exported="false" />
         <activity
-            android:name=".MyCollection"
+            android:name=".MyCatCollection"
             android:exported="false" />
         <activity
             android:name=".Splash"
             android:exported="false">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
-        <activity
-            android:name=".PawShop"
-            android:exported="false" />
         <activity
             android:name=".Menu"
             android:exported="false" />
         <activity
             android:name=".Timer"
-            android:lockTaskMode="if_whitelisted"
-            android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
+            android:exported="false">
+        </activity>
         <activity
             android:name=".ProfileActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".CatShopActivity"
-            android:exported="false" />
+            android:exported="false">
+        </activity>
         <activity
             android:name=".TaskListActivity"
-            android:exported="false"/>
-
+            android:exported="false">
+        </activity>
         <activity
             android:name=".LogInActivity"
             android:exported="false">
@@ -56,9 +58,8 @@
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SettingsActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>

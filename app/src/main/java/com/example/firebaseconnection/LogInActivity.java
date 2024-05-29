@@ -45,9 +45,17 @@ public class LogInActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(v -> {
+
             String email = loginUsername.getText().toString();
             String password = loginPassword.getText().toString();
-            loginAccount(email, password);
+            if(password.isEmpty()){
+                loginPassword.setError("Please enter your password.");
+
+            }
+            if(email.isEmpty()){
+                loginUsername.setError("Please enter your email.");
+            }
+            if(!password.isEmpty() && !email.isEmpty())loginAccount(email, password);
         });
 
     }
@@ -59,8 +67,8 @@ public class LogInActivity extends AppCompatActivity {
                         System.out.println("Log-in Successful!");
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(LogInActivity.this, "Log-in successful", Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(LogInActivity.this, TaskListActivity.class);
-//                        startActivity(intent);
+                        Intent intent = new Intent(LogInActivity.this, Menu.class);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(LogInActivity.this, "Log-in failed", Toast.LENGTH_SHORT).show();
                     }
