@@ -1,12 +1,19 @@
 package com.example.firebaseconnection;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,10 +22,16 @@ import androidx.core.content.res.ResourcesCompat;
 
 import java.util.Date;
 
+
 public class Task extends AppCompatActivity {
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth mAuth;
+    private String UID;
+
     private String taskName;
 
     private boolean taskMode;
+
     private String taskDuration;
     private int taskCoins;
     private Timestamp taskDate;
@@ -63,6 +76,7 @@ public class Task extends AppCompatActivity {
         topInnerLayout.setClickable(true); // Make clickable
         topInnerLayout.setOnClickListener(v -> {
             // Handle click event
+
         });
 
         TextView titleTextView = new TextView(context);
@@ -248,6 +262,41 @@ public class Task extends AppCompatActivity {
         deleteButtonLayout.setClickable(true); // Make clickable
         deleteButtonLayout.setOnClickListener(v -> {
             // TODO delete button
+            firebaseFirestore = FirebaseFirestore.getInstance();
+            mAuth = FirebaseAuth.getInstance();
+            UID = mAuth.getCurrentUser().getUid();
+
+
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_delete_task, null);
+
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            PopupWindow deleteTaskPopUp = new PopupWindow(popupView, width, height, true);
+
+            deleteTaskPopUp.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
+
+            LinearLayout btnYes = findViewById(R.id.btnDeleteYes);
+            LinearLayout btnNo = findViewById(R.id.btnDeleteNo);
+
+            btnNo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteTaskPopUp.dismiss();
+                }
+            });
+            btnYes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String taskNameToDelete = "Updated Task Name";
+                    TaskListActivity.deleteTaskFromUser(UID, taskNameToDelete);
+                }
+
+
+
+        });
+
+
         });
 
         ImageView deleteButtonImageView = new ImageView(context);
