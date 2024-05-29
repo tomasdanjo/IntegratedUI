@@ -93,12 +93,13 @@ public class TaskListActivity extends AppCompatActivity {
             createTaskPopup.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
             EditText etTaskTitle, etTaskDate, etDuration;
             ToggleButton tbTaskMode;
-            etTaskTitle = findViewById(R.id.editTextMode);
-            etTaskDate = findViewById(R.id.editTextTaskDate);
-            etDuration = findViewById(R.id.editTextTime);
-            tbTaskMode = findViewById(R.id.toggleMode);
 
-            LinearLayout create_task = findViewById(R.id.createTaskBtn);
+            etTaskTitle = popupView.findViewById(R.id.editTextMode);
+            etTaskDate = popupView.findViewById(R.id.editTextTaskDate);
+            etDuration = popupView.findViewById(R.id.editTextTime);
+            tbTaskMode = popupView.findViewById(R.id.toggleMode);
+
+            LinearLayout create_task = popupView.findViewById(R.id.createTaskBtn);
             create_task.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -109,7 +110,7 @@ public class TaskListActivity extends AppCompatActivity {
                     taskDuration = etDuration.getText().toString();
                     taskMode = tbTaskMode.isChecked()?"Focus":"Chill";
 
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                     Date date = null;
                     try {
                         date = dateFormat.parse(taskDateStr);
@@ -120,7 +121,7 @@ public class TaskListActivity extends AppCompatActivity {
                     // Create a Timestamp object from the parsed Date object
                     Timestamp taskDate = new Timestamp(Instant.ofEpochSecond(date.getTime()));
 
-                    addTaskToUser(UID,taskTitle,taskDuration,taskDate,tbTaskMode.isChecked());
+                    addTaskToUser(UID,taskTitle,taskDuration, taskDate, tbTaskMode.isChecked());
 
                 }
             });
