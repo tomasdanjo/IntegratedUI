@@ -11,10 +11,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +25,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     FirebaseFirestore firebaseFirestore;
     FirebaseAuth mAuth;
+    private List<Map<String, Object>> userCatsList;
     String UID;
     TextView tvUserUsername, tvUserEmail;
     Button btnEditUserInformation;
+    private static int totalCats, totalFinishedTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Log.d("TAG", "User document fetched successfully");
                         String username = documentSnapshot.getString("username");
                         String email = documentSnapshot.getString("email");
-                        updateUIWithProfile(username, email);
+                        updateUIWithProfile(username);
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }
@@ -97,11 +100,57 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateUIWithProfile(String username, String email) {
+    private void fetchUserCats(){
+        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+
+                        List<Object> cats = (List<Object>) documentSnapshot.get("cats");
+                        if (cats != null) {
+                            totalCats = cats.size();
+                            return;
+                        }
+                    }
+                    totalCats=0;
+                })
+                .addOnFailureListener(e -> {
+                    totalCats = 0;
+                });
+    }
+
+    private void fetchUserTasks(){
+        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+
+                        List<Object> tasks = (List<Object>) documentSnapshot.get("tasks");
+                        if (tasks != null) {
+                            totalFinishedTasks = tasks.size();
+                            return;
+                        }
+                    }
+                    totalFinishedTasks=0;
+                })
+                .addOnFailureListener(e -> {
+                    totalFinishedTasks = 0;
+                });
+    }
+
+
+    private void updateUIWithProfile(String username) {
+        fetchUserCats();
+        fetchUserTasks();
+
+
         TextView tvUserUsername = findViewById(R.id.username);
-//        TextView tvUserEmail = findViewById(R.id.tvUserEmail);
+        TextView tvTotalPaws = findViewById(R.id.tvTotalTasksFinished);
+        TextView tvTotalTasks = findViewById(R.id.tvTotalTasksFinished);
 
         tvUserUsername.setText(username);
+        tvTotalPaws.setText(String.valueOf(totalCats));
+        tvTotalTasks.setText(String.valueOf(totalFinishedTasks));
 //        tvUserEmail.setText(email);
     }
 
