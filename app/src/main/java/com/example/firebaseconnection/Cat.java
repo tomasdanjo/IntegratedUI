@@ -54,7 +54,7 @@ public class Cat {
         catImageView.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        Glide.with(context).load(catImageURL).into(catImageView);
+        Glide.with(parent).load(catImageURL).into(catImageView);
         linearLayout.addView(catImageView);
 
         // Price and Rarity LinearLayout
