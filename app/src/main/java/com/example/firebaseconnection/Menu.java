@@ -76,14 +76,9 @@ public class Menu extends AppCompatActivity {
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                TODO add settings intent
-
+                Intent i = new Intent(Menu.this, SettingsActivity.class);
+                startActivity(i);
             }
         });
     }
-
-
-
-
-
 }

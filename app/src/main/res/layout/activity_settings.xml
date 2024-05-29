@@ -127,6 +127,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/spacing_small"
@@ -162,6 +163,7 @@
         app:layout_constraintTop_toTopOf="@+id/linearLayout">
 
         <LinearLayout
+            android:id="@+id/btnMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_hamburger"
@@ -188,6 +190,7 @@
             android:layout_weight="1" />
 
         <LinearLayout
+            android:id="@+id/btnUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_blue_circle"

@@ -14,9 +14,9 @@
         <activity
             android:name=".DashboardTotals"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".MyCollection"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".MyCatCollection"
+            android:exported="false" />
         <activity
             android:name=".Splash"
             android:exported="false">
@@ -73,6 +73,9 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
             android:exported="false" />
     </application>
 
