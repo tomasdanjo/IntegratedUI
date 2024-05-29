@@ -223,7 +223,7 @@ public class TaskListActivity extends AppCompatActivity {
         fetchTasks(UID);
 
         txtCoin = findViewById(R.id.txtCoinBalance);
-        ProfileActivity.getUserCoins(UID);
+
 
 
     }

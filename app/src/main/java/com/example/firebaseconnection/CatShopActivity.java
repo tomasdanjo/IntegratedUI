@@ -88,7 +88,7 @@ public class CatShopActivity extends AppCompatActivity {
 
 
         txtCoin = findViewById(R.id.txtCoinBalance);
-        ProfileActivity.getUserCoins(UID);
+
 //        ivCatImage = findViewById(R.id.ivCatImage);
 //
 //        tvCatName = findViewById(R.id.tvCatName);
