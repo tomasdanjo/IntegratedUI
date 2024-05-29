@@ -3,9 +3,12 @@ package com.example.firebaseconnection;
 import android.content.Context;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -61,7 +64,8 @@ public class Cat {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         pawImage.setBackground(ContextCompat.getDrawable(context, R.drawable.button_white));
-        String catImageResource = catImageURL.replace(".svg", ".xml");
+        String catImageResource = catImageURL.replace(".svg", "");
+        catImageResource = catImageResource.toLowerCase();
         int resId = context.getResources().getIdentifier(catImageResource, "drawable", context.getPackageName());
         if (resId != 0) {
             pawImage.setImageResource(resId);
@@ -161,6 +165,36 @@ public class Cat {
                 context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
                 context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
                 context.getResources().getDimensionPixelSize(R.dimen.spacing_small));
+        purchaseButtonLayout.setClickable(true);
+        purchaseButtonLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = LayoutInflater.from(context);
+                View popupView = inflater.inflate(R.layout.popup_purchase_paw, null);
+                int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                PopupWindow purchasePawPopUp = new PopupWindow(popupView, width, height, true);
+                purchasePawPopUp.showAtLocation(parent, Gravity.CENTER_VERTICAL, 0, 0);
+
+                TextView pawName = popupView.findViewById(R.id.pawName);
+                ImageView pawImage = popupView.findViewById(R.id.pawImage);
+                TextView pawPrice = popupView.findViewById(R.id.pawPrice);
+                TextView pawRarity = popupView.findViewById(R.id.pawRarity);
+
+                pawName.setText(catName);
+                pawImage.setImageResource(resId);
+                pawPrice.setText(String.valueOf(catPrice));
+                pawRarity.setText(String.valueOf(catRarity));
+
+                LinearLayout purchasePawButton = popupView.findViewById(R.id.purchasePawButton);
+                purchasePawButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        purchasePawPopUp.dismiss();
+                    }
+                });
+            }
+        });
 
         TextView purchaseText = new TextView(context);
         purchaseText.setId(View.generateViewId());
