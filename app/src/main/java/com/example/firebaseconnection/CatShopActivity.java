@@ -277,6 +277,7 @@ public class CatShopActivity extends AppCompatActivity {
         getCats();
         catsGrid.removeAllViews();
         for (Cat cat : cats) {
+            System.out.println(cat);
             catsGrid.addView(cat.generate(catsGrid.getContext(), catShop));
         }
     }
