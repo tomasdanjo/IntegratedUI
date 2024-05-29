@@ -7,11 +7,24 @@ import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.gridlayout.widget.GridLayout;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MyCatCollection extends AppCompatActivity {
+
+    public static GridLayout catsGrid;
+    public static ConstraintLayout main;
+    private static String UID;
+    public ArrayList<Cat> cats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +46,18 @@ public class MyCatCollection extends AppCompatActivity {
             }
         });
 
-    }
+        main = findViewById(R.id.main);
+        catsGrid = findViewById(R.id.catsGrid);
+        cats = new ArrayList<>();
 
+        List<Map<String, Object>> ownedCats = CatShopActivity.userCatsList;
+
+        for (Map map : ownedCats) {
+            cats.add(new Cat((String) map.get("catImageURL"), (String) map.get("catName"), null, null));
+        }
+
+        for (Cat cat : cats) {
+            catsGrid.addView(cat.generate(catsGrid.getContext(), main));
+        }
+    }
 }
