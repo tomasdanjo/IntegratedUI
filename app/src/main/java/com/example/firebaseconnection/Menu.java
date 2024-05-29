@@ -46,7 +46,11 @@ public class Menu extends AppCompatActivity {
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                TODO add intent to homepage
+//                TODO add intent to cat collection
+                Intent i = new Intent(Menu.this,MyCatCollection.class);
+                startActivity(i);
+
+
             }
         });
 
@@ -54,7 +58,6 @@ public class Menu extends AppCompatActivity {
         btnShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                TODO add shop intent
                 Intent i = new Intent(Menu.this,CatShopActivity.class);
                 startActivity(i);
             }
@@ -65,6 +68,7 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                TODO add settings intent
+
             }
         });
     }
