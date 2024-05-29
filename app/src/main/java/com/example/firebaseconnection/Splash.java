@@ -22,7 +22,11 @@ public class Splash extends AppCompatActivity {
             return insets;
         });
 
-        Thread.sleep(3000);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         Intent i = new Intent(Splash.this, SignUpActivity.class);
         startActivity(i);
 

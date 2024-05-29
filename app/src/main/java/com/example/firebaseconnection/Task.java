@@ -348,6 +348,7 @@ public class Task extends AppCompatActivity {
         startButtonLayout.addView(startTextView);
         startButtonLayout.setOnClickListener(v -> {
             // TODO start button
+
         });
 
         bottomLayout.addView(deleteButtonLayout);

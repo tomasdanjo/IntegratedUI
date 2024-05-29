@@ -42,17 +42,17 @@ import java.util.Objects;
 
 public class TaskListActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private FirebaseFirestore firebaseFirestore;
+    private static FirebaseFirestore firebaseFirestore;
     private TextView TaskName, TaskDate, TaskMode, TaskCoins;
     private LinearLayout btnAdd, btnEdit, btnDelete;
     private Map<String, Object> user;
     private String UID;
 
-    private List<Map<String, Object>> tasksList;
+    private static List<Map<String, Object>> tasksList;
 
-    private ArrayList<Task> tasks;
+    private static ArrayList<Task> tasks;
 
-    LinearLayout tasksLinearLayout;
+    static LinearLayout tasksLinearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -235,7 +235,7 @@ public class TaskListActivity extends AppCompatActivity {
                 });
     }
 
-    private void fetchTasks(String userId) {
+    private static void fetchTasks(String userId) {
         //user document reference
         DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
         //user document fetch
@@ -320,7 +320,7 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
 
-    private void updateUIWithTasks() {
+    private static void updateUIWithTasks() {
 //        if (!tasksList.isEmpty()) {
 //            TaskName.setText(Objects.requireNonNull(tasksList.get().get("taskName")).toString());
 //            Log.i("TAG", "SUCCESS");
@@ -367,7 +367,7 @@ public class TaskListActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching tasks", e));
     }
 
-    public void getTasks() {
+    public static void getTasks() {
         for (int i = 0; i < tasksList.size(); i++) {
             String taskName = tasksList.get(i).get("taskName").toString();
             boolean taskMode = (boolean) tasksList.get(i).get("taskMode");
@@ -378,7 +378,7 @@ public class TaskListActivity extends AppCompatActivity {
         }
     }
 
-    public void generateTasks() {
+    public static void generateTasks() {
         tasksLinearLayout.removeAllViews();
 
         System.out.println(tasks.size());
