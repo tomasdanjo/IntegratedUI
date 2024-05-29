@@ -264,7 +264,7 @@ public class CatShopActivity extends AppCompatActivity {
     public void getCats() {
         cats.clear();
         for (int i = 0; i < catShopList.size(); i++) {
-            System.out.println("Yup there's a cat here");
+            Log.d("SIMON", "Sasdd");
             String catImageURL = (String) catShopList.get(i).get("catImageURL");
             String catName = (String) catShopList.get(i).get("catImageURL");
             Long catPrice = (Long) catShopList.get(i).get("catPrice");
@@ -277,7 +277,6 @@ public class CatShopActivity extends AppCompatActivity {
         getCats();
         catsGrid.removeAllViews();
         for (Cat cat : cats) {
-            System.out.println(cat);
             catsGrid.addView(cat.generate(catsGrid.getContext(), catShop));
         }
     }
