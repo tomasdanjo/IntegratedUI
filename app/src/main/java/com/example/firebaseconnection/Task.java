@@ -289,7 +289,7 @@ public class Task extends AppCompatActivity {
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TaskListActivity.deleteTaskFromUser(UID, taskName);
+                    TaskListActivity.deleteTaskFromUser("YkbW5nnkv1aLDXUvEYxZDMB1oj03", taskName);
 
                     deleteTaskPopUp.dismiss();
                 }

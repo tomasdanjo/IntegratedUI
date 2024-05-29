@@ -119,7 +119,8 @@ public class TaskListActivity extends AppCompatActivity {
 
                     // Create a Timestamp object from the parsed Date object
                     addTaskToUser(UID,taskTitle,taskDuration, taskDateStr, tbTaskMode.isChecked());
-
+                    fetchTasks(UID);
+                    createTaskPopup.dismiss();
                 }
             });
 
@@ -370,6 +371,7 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
     public static void getTasks() {
+        tasks.clear();
         for (int i = 0; i < tasksList.size(); i++) {
             String taskName = tasksList.get(i).get("taskName").toString();
             boolean taskMode = (boolean) tasksList.get(i).get("taskMode");
