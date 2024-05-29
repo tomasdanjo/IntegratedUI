@@ -1,7 +1,5 @@
 package com.example.firebaseconnection;
 
-import static com.example.firebaseconnection.CatShopActivity.firebaseFirestore;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,7 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-        getUserCoins(UID);
+        getUserBalance(UID);
         fetchUserInfo(UID);
         fetchUserCats(UID);
     }
@@ -167,7 +165,7 @@ public class ProfileActivity extends AppCompatActivity {
 //        tvUserEmail.setText(email);
     }
 
-    public void getUserCoins(String userID) {
+    public void getUserBalance(String userID) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(userID);
 
         userRef.get()

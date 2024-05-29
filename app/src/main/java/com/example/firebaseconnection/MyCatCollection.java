@@ -1,9 +1,12 @@
 package com.example.firebaseconnection;
 
-import static com.example.firebaseconnection.ProfileActivity.userCoins;
+
+
+import static com.example.firebaseconnection.ProfileActivity.UID;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,8 +17,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class MyCatCollection extends AppCompatActivity {
 
+    TextView txtCoin;
+    Long userCoins;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +45,41 @@ public class MyCatCollection extends AppCompatActivity {
         });
 
 
-        TextView txtCoin = findViewById(R.id.txtCoinBalance);
+        getUserBalance(UID);
+
+
+    }
+
+    public void getUserBalance(String userID) {
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference userRef = firebaseFirestore.collection("users").document(userID);
+
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        //get the "coins" field from the document
+
+                        userCoins = documentSnapshot.getLong("coins");
+                        if (userCoins != null) {
+                            updateCoinText();
+                            Log.d("TAG", "User has " + userCoins + " coins.");
+                        } else {
+                            Log.d("TAG", "Coins field is not found in the document.");
+                        }
+                        //update
+
+
+
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
+    }
+
+    private void updateCoinText(){
+        txtCoin =  findViewById(R.id.txtCoinBalance);
         txtCoin.setText(String.valueOf(userCoins));
-
-
     }
 
 }
