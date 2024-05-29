@@ -2,6 +2,7 @@ package com.example.firebaseconnection;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -51,6 +52,23 @@ public class Timer extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+        LinearLayout btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Timer.this, Menu.class);
+                startActivity(i);
+            }
+        });
+
+        LinearLayout btnProfile = findViewById(R.id.btnProfile);
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Timer.this, ProfileActivity.class);
+                startActivity(i);
+            }
         });
 
         timerTextView = findViewById(R.id.txtTimer);

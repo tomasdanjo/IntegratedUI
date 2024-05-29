@@ -48,7 +48,7 @@
                 android:textSize="42sp" />
 
             <LinearLayout
-                android:id="@+id/circle"
+                android:id="@+id/btnProfile"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="30dp"
@@ -132,7 +132,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:id="@+id/circle"
+                            android:id="@+id/btnProfile"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginBottom="30dp"
@@ -199,7 +199,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:id="@+id/circle"
+                            android:id="@+id/btnProfile"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginBottom="30dp"
@@ -271,7 +271,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:id="@+id/circle"
+                            android:id="@+id/btnProfile"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginBottom="30dp"
@@ -338,7 +338,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:id="@+id/circle"
+                            android:id="@+id/btnProfile"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginBottom="30dp"
