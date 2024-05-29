@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -27,90 +29,153 @@ public class Cat {
     }
 
     public LinearLayout generate(Context context, View parent) {
-        LinearLayout linearLayout = new LinearLayout(context);
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+        LinearLayout mainLayout = new LinearLayout(context);
+        LinearLayout.LayoutParams mainLayoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setPadding(
-                (int) context.getResources().getDimension(R.dimen.spacing_small),
-                (int) context.getResources().getDimension(R.dimen.spacing_small),
-                (int) context.getResources().getDimension(R.dimen.spacing_small),
-                (int) context.getResources().getDimension(R.dimen.spacing_small)
-        );
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        mainLayoutParams.weight = 1;
+        mainLayout.setLayoutParams(mainLayoutParams);
+        mainLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_white));
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setPadding(
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small));
 
-        // Cat Name TextView
-        TextView catNameTextView = new TextView(context);
-        catNameTextView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        catNameTextView.setText(catName);
-        catNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                context.getResources().getDimension(R.dimen.font_size_medium));
-        linearLayout.addView(catNameTextView);
-
-        // Cat Image ImageView
-
-        ImageView catImageView = new ImageView(context);
-        catImageView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference().child(catImageURL);
-        storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(parent)
-                    .load(uri)
-                    .into(catImageView);});
-        linearLayout.addView(catImageView);
-
-        // Price and Rarity LinearLayout
-        LinearLayout priceAndRarityLayout = new LinearLayout(context);
-        priceAndRarityLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        priceAndRarityLayout.setOrientation(LinearLayout.HORIZONTAL);
-        priceAndRarityLayout.setGravity(Gravity.CENTER_VERTICAL);
-
-        // Price TextView
-        TextView priceTextView = new TextView(context);
-        priceTextView.setLayoutParams(new LinearLayout.LayoutParams(
+        // Create and add the TextView for cat name
+        TextView pawName = new TextView(context);
+        pawName.setId(View.generateViewId());
+        pawName.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        priceTextView.setText(String.valueOf(catPrice));
-        priceAndRarityLayout.addView(priceTextView);
+        pawName.setText(catName);
+        pawName.setTextSize(pxToSp(context, context.getResources().getDimension(R.dimen.font_size_medium)));
+        pawName.setTypeface(context.getResources().getFont(R.font.nunito_black));
+        mainLayout.addView(pawName);
 
-        // Rarity TextView
-        TextView rarityTextView = new TextView(context);
-        rarityTextView.setLayoutParams(new LinearLayout.LayoutParams(
+        // Create and add the ImageView for cat image
+        ImageView pawImage = new ImageView(context);
+        pawImage.setId(View.generateViewId());
+        pawImage.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        pawImage.setBackground(ContextCompat.getDrawable(context, R.drawable.button_white));
+        pawImage.setImageResource(R.id.(catImageURL));
+        mainLayout.addView(pawImage);
+
+        // Create the LinearLayout for price and rarity
+        LinearLayout priceRarityLayout = new LinearLayout(context);
+        priceRarityLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        priceRarityLayout.setOrientation(LinearLayout.HORIZONTAL);
+        priceRarityLayout.setGravity(Gravity.CENTER);
+        priceRarityLayout.setPadding(0, context.getResources().getDimensionPixelSize(R.dimen.spacing_very_small), 0, 0);
+
+        // Create and add the price layout
+        LinearLayout priceLayout = new LinearLayout(context);
+        priceLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        rarityTextView.setText(String.valueOf(catRarity));
-        priceAndRarityLayout.addView(rarityTextView);
+        priceLayout.setOrientation(LinearLayout.HORIZONTAL);
+        priceLayout.setGravity(Gravity.CENTER);
 
-        linearLayout.addView(priceAndRarityLayout);
+        ImageView priceIcon = new ImageView(context);
+        priceIcon.setId(View.generateViewId());
+        priceIcon.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        priceIcon.setImageResource(R.drawable.icon_coin);
+        priceLayout.addView(priceIcon);
 
-        // Purchase Button LinearLayout
+        TextView pawPrice = new TextView(context);
+        pawPrice.setId(View.generateViewId());
+        pawPrice.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        pawPrice.setText(String.valueOf(catPrice));
+        pawPrice.setTypeface(context.getResources().getFont(R.font.nunito_black));
+        pawPrice.setTextSize(pxToSp(context, context.getResources().getDimension(R.dimen.font_size_regular)));
+        pawPrice.setPadding(
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_smallest),
+                0, 0, 0);
+        priceLayout.addView(pawPrice);
+
+        priceRarityLayout.addView(priceLayout);
+
+        // Add a spacer view
+        View spacer = new View(context);
+        spacer.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                0, 1));
+        priceRarityLayout.addView(spacer);
+
+        // Create and add the rarity layout
+        LinearLayout rarityLayout = new LinearLayout(context);
+        rarityLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        rarityLayout.setOrientation(LinearLayout.VERTICAL);
+        rarityLayout.setGravity(Gravity.CENTER);
+
+        TextView rarityLabel = new TextView(context);
+        rarityLabel.setId(View.generateViewId());
+        rarityLabel.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        rarityLabel.setText("RARITY");
+        rarityLabel.setTypeface(context.getResources().getFont(R.font.nunito_black));
+        rarityLabel.setTextSize(10);
+        rarityLabel.setTextColor(ContextCompat.getColor(context, R.color.gray));
+        rarityLayout.addView(rarityLabel);
+
+        TextView pawRarity = new TextView(context);
+        pawRarity.setId(View.generateViewId());
+        pawRarity.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        pawRarity.setText(String.valueOf(catRarity));
+        pawRarity.setTypeface(context.getResources().getFont(R.font.nunito_black));
+        pawRarity.setTextColor(ContextCompat.getColor(context, R.color.orange_dark));
+        rarityLayout.addView(pawRarity);
+
+        priceRarityLayout.addView(rarityLayout);
+        mainLayout.addView(priceRarityLayout);
+
+        // Create and add the purchase button
         LinearLayout purchaseButtonLayout = new LinearLayout(context);
+        purchaseButtonLayout.setId(View.generateViewId());
         purchaseButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams.MATCH_PARENT));
         purchaseButtonLayout.setOrientation(LinearLayout.HORIZONTAL);
         purchaseButtonLayout.setGravity(Gravity.CENTER);
+        purchaseButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_green));
+        purchaseButtonLayout.setPadding(
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small));
 
-        // Purchase Button TextView
-        TextView purchaseButtonTextView = new TextView(context);
-        purchaseButtonTextView.setLayoutParams(new LinearLayout.LayoutParams(
+        TextView purchaseText = new TextView(context);
+        purchaseText.setId(View.generateViewId());
+        purchaseText.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        purchaseButtonTextView.setText("Purchase");
-        purchaseButtonTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle purchase button click
-            }
-        });
-        purchaseButtonLayout.addView(purchaseButtonTextView);
-        linearLayout.addView(purchaseButtonLayout);
-        return linearLayout;
+        purchaseText.setText("Purchase");
+        purchaseText.setTypeface(context.getResources().getFont(R.font.nunito_extrabold));
+        purchaseText.setTextColor(ContextCompat.getColor(context, R.color.white));
+        purchaseText.setPadding(0, 0, context.getResources().getDimensionPixelSize(R.dimen.border_width), context.getResources().getDimensionPixelSize(R.dimen.border_width));
+        purchaseText.setPadding(0, 0, context.getResources().getDimensionPixelSize(R.dimen.border_width), context.getResources().getDimensionPixelSize(R.dimen.border_width));
+        purchaseButtonLayout.addView(purchaseText);
+
+        mainLayout.addView(purchaseButtonLayout);
+
+        return mainLayout;
+    }
+
+    private float pxToSp(Context context, float px) {
+        return px / context.getResources().getDisplayMetrics().scaledDensity;
     }
 }
