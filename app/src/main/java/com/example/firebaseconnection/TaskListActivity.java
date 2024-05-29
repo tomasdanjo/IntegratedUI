@@ -208,7 +208,7 @@ public class TaskListActivity extends AppCompatActivity {
 //
 //        });
 
-        fetchTasks("YkbW5nnkv1aLDXUvEYxZDMB1oj03");
+        fetchTasks(UID);
 
     }
 
@@ -303,6 +303,7 @@ public class TaskListActivity extends AppCompatActivity {
                                     task.put("taskDate", newTaskDate);
                                     task.put("taskMode", newTaskMode);
                                     int newTaskCoins = (int) (duration/2);
+                                    task.put("taskDuration",duration);
                                     task.put("taskCoins", newTaskCoins);
                                     break;
                                 }
