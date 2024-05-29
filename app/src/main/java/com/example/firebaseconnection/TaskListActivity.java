@@ -2,6 +2,7 @@ package com.example.firebaseconnection;
 
 import static com.example.firebaseconnection.ProfileActivity.userCoins;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TaskListActivity extends AppCompatActivity {
+    public static Activity activity;
     private FirebaseAuth mAuth;
     private static FirebaseFirestore firebaseFirestore;
     private TextView TaskName, TaskDate, TaskMode, TaskCoins;
@@ -61,6 +63,7 @@ public class TaskListActivity extends AppCompatActivity {
         //update task (updateTaskInUser), delete task (deleteTaskFromUser)
         tasks = new ArrayList<>();
 
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_task_list);
@@ -69,6 +72,9 @@ public class TaskListActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        activity = this;
+
 
         LinearLayout btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(new View.OnClickListener() {

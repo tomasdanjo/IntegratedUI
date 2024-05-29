@@ -393,6 +393,7 @@ public class Task extends AppCompatActivity {
         startButtonLayout.addView(startTextView);
         startButtonLayout.setOnClickListener(v -> {
             // TODO start button
+            Intent i = new Intent(TaskListActivity.activity, Timer.class);
 
 
         });

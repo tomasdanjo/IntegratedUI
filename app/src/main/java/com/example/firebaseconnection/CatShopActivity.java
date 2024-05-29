@@ -327,7 +327,6 @@ public class CatShopActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         //get the "coins" field from the document
-
                         userCoins = documentSnapshot.getLong("coins");
                         if (userCoins != null) {
                             updateCoinText();
@@ -336,9 +335,6 @@ public class CatShopActivity extends AppCompatActivity {
                             Log.d("TAG", "Coins field is not found in the document.");
                         }
                         //update
-
-
-
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }
