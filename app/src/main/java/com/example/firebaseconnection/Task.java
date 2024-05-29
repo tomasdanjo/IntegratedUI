@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -392,6 +393,7 @@ public class Task extends AppCompatActivity {
         startButtonLayout.addView(startTextView);
         startButtonLayout.setOnClickListener(v -> {
             // TODO start button
+
 
         });
 

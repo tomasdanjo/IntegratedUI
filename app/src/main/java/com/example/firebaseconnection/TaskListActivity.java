@@ -208,7 +208,7 @@ public class TaskListActivity extends AppCompatActivity {
 //
 //        });
 
-        fetchTasks("YkbW5nnkv1aLDXUvEYxZDMB1oj03");
+        fetchTasks(UID);
 
     }
 
