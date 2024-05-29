@@ -334,7 +334,7 @@ public class TaskListActivity extends AppCompatActivity {
         generateTasks();
     }
 
-    private void deleteTaskFromUser(String userId, String taskNameToDelete) {
+    public static void deleteTaskFromUser(String userId, String taskNameToDelete) {
 
         DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
 
