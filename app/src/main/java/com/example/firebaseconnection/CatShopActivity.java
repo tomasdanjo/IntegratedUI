@@ -1,5 +1,7 @@
 package com.example.firebaseconnection;
 
+import static com.example.firebaseconnection.ProfileActivity.userCoins;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,7 +47,6 @@ public class CatShopActivity extends AppCompatActivity {
 
     public static GridLayout catsGrid;
     public static ConstraintLayout catShop;
-    TextView txtCoin;
 
     public ArrayList<Cat> cats;
     @Override
@@ -87,7 +88,8 @@ public class CatShopActivity extends AppCompatActivity {
         fetchUserCats();
 
 
-        txtCoin = findViewById(R.id.txtCoinBalance);
+        TextView txtCoin = findViewById(R.id.txtCoinBalance);
+        txtCoin.setText(String.valueOf(userCoins));
 
 //        ivCatImage = findViewById(R.id.ivCatImage);
 //

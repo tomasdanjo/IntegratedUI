@@ -1,5 +1,7 @@
 package com.example.firebaseconnection;
 
+import static com.example.firebaseconnection.ProfileActivity.userCoins;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +37,8 @@ public class MyCatCollection extends AppCompatActivity {
         });
 
 
+        TextView txtCoin = findViewById(R.id.txtCoinBalance);
+        txtCoin.setText(String.valueOf(userCoins));
 
 
     }

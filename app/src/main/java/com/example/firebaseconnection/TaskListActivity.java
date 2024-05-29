@@ -1,5 +1,7 @@
 package com.example.firebaseconnection;
 
+import static com.example.firebaseconnection.ProfileActivity.userCoins;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -222,7 +224,8 @@ public class TaskListActivity extends AppCompatActivity {
 
         fetchTasks(UID);
 
-        txtCoin = findViewById(R.id.txtCoinBalance);
+        TextView txtCoin = findViewById(R.id.txtCoinBalance);
+        txtCoin.setText(String.valueOf(userCoins));
 
 
 

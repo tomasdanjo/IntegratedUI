@@ -34,9 +34,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     static String username;
     private static int totalCats, totalFinishedTasks;
-    static TextView txtCoin;
+    TextView txtCoin;
 
-    static Long userCoins;
+    public static Long userCoins;
 
 
     @Override
