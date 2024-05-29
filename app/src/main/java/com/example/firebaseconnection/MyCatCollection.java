@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,11 @@ public class MyCatCollection extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        TextView txtCoin = findViewById(R.id.txtCoinBalance);
+
+        ProfileActivity.getUserCoins(txtCoin);
+
 
     }
 

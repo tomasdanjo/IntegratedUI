@@ -220,6 +220,10 @@ public class TaskListActivity extends AppCompatActivity {
 
         fetchTasks(UID);
 
+        TextView txtCoin = findViewById(R.id.txtCoinBalance);
+        ProfileActivity.getUserCoins(txtCoin);
+
+
     }
 
     private void addTaskToUser(String userId, String taskName, Long duration, String taskDate, boolean taskMode) {

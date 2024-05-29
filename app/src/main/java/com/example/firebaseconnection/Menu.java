@@ -1,9 +1,13 @@
 package com.example.firebaseconnection;
 
+import static com.example.firebaseconnection.CatShopActivity.firebaseFirestore;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +15,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.DocumentReference;
+
 public class Menu extends AppCompatActivity {
+
+//    public static long coinBalance;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,4 +81,9 @@ public class Menu extends AppCompatActivity {
             }
         });
     }
+
+
+
+
+
 }
