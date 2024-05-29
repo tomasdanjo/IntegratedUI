@@ -13,13 +13,19 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.gridlayout.widget.GridLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MyCatCollection extends AppCompatActivity {
 
@@ -27,6 +33,11 @@ public class MyCatCollection extends AppCompatActivity {
     Long userCoins;
 
     static FirebaseFirestore firebaseFirestore;
+
+    ArrayList<Cat> cats;
+
+    ConstraintLayout main;
+    GridLayout catsGrid;
     FirebaseAuth mAuth;
 
     @Override
@@ -58,6 +69,19 @@ public class MyCatCollection extends AppCompatActivity {
 
         getUserBalance(UID);
 
+        cats = new ArrayList<>();
+        main = findViewById(R.id.main);
+        catsGrid = findViewById(R.id.catsGrid);
+
+        for (Map<String, Object> map : CatShopActivity.userCatsList) {
+            String catImageURL = (String) map.get("catImageURL");
+            String catName = (String) map.get("catName");
+            cats.add(new Cat(catImageURL, catName, null, null));
+        }
+
+        for (Cat cat : cats) {
+            catsGrid.addView(cat.generateWithoutButtons(catsGrid.getContext(), main));
+        }
 
     }
 
