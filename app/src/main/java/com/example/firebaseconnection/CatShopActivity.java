@@ -45,30 +45,30 @@ public class CatShopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cat_shop);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         UID = mAuth.getCurrentUser().getUid();
         catShopList  = new ArrayList<>();
-        ivCatImage = findViewById(R.id.ivCatImage);
-
-        tvCatName = findViewById(R.id.tvCatName);
-        btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
-        btnRedirectToProfile = findViewById(R.id.btnRedirectToProfile);
-
-        btnPurchaseCat.setOnClickListener(v->{
-            getUserCoins();
-        });
-
-        btnRedirectToProfile.setOnClickListener(v->{
-            Intent intent = new Intent(CatShopActivity.this, ProfileActivity.class);
-            startActivity(intent);
-        });
+//        ivCatImage = findViewById(R.id.ivCatImage);
+//
+//        tvCatName = findViewById(R.id.tvCatName);
+//        btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
+//        btnRedirectToProfile = findViewById(R.id.btnRedirectToProfile);
+//
+//        btnPurchaseCat.setOnClickListener(v->{
+//            getUserCoins();
+//        });
+//
+//        btnRedirectToProfile.setOnClickListener(v->{
+//            Intent intent = new Intent(CatShopActivity.this, ProfileActivity.class);
+//            startActivity(intent);
+//        });
 
         fetchCats(documentId);
         fetchUserCats();
@@ -144,7 +144,7 @@ public class CatShopActivity extends AppCompatActivity {
                                 Log.d("TAG", "catImageURL: " + catImageURL);
                                 Log.d("TAG", "catName: " + catName);
                             }
-                            updateUIDisableButton2();
+//                            updateUIDisableButton2();
                         } else {
                             Log.d("TAG", "No tasks found");
                         }
@@ -257,7 +257,7 @@ public class CatShopActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Log.d("TAG", "User document fetched successfully");
-                        updateUIDisableButton();
+//                        updateUIDisableButton();
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }
@@ -269,23 +269,23 @@ public class CatShopActivity extends AppCompatActivity {
 
 
 
-    private void updateUIDisableButton() {
-        //disable button for users' purchased cats
-
-        //an array of buttons guro nya each index sa button kay same ug
-        //index sa catShopList. if naa ang usersCatsList sacatShopList
-        //then idisable ang button
-
-        Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
-        btnPurchaseCat.setText("purchased");
-        btnPurchaseCat.setEnabled(false);
-    }
-
-    private void updateUIDisableButton2() {
-        Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
-        btnPurchaseCat.setText("purchased");
-        btnPurchaseCat.setEnabled(false);
-    }
+//    private void updateUIDisableButton() {
+//        //disable button for users' purchased cats
+//
+//        //an array of buttons guro nya each index sa button kay same ug
+//        //index sa catShopList. if naa ang usersCatsList sacatShopList
+//        //then idisable ang button
+//
+//        Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
+//        btnPurchaseCat.setText("purchased");
+//        btnPurchaseCat.setEnabled(false);
+//    }
+//
+//    private void updateUIDisableButton2() {
+//        Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
+//        btnPurchaseCat.setText("purchased");
+//        btnPurchaseCat.setEnabled(false);
+//    }
 
 
 
