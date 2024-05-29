@@ -58,11 +58,11 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 //        UID = mAuth.getCurrentUser().getUid();
-        UID ="YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+        UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
 
         TextView txtCoin = findViewById(R.id.txtCoinBalance);
-        ProfileActivity.getUserCoins(txtCoin);
+        getUserCoins(txtCoin);
 
         fetchUserInfo(UID);
         fetchUserCats(UID);
@@ -165,6 +165,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     public static void getUserCoins(TextView txtCoin) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
+        if (userRef == null) {
+            Log.d("Simons", "it's null");
+        }
 
         userRef.get()
                 .addOnSuccessListener(documentSnapshot -> {

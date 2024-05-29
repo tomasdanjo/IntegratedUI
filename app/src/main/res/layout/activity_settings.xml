@@ -82,6 +82,16 @@
                     android:textColor="@color/blue_dark"
                     android:textSize="@dimen/font_size_medium" />
 
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/negative_border_width"
+                    android:layout_weight="1"
+                    android:background="@drawable/settings_icon"
+                    android:padding="@dimen/spacing_regular"
+                    android:src="@drawable/icon_sound" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -105,30 +115,17 @@
                     android:textColor="@color/blue_dark"
                     android:textSize="@dimen/font_size_medium" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:background="@drawable/shadow"
-                android:orientation="horizontal"
-                android:paddingRight="@dimen/border_width"
-                android:paddingBottom="@dimen/border_width">
-
-                <TextView
-                    android:id="@+id/textView19"
+                <ImageView
+                    android:id="@+id/imageView6"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/setting_title"
-                    android:fontFamily="@font/nunito_bold"
+                    android:layout_marginLeft="@dimen/negative_border_width"
+                    android:background="@drawable/settings_icon"
                     android:padding="@dimen/spacing_regular"
-                    android:text="Notifications"
-                    android:textColor="@color/blue_dark"
-                    android:textSize="@dimen/font_size_medium" />
+                    android:src="@drawable/icon_sound" />
 
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
