@@ -2,6 +2,7 @@ package com.example.firebaseconnection;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -46,6 +47,8 @@ public class MyCatCollection extends AppCompatActivity {
             }
         });
 
+        CatShopActivity.fetchUserCats();
+
         main = findViewById(R.id.main);
         catsGrid = findViewById(R.id.catsGrid);
         cats = new ArrayList<>();
@@ -53,11 +56,13 @@ public class MyCatCollection extends AppCompatActivity {
         List<Map<String, Object>> ownedCats = CatShopActivity.userCatsList;
 
         for (Map map : ownedCats) {
-            cats.add(new Cat((String) map.get("catImageURL"), (String) map.get("catName"), null, null));
+            String url = (String) map.get("catImageURL");
+            Log.d("Simon", url);
+            cats.add(new Cat(url, (String) map.get("catName"), null, null));
         }
 
         for (Cat cat : cats) {
-            catsGrid.addView(cat.generate(catsGrid.getContext(), main));
+            catsGrid.addView(cat.generateWithoutButtons(catsGrid.getContext(), main));
         }
     }
 }

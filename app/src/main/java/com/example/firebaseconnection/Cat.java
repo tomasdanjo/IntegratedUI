@@ -72,6 +72,7 @@ public class Cat {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         pawImage.setBackground(ContextCompat.getDrawable(context, R.drawable.button_white));
         String catImageResource = catImageURL.replace(".svg", "");
+        Log.d("stimon", catImageResource);
         catImageResource = catImageResource.toLowerCase();
         int resId = context.getResources().getIdentifier(catImageResource, "drawable", context.getPackageName());
         if (resId != 0) {
@@ -224,6 +225,50 @@ public class Cat {
         }
 
         mainLayout.addView(purchaseButtonLayout);
+
+        return mainLayout;
+    }
+
+    public LinearLayout generateWithoutButtons(Context context, View parent) {
+        LinearLayout mainLayout = new LinearLayout(context);
+        LinearLayout.LayoutParams mainLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        mainLayoutParams.weight = 1;
+        mainLayout.setLayoutParams(mainLayoutParams);
+        mainLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_white));
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setPadding(
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
+                context.getResources().getDimensionPixelSize(R.dimen.spacing_small));
+
+        // Create and add the TextView for cat name
+        TextView pawName = new TextView(context);
+        pawName.setId(View.generateViewId());
+        pawName.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        pawName.setText(catName);
+        pawName.setTextSize(pxToSp(context, context.getResources().getDimension(R.dimen.font_size_medium)));
+        pawName.setTypeface(context.getResources().getFont(R.font.nunito_black));
+        mainLayout.addView(pawName);
+
+        // Create and add the ImageView for cat image
+        ImageView pawImage = new ImageView(context);
+        pawImage.setId(View.generateViewId());
+        pawImage.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        pawImage.setBackground(ContextCompat.getDrawable(context, R.drawable.button_white));
+        String catImageResource = catImageURL.replace(".svg", "");
+        catImageResource = catImageResource.toLowerCase();
+        int resId = context.getResources().getIdentifier(catImageResource, "drawable", context.getPackageName());
+        if (resId != 0) {
+            pawImage.setImageResource(resId);
+        }
+        mainLayout.addView(pawImage);
 
         return mainLayout;
     }

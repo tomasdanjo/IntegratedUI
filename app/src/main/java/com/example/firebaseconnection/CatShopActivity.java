@@ -128,7 +128,7 @@ public class CatShopActivity extends AppCompatActivity {
                                 catMap.put("catRarity", catRarity);
 
                                 // Add the cat map to the catShopList
-                                catShopList.add(catMap);
+
                                 catsGrid.addView(new Cat(catImageUrl, catName, catPrice, catRarity).generate(catsGrid.getContext(), catShop));
                                 Log.d("TAG", "Cat Name: " + catName);
                                 Log.d("TAG", "Cat Image URL: " + catImageUrl);
@@ -148,7 +148,7 @@ public class CatShopActivity extends AppCompatActivity {
                 });
     }
 
-    private void fetchUserCats(){
+    public static void fetchUserCats(){
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
         userRef.get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -244,7 +244,7 @@ public class CatShopActivity extends AppCompatActivity {
 
         Map<String, String> newCat = new HashMap<>();
         newCat.put("catName", catName);
-        newCat.put("catImage", catImage);
+        newCat.put("catImageURL", catImage);
 
         //update cats field
         userRef.update("cats", FieldValue.arrayUnion(newCat))
