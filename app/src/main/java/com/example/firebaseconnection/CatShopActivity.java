@@ -84,6 +84,10 @@ public class CatShopActivity extends AppCompatActivity {
         UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
         fetchUserCats();
+
+
+        TextView txtCoin = findViewById(R.id.txtCoinBalance);
+        ProfileActivity.getUserCoins(txtCoin);
 //        ivCatImage = findViewById(R.id.ivCatImage);
 //
 //        tvCatName = findViewById(R.id.tvCatName);

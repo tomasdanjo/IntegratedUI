@@ -1,5 +1,7 @@
 package com.example.firebaseconnection;
 
+import static com.example.firebaseconnection.CatShopActivity.firebaseFirestore;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,10 +25,10 @@ import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    FirebaseFirestore firebaseFirestore;
+    static FirebaseFirestore firebaseFirestore;
     FirebaseAuth mAuth;
     private List<Map<String, Object>> userCatsList;
-    String UID;
+    static String UID;
     TextView tvUserUsername, tvUserEmail;
     Button btnEditUserInformation;
 
@@ -59,6 +61,8 @@ public class ProfileActivity extends AppCompatActivity {
         UID ="YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
 
+        TextView txtCoin = findViewById(R.id.txtCoinBalance);
+        ProfileActivity.getUserCoins(txtCoin);
 
         fetchUserInfo(UID);
         fetchUserCats(UID);
@@ -157,6 +161,34 @@ public class ProfileActivity extends AppCompatActivity {
         tvTotalPaws.setText(String.valueOf(totalCats));
         tvTotalTasks.setText(String.valueOf(totalFinishedTasks));
 //        tvUserEmail.setText(email);
+    }
+
+    public static void getUserCoins(TextView txtCoin) {
+        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
+
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        //get the "coins" field from the document
+
+                        Long userCoins = documentSnapshot.getLong("coins");
+                        if (userCoins != null) {
+                            Log.d("TAG", "User has " + userCoins + " coins.");
+                        } else {
+                            Log.d("TAG", "Coins field is not found in the document.");
+                        }
+                        //update
+                        updateCoinText(txtCoin,userCoins);
+
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
+    }
+
+    private static void updateCoinText(TextView txtCoin, Long coinBalance){
+        txtCoin.setText(String.valueOf(coinBalance));
     }
 
 
