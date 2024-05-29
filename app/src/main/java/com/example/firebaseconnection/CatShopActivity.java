@@ -1,19 +1,16 @@
 package com.example.firebaseconnection;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import androidx.gridlayout.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -41,6 +38,9 @@ public class CatShopActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Long userCoins, newUserCoins;
 
+    public static GridLayout catsGrid;
+    public static ConstraintLayout catShop;
+
     public ArrayList<Cat> cats;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +54,14 @@ public class CatShopActivity extends AppCompatActivity {
 //        });
 
         cats = new ArrayList<>();
+        catShop = findViewById(R.id.catShop);
+        catsGrid = findViewById(R.id.catsGrid);
+        generateCats();
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        UID = mAuth.getCurrentUser().getUid();
+//        UID = mAuth.getCurrentUser().getUid();
+        UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
         catShopList  = new ArrayList<>();
 //        ivCatImage = findViewById(R.id.ivCatImage);
 //
@@ -75,7 +79,6 @@ public class CatShopActivity extends AppCompatActivity {
 //        });
 
         fetchCats(documentId);
-        fetchUserCats();
     }
 
     private void fetchCats(String documentId) {
@@ -126,61 +129,26 @@ public class CatShopActivity extends AppCompatActivity {
                 });
     }
 
-    private void fetchUserCats(){
-        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
-        userRef.get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        List<Map<String, Object>> cats = (List<Map<String, Object>>) documentSnapshot.get("cats");
-                        if (cats != null) {
-                            userCatsList.clear();
-                            for (Map<String, Object> cat : cats) {
-                                String catImageURL = (String) cat.get("catImageURL");
-                                String catName = (String) cat.get("catName");
-
-                                Map<String, Object> taskMap = new HashMap<>();
-                                taskMap.put("catImageURL", catImageURL);
-                                taskMap.put("catName", catName);
-
-                                userCatsList.add(taskMap);
-
-                                Log.i("TAG", "Size " + userCatsList.size());
-                                Log.d("TAG", "catImageURL: " + catImageURL);
-                                Log.d("TAG", "catName: " + catName);
-                            }
-//                            updateUIDisableButton2();
-                        } else {
-                            Log.d("TAG", "No tasks found");
-                        }
-                    } else {
-                        Log.d("TAG", "User document does not exist");
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("TAG", "Error fetching tasks", e);
-                });
-    }
-
     private void updateUIWithCats() {
         if (!catShopList.isEmpty()) {
-
-            String catName = (String) catShopList.get(9).get("catName");
-            String catImageUrl = (String) catShopList.get(9).get("catImageURL");
-
-            tvCatName.setText(catName);
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference().child(catImageUrl);
-
-            storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                //if fails, check gradle / rebuild proj
-                Glide.with(this)
-                        .load(uri)
-                        .into(ivCatImage);
-            }).addOnFailureListener(exception -> {
-                Log.e("TAG", "Error fetching image URL", exception);
-                //ivCatImage.setImageResource(R.drawable.placeholder_image); //set a placeholder image
-            });
+//
+//            String catName = (String) catShopList.get(9).get("catName");
+//            String catImageUrl = (String) catShopList.get(9).get("catImageURL");
+//
+//            tvCatName.setText(catName);
+//
+//            FirebaseStorage storage = FirebaseStorage.getInstance();
+//            StorageReference storageRef = storage.getReference().child(catImageUrl);
+//
+//            storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+//                //if fails, check gradle / rebuild proj
+//                Glide.with(this)
+//                        .load(uri)
+//                        .into(ivCatImage);
+//            }).addOnFailureListener(exception -> {
+//                Log.e("TAG", "Error fetching image URL", exception);
+//                //ivCatImage.setImageResource(R.drawable.placeholder_image); //set a placeholder image
+//            });
 
         } else {
             Log.i("TAG", "EMPTY LIST");
@@ -293,7 +261,22 @@ public class CatShopActivity extends AppCompatActivity {
 
 
     public void getCats() {
-
+        cats.clear();
+        for (int i = 0; i < catShopList.size(); i++) {
+            System.out.println("Yup there's a cat here");
+            String catImageURL = (String) catShopList.get(i).get("catImageURL");
+            String catName = (String) catShopList.get(i).get("catImageURL");
+            Long catPrice = (Long) catShopList.get(i).get("catPrice");
+            Long catRarity = (Long) catShopList.get(i).get("catRarity");
+            cats.add(new Cat(catImageURL, catName, catPrice, catRarity));
+        }
     }
 
+    public void generateCats() {
+        getCats();
+        catsGrid.removeAllViews();
+        for (Cat cat : cats) {
+            catsGrid.addView(cat.generate(catsGrid.getContext(), catShop));
+        }
+    }
 }

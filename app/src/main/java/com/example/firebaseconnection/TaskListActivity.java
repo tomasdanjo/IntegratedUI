@@ -386,7 +386,6 @@ public class TaskListActivity extends AppCompatActivity {
     public static void generateTasks() {
         tasksLinearLayout.removeAllViews();
 
-        System.out.println(tasks.size());
         for (Task task : tasks) {
             tasksLinearLayout.addView(task.generate(tasksLinearLayout.getContext(), tasksConstraintLayout));
         }

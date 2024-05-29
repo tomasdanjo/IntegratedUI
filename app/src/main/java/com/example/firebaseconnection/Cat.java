@@ -26,7 +26,7 @@ public class Cat {
         this.catRarity = catRarity;
     }
 
-    public LinearLayout generate(Context context) {
+    public LinearLayout generate(Context context, View parent) {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
