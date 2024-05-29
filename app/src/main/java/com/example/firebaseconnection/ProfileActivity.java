@@ -32,7 +32,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_dashboard_totals);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -41,15 +41,18 @@ public class ProfileActivity extends AppCompatActivity {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        UID = mAuth.getCurrentUser().getUid();
+//        UID = mAuth.getCurrentUser().getUid();
+        UID ="YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
-        tvUserEmail = findViewById(R.id.tvUserEmail);
-        tvUserUsername = findViewById(R.id.tvUserUsername);
-        btnEditUserInformation = findViewById(R.id.btnEditUserInformation);
+//        tvUserEmail = findViewById(R.id.username);
+//        tvUserUsername = findViewById(R.id.username);
 
-        btnEditUserInformation.setOnClickListener(v->{
-            updateUsername(UID,"newUsername");
-        });
+
+//        btnEditUserInformation = findViewById(R.id.btnEditUserInformation);
+
+//        btnEditUserInformation.setOnClickListener(v->{
+//            updateUsername(UID,"newUsername");
+//        });
 
         fetchUserInfo(UID);
     }
@@ -95,11 +98,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateUIWithProfile(String username, String email) {
-        TextView tvUserUsername = findViewById(R.id.tvUserUsername);
-        TextView tvUserEmail = findViewById(R.id.tvUserEmail);
+        TextView tvUserUsername = findViewById(R.id.username);
+//        TextView tvUserEmail = findViewById(R.id.tvUserEmail);
 
         tvUserUsername.setText(username);
-        tvUserEmail.setText(email);
+//        tvUserEmail.setText(email);
     }
 
 
