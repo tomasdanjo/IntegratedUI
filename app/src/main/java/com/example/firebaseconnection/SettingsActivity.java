@@ -1,6 +1,5 @@
 package com.example.firebaseconnection;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,9 +13,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    TextView homeSetting;
+    TextView txtHomeSetting;
     ImageView toggleBGM;
     ImageView toggleSFX;
+
+    String homeSetting;
+    boolean bgm;
+    boolean sfx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +32,42 @@ public class SettingsActivity extends AppCompatActivity {
             return insets;
         });
 
-        homeSetting = findViewById(R.id.homeSetting);
+        homeSetting = "Rural";
+        bgm = true;
+        sfx = true;
+
+        txtHomeSetting = findViewById(R.id.homeSetting);
         toggleBGM = findViewById(R.id.toggleBGM);
         toggleSFX = findViewById(R.id.toggleSFX);
 
-        homeSetting.setOnClickListener(new View.OnClickListener() {
+        txtHomeSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (homeSetting.equals("Rural")) {
+                    homeSetting = "Urban";
+                } else {
+                    homeSetting = "Rural";
+                }
+                txtHomeSetting.setText(homeSetting);
+            }
+        });
+
+        toggleBGM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bgm = !bgm;
+                if (!bgm) {
+                    toggleBGM.setImageResource(R);
+                } else {
+
+                }
+            }
+        });
+
+        toggleSFX.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sfx = !sfx;
 
             }
         });
