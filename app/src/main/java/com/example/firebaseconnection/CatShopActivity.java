@@ -32,7 +32,8 @@ import com.google.firebase.storage.StorageReference;
 public class CatShopActivity extends AppCompatActivity {
 
     static FirebaseFirestore firebaseFirestore;
-    private static List<Map<String, Object>> catShopList, userCatsList;
+    private static List<Map<String, Object>> catShopList;
+    static List<Map<String, Object>> userCatsList;
     private final String documentId = "xv6JGkDrmpJMylgUIeEz";
     private static String UID;
     private TextView tvCatName;
@@ -71,6 +72,8 @@ public class CatShopActivity extends AppCompatActivity {
         catsGrid = findViewById(R.id.catsGrid);
         firebaseFirestore = FirebaseFirestore.getInstance();
         catShopList  = new ArrayList<>();
+        userCatsList = new ArrayList<>();
+
 
         fetchCats(documentId);
 
@@ -79,6 +82,8 @@ public class CatShopActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 //        UID = mAuth.getCurrentUser().getUid();
         UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+
+        fetchUserCats();
 //        ivCatImage = findViewById(R.id.ivCatImage);
 //
 //        tvCatName = findViewById(R.id.tvCatName);
@@ -143,6 +148,40 @@ public class CatShopActivity extends AppCompatActivity {
                 });
     }
 
+    private void fetchUserCats(){
+        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<Map<String, Object>> cats = (List<Map<String, Object>>) documentSnapshot.get("cats");
+                        if (cats != null) {
+                            userCatsList.clear();
+                            for (Map<String, Object> cat : cats) {
+                                String catImageURL = (String) cat.get("catImageURL");
+                                String catName = (String) cat.get("catName");
+
+                                Map<String, Object> taskMap = new HashMap<>();
+                                taskMap.put("catImageURL", catImageURL);
+                                taskMap.put("catName", catName);
+
+                                userCatsList.add(taskMap);
+
+                                Log.i("TAG", "Size " + userCatsList.size());
+                                Log.d("TAG", "catImageURL: " + catImageURL);
+                                Log.d("TAG", "catName: " + catName);
+                            }
+                        } else {
+                            Log.d("TAG", "No tasks found");
+                        }
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("TAG", "Error fetching tasks", e);
+                });
+    }
+
     private void updateUIWithCats() {
         if (!catShopList.isEmpty()) {
 
@@ -153,7 +192,7 @@ public class CatShopActivity extends AppCompatActivity {
         Log.i("TAG", "Total cats: " + catShopList.size());
     }
 
-    public static void getUserCoins() {
+    public static void getUserCoins(String catName) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         userRef.get()
@@ -166,7 +205,7 @@ public class CatShopActivity extends AppCompatActivity {
                         } else {
                             Log.d("TAG", "Coins field is not found in the document.");
                         }
-                        checkCoinBalance(userCoins, (Long) catShopList.get(0).get("catPrice"));
+                        checkCoinBalance(catName, userCoins, (Long) catShopList.get(0).get("catPrice"));
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }
@@ -174,13 +213,13 @@ public class CatShopActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
     }
 
-    private static void checkCoinBalance(Long userCoins, Long catFee){
+    private static void checkCoinBalance(String catName, Long userCoins, Long catFee){
         assert userCoins >= catFee;
         newUserCoins = userCoins - catFee;
-        updateUserCoins(newUserCoins);
+        updateUserCoins(catName, newUserCoins);
     }
 
-    private static void updateUserCoins(Long newUserCoins) {
+    private static void updateUserCoins(String catName, Long newUserCoins) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         userRef.get()
@@ -190,7 +229,7 @@ public class CatShopActivity extends AppCompatActivity {
                                 .addOnSuccessListener(aVoid -> {
                                     Log.d("TAG", "Username updated successfully");
 
-                                    addCatToUser(catShopList.get(0).get("catName").toString(), catShopList.get(0).get("catImageURL").toString());
+                                    addCatToUser(catName, catName + ".svg");
                                 })
                                 .addOnFailureListener(e -> Log.e("TAG", "Error updating username", e));
                     } else {

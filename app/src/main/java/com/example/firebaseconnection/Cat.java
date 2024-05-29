@@ -1,6 +1,8 @@
 package com.example.firebaseconnection;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +19,10 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 public class Cat {
 
     public String catImageURL;
@@ -31,6 +37,7 @@ public class Cat {
         this.catRarity = catRarity;
     }
 
+    @SuppressLint("SetTextI18n")
     public LinearLayout generate(Context context, View parent) {
         LinearLayout mainLayout = new LinearLayout(context);
         LinearLayout.LayoutParams mainLayoutParams = new LinearLayout.LayoutParams(
@@ -166,36 +173,6 @@ public class Cat {
                 context.getResources().getDimensionPixelSize(R.dimen.spacing_small),
                 context.getResources().getDimensionPixelSize(R.dimen.spacing_small));
         purchaseButtonLayout.setClickable(true);
-        purchaseButtonLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LayoutInflater inflater = LayoutInflater.from(context);
-                View popupView = inflater.inflate(R.layout.popup_purchase_paw, null);
-                int width = ViewGroup.LayoutParams.MATCH_PARENT;
-                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                PopupWindow purchasePawPopUp = new PopupWindow(popupView, width, height, true);
-                purchasePawPopUp.showAtLocation(parent, Gravity.CENTER_VERTICAL, 0, 0);
-
-                TextView pawName = popupView.findViewById(R.id.pawName);
-                ImageView pawImage = popupView.findViewById(R.id.pawImage);
-                TextView pawPrice = popupView.findViewById(R.id.pawPrice);
-                TextView pawRarity = popupView.findViewById(R.id.pawRarity);
-
-                pawName.setText(catName);
-                pawImage.setImageResource(resId);
-                pawPrice.setText(String.valueOf(catPrice));
-                pawRarity.setText(String.valueOf(catRarity));
-
-                LinearLayout purchasePawButton = popupView.findViewById(R.id.purchasePawButton);
-                purchasePawButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        purchasePawPopUp.dismiss();
-                    }
-                });
-            }
-        });
 
         TextView purchaseText = new TextView(context);
         purchaseText.setId(View.generateViewId());
@@ -209,6 +186,43 @@ public class Cat {
         purchaseText.setPadding(0, 0, context.getResources().getDimensionPixelSize(R.dimen.border_width), context.getResources().getDimensionPixelSize(R.dimen.border_width));
         purchaseButtonLayout.addView(purchaseText);
 
+        if (contains(CatShopActivity.userCatsList, catName)) {
+            purchaseText.setText("Purchased");
+            purchaseButtonLayout.setEnabled(false);
+        } else {
+            purchaseButtonLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LayoutInflater inflater = LayoutInflater.from(context);
+                    View popupView = inflater.inflate(R.layout.popup_purchase_paw, null);
+                    int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    PopupWindow purchasePawPopUp = new PopupWindow(popupView, width, height, true);
+                    purchasePawPopUp.showAtLocation(parent, Gravity.CENTER_VERTICAL, 0, 0);
+
+                    TextView pawName = popupView.findViewById(R.id.pawName);
+                    ImageView pawImage = popupView.findViewById(R.id.pawImage);
+                    TextView pawPrice = popupView.findViewById(R.id.pawPrice);
+                    TextView pawRarity = popupView.findViewById(R.id.pawRarity);
+
+                    pawName.setText(catName);
+                    pawImage.setImageResource(resId);
+                    pawPrice.setText(String.valueOf(catPrice));
+                    pawRarity.setText(String.valueOf(catRarity));
+
+                    LinearLayout purchasePawButton = popupView.findViewById(R.id.purchasePawButton);
+
+                    purchasePawButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CatShopActivity.getUserCoins(catName);
+                            purchasePawPopUp.dismiss();
+                        }
+                    });
+                }
+            });
+        }
+
         mainLayout.addView(purchaseButtonLayout);
 
         return mainLayout;
@@ -216,5 +230,14 @@ public class Cat {
 
     private float pxToSp(Context context, float px) {
         return px / context.getResources().getDisplayMetrics().scaledDensity;
+    }
+
+    public boolean contains(List<Map<String, Object>> list, String name) {
+        for (Map stringObject : list) {
+            if (Objects.equals(stringObject.get("catName"), name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
