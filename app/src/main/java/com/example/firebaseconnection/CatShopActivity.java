@@ -53,16 +53,18 @@ public class CatShopActivity extends AppCompatActivity {
 //            return insets;
 //        });
 
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        catShopList  = new ArrayList<>();
+        fetchCats(documentId);
+
         cats = new ArrayList<>();
         catShop = findViewById(R.id.catShop);
         catsGrid = findViewById(R.id.catsGrid);
         generateCats();
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 //        UID = mAuth.getCurrentUser().getUid();
         UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
-        catShopList  = new ArrayList<>();
 //        ivCatImage = findViewById(R.id.ivCatImage);
 //
 //        tvCatName = findViewById(R.id.tvCatName);
@@ -78,7 +80,6 @@ public class CatShopActivity extends AppCompatActivity {
 //            startActivity(intent);
 //        });
 
-        fetchCats(documentId);
     }
 
     private void fetchCats(String documentId) {
