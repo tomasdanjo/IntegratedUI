@@ -109,10 +109,10 @@ public class ProfileActivity extends AppCompatActivity {
                         List<Object> cats = (List<Object>) documentSnapshot.get("cats");
                         if (cats != null) {
                             totalCats = cats.size();
-                            return;
                         }
+                    }else{
+                        totalCats = 0;
                     }
-                    totalCats=0;
                 })
                 .addOnFailureListener(e -> {
                     totalCats = 0;
@@ -128,10 +128,11 @@ public class ProfileActivity extends AppCompatActivity {
                         List<Object> tasks = (List<Object>) documentSnapshot.get("tasks");
                         if (tasks != null) {
                             totalFinishedTasks = tasks.size();
-                            return;
+                        }else{
+                            totalFinishedTasks=0;
                         }
                     }
-                    totalFinishedTasks=0;
+
                 })
                 .addOnFailureListener(e -> {
                     totalFinishedTasks = 0;
