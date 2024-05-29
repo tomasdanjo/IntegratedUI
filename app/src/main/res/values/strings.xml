@@ -7,4 +7,5 @@
     <string name="btnLoginRedirect">Log-in Redirect</string>
     <string name="btnSignUpRedirect">Sign-Up Redirect</string>
     <string name="btnEditProfile">Edit Profile</string>
+
 </resources>
