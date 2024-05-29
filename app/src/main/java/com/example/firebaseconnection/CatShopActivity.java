@@ -40,6 +40,8 @@ public class CatShopActivity extends AppCompatActivity {
     private ImageView ivCatImage;
     private FirebaseAuth mAuth;
     private Long userCoins, newUserCoins;
+
+    public ArrayList<Cat> cats;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,8 @@ public class CatShopActivity extends AppCompatActivity {
 //            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
 //            return insets;
 //        });
+
+        cats = new ArrayList<>();
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -288,6 +292,8 @@ public class CatShopActivity extends AppCompatActivity {
 //    }
 
 
+    public void getCats() {
 
+    }
 
 }
