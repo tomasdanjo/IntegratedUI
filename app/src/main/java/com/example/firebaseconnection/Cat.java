@@ -61,7 +61,11 @@ public class Cat {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         pawImage.setBackground(ContextCompat.getDrawable(context, R.drawable.button_white));
-        pawImage.setImageResource(R.id.(catImageURL));
+        String catImageResource = catImageURL.replace(".svg", ".xml");
+        int resId = context.getResources().getIdentifier(catImageResource, "drawable", context.getPackageName());
+        if (resId != 0) {
+            pawImage.setImageResource(resId);
+        }
         mainLayout.addView(pawImage);
 
         // Create the LinearLayout for price and rarity
