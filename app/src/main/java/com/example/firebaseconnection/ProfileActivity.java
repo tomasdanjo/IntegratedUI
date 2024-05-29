@@ -109,9 +109,9 @@ public class ProfileActivity extends AppCompatActivity {
                         List<Object> cats = (List<Object>) documentSnapshot.get("cats");
                         if (cats != null) {
                             totalCats = cats.size();
+                        }else{
+                            totalCats = 0;
                         }
-                    }else{
-                        totalCats = 0;
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -129,7 +129,7 @@ public class ProfileActivity extends AppCompatActivity {
                         if (tasks != null) {
                             totalFinishedTasks = tasks.size();
                         }else{
-                            totalFinishedTasks=0;
+                            totalFinishedTasks = 0;
                         }
                     }
 
