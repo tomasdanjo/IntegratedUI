@@ -90,7 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Log.d("TAG", "User document fetched successfully");
                         String username = documentSnapshot.getString("username");
                         String email = documentSnapshot.getString("email");
-                        updateUIWithProfile(username,userID);
+                        updateUIWithProfile(username,userId);
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }
