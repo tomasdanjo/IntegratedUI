@@ -31,15 +31,16 @@ import com.google.firebase.storage.StorageReference;
 
 public class CatShopActivity extends AppCompatActivity {
 
-    FirebaseFirestore firebaseFirestore;
+    static FirebaseFirestore firebaseFirestore;
     private static List<Map<String, Object>> catShopList, userCatsList;
     private final String documentId = "xv6JGkDrmpJMylgUIeEz";
-    private String UID;
+    private static String UID;
     private TextView tvCatName;
     private Button btnPurchaseCat, btnRedirectToProfile;
     private ImageView ivCatImage;
     private FirebaseAuth mAuth;
-    private Long userCoins, newUserCoins;
+    private static Long userCoins;
+    private static Long newUserCoins;
 
     public static GridLayout catsGrid;
     public static ConstraintLayout catShop;
@@ -152,7 +153,7 @@ public class CatShopActivity extends AppCompatActivity {
         Log.i("TAG", "Total cats: " + catShopList.size());
     }
 
-    private void getUserCoins() {
+    public static void getUserCoins() {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         userRef.get()
@@ -173,13 +174,13 @@ public class CatShopActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
     }
 
-    private void checkCoinBalance(Long userCoins, Long catFee){
+    private static void checkCoinBalance(Long userCoins, Long catFee){
         assert userCoins >= catFee;
         newUserCoins = userCoins - catFee;
         updateUserCoins(newUserCoins);
     }
 
-    private void updateUserCoins(Long newUserCoins) {
+    private static void updateUserCoins(Long newUserCoins) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         userRef.get()
@@ -199,7 +200,7 @@ public class CatShopActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
     }
 
-    private void addCatToUser(String catName, String catImage) {
+    private static void addCatToUser(String catName, String catImage) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         Map<String, String> newCat = new HashMap<>();
@@ -217,7 +218,7 @@ public class CatShopActivity extends AppCompatActivity {
                 });
     }
 
-    private void fetchUserInfo() {
+    private static void fetchUserInfo() {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         userRef.get()

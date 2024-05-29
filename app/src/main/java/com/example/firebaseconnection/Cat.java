@@ -190,6 +190,7 @@ public class Cat {
                 purchasePawButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         purchasePawPopUp.dismiss();
                     }
                 });
