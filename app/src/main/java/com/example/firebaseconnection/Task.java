@@ -78,6 +78,8 @@ public class Task {
         textView8.setTextSize(context.getResources().getDimension(R.dimen.font_size_regular));
         parentLayout.addView(textView8);
 
+
+
         // Remaining LinearLayouts and views
         // Add your code here for the remaining parts of the layout...
 
