@@ -289,8 +289,9 @@ public class Task extends AppCompatActivity {
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String taskNameToDelete = "Updated Task Name";
-                    TaskListActivity.deleteTaskFromUser(UID, taskNameToDelete);
+                    TaskListActivity.deleteTaskFromUser(UID, taskName);
+
+                    deleteTaskPopUp.dismiss();
                 }
             });
 
