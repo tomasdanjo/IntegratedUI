@@ -13,9 +13,9 @@ public class Cat {
 
     }
 
-    public LinearLayout generate() {
-        LinearLayout linearLayout;
-
-        return linearLayout;
-    }
+//    public LinearLayout generate() {
+//        LinearLayout linearLayout;
+//
+//        return new LinearLayout();
+//    }
 }

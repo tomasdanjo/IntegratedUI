@@ -327,10 +327,6 @@ public class Task extends AppCompatActivity {
             UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
             // TODO Edit naa diri
 
-
-
-
-
             LayoutInflater inflater = LayoutInflater.from(context);
             View popupView = inflater.inflate(R.layout.popup_edit_task, null);
 
@@ -341,10 +337,10 @@ public class Task extends AppCompatActivity {
             editTaskPopup.showAtLocation(parentView, Gravity.CENTER_VERTICAL, 0, 0);
 
             EditText etTaskTitle, etTaskDate,etTaskDuration;
-            ToggleButton tbTaskMode = findViewById(R.id.toggleButtonTaskMode);
-            etTaskTitle = findViewById(R.id.editTextTaskTitle);
-            etTaskDate = findViewById(R.id.editTextDate);
-            etTaskDuration = findViewById(R.id.editTextTime);
+            ToggleButton tbTaskMode = popupView.findViewById(R.id.toggleButtonTaskMode);
+            etTaskTitle = popupView.findViewById(R.id.editTextTaskTitle);
+            etTaskDate = popupView.findViewById(R.id.editTextDate);
+            etTaskDuration = popupView.findViewById(R.id.editTextTime);
 
             etTaskTitle.setText(taskName);
             etTaskDate.setText(taskDate);
@@ -353,13 +349,13 @@ public class Task extends AppCompatActivity {
 
             String newTaskName = etTaskTitle.getText().toString();
             String newTaskDate = etTaskDate.getText().toString();
+            Long newDuration = Long.parseLong(etTaskDuration.getText().toString());
             boolean newTaskMode = tbTaskMode.isChecked();
 
-            TaskListActivity.updateTaskInUser(UID, taskName, newTaskName,newTaskName, newTaskDate,newTaskMode);
+            TaskListActivity.updateTaskInUser(UID, taskName, newTaskName, newDuration, newTaskDate,newTaskMode);
 
             editTaskPopup.dismiss();
-
-
+            TaskListActivity.fetchTasks(UID);
         });
 
         ImageView editButtonImageView = new ImageView(context);

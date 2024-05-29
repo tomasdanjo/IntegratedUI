@@ -234,7 +234,7 @@ public class TaskListActivity extends AppCompatActivity {
                 });
     }
 
-    private static void fetchTasks(String userId) {
+    public static void fetchTasks(String userId) {
         //user document reference
         DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
         //user document fetch
@@ -286,7 +286,7 @@ public class TaskListActivity extends AppCompatActivity {
                 });
     }
 
-    public static void updateTaskInUser(String userId, String oldTaskName, String newTaskName, String duration, String newTaskDate, boolean newTaskMode) {
+    public static void updateTaskInUser(String userId, String oldTaskName, String newTaskName, Long duration, String newTaskDate, boolean newTaskMode) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
 
         userRef.get()
@@ -302,7 +302,7 @@ public class TaskListActivity extends AppCompatActivity {
                                     task.put("taskName", newTaskName);
                                     task.put("taskDate", newTaskDate);
                                     task.put("taskMode", newTaskMode);
-                                    int newTaskCoins = Integer.parseInt(duration)/2;
+                                    int newTaskCoins = (int) (duration/2);
                                     task.put("taskCoins", newTaskCoins);
                                     break;
                                 }
