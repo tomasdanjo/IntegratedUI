@@ -90,7 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Log.d("TAG", "User document fetched successfully");
                         String username = documentSnapshot.getString("username");
                         String email = documentSnapshot.getString("email");
-                        updateUIWithProfile(username);
+                        updateUIWithProfile(username,userId);
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }
@@ -100,8 +100,8 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    private void fetchUserCats(){
-        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
+    private void fetchUserCats(String userId){
+        DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
         userRef.get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
@@ -119,8 +119,8 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    private void fetchUserTasks(){
-        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
+    private void fetchUserTasks(String userId){
+        DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
         userRef.get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
@@ -140,9 +140,9 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-    private void updateUIWithProfile(String username) {
-        fetchUserCats();
-        fetchUserTasks();
+    private void updateUIWithProfile(String username, String userId) {
+        fetchUserCats(userId);
+        fetchUserTasks(userId);
 
 
         TextView tvUserUsername = findViewById(R.id.username);
