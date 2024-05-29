@@ -33,6 +33,15 @@ public class Menu extends AppCompatActivity {
             }
         });
 
+        LinearLayout btnProfile = findViewById(R.id.btnProfile);
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Menu.this, ProfileActivity.class);
+                startActivity(i);
+            }
+        });
+
         LinearLayout btnHome = findViewById(R.id.btnHome);
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override

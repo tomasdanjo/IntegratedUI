@@ -57,7 +57,16 @@ public class Timer extends AppCompatActivity {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(TaskListActivity.this, Menu.class);
+                Intent i = new Intent(Timer.this, Menu.class);
+                startActivity(i);
+            }
+        });
+
+        LinearLayout btnProfile = findViewById(R.id.btnProfile);
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Timer.this, ProfileActivity.class);
                 startActivity(i);
             }
         });

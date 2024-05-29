@@ -48,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(TaskListActivity.this, Menu.class);
+                Intent i = new Intent(ProfileActivity.this, Menu.class);
                 startActivity(i);
             }
         });
