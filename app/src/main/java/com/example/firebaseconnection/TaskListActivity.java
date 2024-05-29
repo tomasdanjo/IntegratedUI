@@ -109,6 +109,7 @@ public class TaskListActivity extends AppCompatActivity {
                     taskDuration = etDuration.getText().toString();
                     taskMode = tbTaskMode.isChecked()?"Focus":"Chill";
 
+
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = null;
                     try {
@@ -120,7 +121,8 @@ public class TaskListActivity extends AppCompatActivity {
                     // Create a Timestamp object from the parsed Date object
                     Timestamp taskDate = new Timestamp(Instant.ofEpochSecond(date.getTime()));
 
-                    addTaskToUser(UID,taskTitle,taskDuration,taskDate,tbTaskMode.isChecked());
+
+                    addTaskToUser(UID,taskTitle,taskDuration,taskDateStr,tbTaskMode.isChecked());
 
                 }
             });
@@ -213,7 +215,7 @@ public class TaskListActivity extends AppCompatActivity {
 
     }
 
-    private void addTaskToUser(String userId, String taskName, String duration, Timestamp taskDate, boolean taskMode) {
+    private void addTaskToUser(String userId, String taskName, String duration, String taskDate, boolean taskMode) {
         //map for the new task
         Map<String, Object> newTask = new HashMap<>();
         newTask.put("taskName", taskName);
