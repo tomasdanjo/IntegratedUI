@@ -34,6 +34,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     static String username;
     private static int totalCats, totalFinishedTasks;
+    static TextView txtCoin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +63,9 @@ public class ProfileActivity extends AppCompatActivity {
         UID ="YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
 
-        TextView txtCoin = findViewById(R.id.txtCoinBalance);
-        ProfileActivity.getUserCoins(txtCoin);
+        txtCoin =  findViewById(R.id.txtCoinBalance);
 
+        getUserCoins(UID);
         fetchUserInfo(UID);
         fetchUserCats(UID);
     }
@@ -163,8 +165,8 @@ public class ProfileActivity extends AppCompatActivity {
 //        tvUserEmail.setText(email);
     }
 
-    public static void getUserCoins(TextView txtCoin) {
-        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
+    public static void getUserCoins(String userID) {
+        DocumentReference userRef = firebaseFirestore.collection("users").document(userID);
 
         userRef.get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -178,7 +180,8 @@ public class ProfileActivity extends AppCompatActivity {
                             Log.d("TAG", "Coins field is not found in the document.");
                         }
                         //update
-                        updateCoinText(txtCoin,userCoins);
+
+                        updateCoinText(userCoins);
 
                     } else {
                         Log.d("TAG", "User document does not exist");
@@ -187,7 +190,8 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
     }
 
-    private static void updateCoinText(TextView txtCoin, Long coinBalance){
+    private static void updateCoinText(Long coinBalance){
+
         txtCoin.setText(String.valueOf(coinBalance));
     }
 

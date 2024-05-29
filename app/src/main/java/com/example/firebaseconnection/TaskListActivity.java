@@ -49,6 +49,8 @@ public class TaskListActivity extends AppCompatActivity {
     public static ConstraintLayout tasksConstraintLayout;
 
     public static LinearLayout tasksLinearLayout;
+
+    static  TextView txtCoin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -220,8 +222,8 @@ public class TaskListActivity extends AppCompatActivity {
 
         fetchTasks(UID);
 
-        TextView txtCoin = findViewById(R.id.txtCoinBalance);
-        ProfileActivity.getUserCoins(txtCoin);
+        txtCoin = findViewById(R.id.txtCoinBalance);
+        ProfileActivity.getUserCoins(UID);
 
 
     }
