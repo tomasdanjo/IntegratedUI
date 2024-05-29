@@ -33,6 +33,28 @@ public class Menu extends AppCompatActivity {
             }
         });
 
+        LinearLayout btnHome = findViewById(R.id.btnHome);
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                TODO add intent to homepage
+            }
+        });
 
+        LinearLayout btnShop = findViewById(R.id.btnShop);
+        btnShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                TODO add shop intent
+            }
+        });
+
+        LinearLayout btnSettings = findViewById(R.id.btnSettings);
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                TODO add settings intent
+            }
+        });
     }
 }
