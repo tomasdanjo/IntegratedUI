@@ -292,7 +292,7 @@ public class Task extends AppCompatActivity {
                     String taskNameToDelete = "Updated Task Name";
                     TaskListActivity.deleteTaskFromUser(UID, taskNameToDelete);
                 }
-        });
+            });
 
 
         });
@@ -318,7 +318,14 @@ public class Task extends AppCompatActivity {
         editButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
         editButtonLayout.setClickable(true); // Make clickable
         editButtonLayout.setOnClickListener(v -> {
-            // TODO edit button
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View popupView = inflater.inflate(R.layout.popup_edit_task, null);
+
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            PopupWindow editTaskPopup = new PopupWindow(popupView, width, height, true);
+
+            editTaskPopup.showAtLocation(parentView, Gravity.CENTER_VERTICAL, 0, 0);
         });
 
         ImageView editButtonImageView = new ImageView(context);
