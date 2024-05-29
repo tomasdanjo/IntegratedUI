@@ -14,6 +14,7 @@ import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -44,7 +45,9 @@ public class TaskListActivity extends AppCompatActivity {
 
     private static ArrayList<Task> tasks;
 
-    static LinearLayout tasksLinearLayout;
+    public static ConstraintLayout tasksConstraintLayout;
+
+    public static LinearLayout tasksLinearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -61,6 +64,8 @@ public class TaskListActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        tasksConstraintLayout = findViewById(R.id.tasks);
 
         btnAdd = findViewById(R.id.btnAddTask);
 
@@ -380,7 +385,7 @@ public class TaskListActivity extends AppCompatActivity {
 
         System.out.println(tasks.size());
         for (Task task : tasks) {
-            tasksLinearLayout.addView(task.generate(tasksLinearLayout.getContext()));
+            tasksLinearLayout.addView(task.generate(tasksLinearLayout.getContext(), tasksConstraintLayout));
         }
     }
 }
