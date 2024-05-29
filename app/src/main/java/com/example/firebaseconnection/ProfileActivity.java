@@ -36,6 +36,8 @@ public class ProfileActivity extends AppCompatActivity {
     private static int totalCats, totalFinishedTasks;
     static TextView txtCoin;
 
+    static Long userCoins;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
         UID ="YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
 
-        txtCoin =  findViewById(R.id.txtCoinBalance);
+
 
         getUserCoins(UID);
         fetchUserInfo(UID);
@@ -165,7 +167,7 @@ public class ProfileActivity extends AppCompatActivity {
 //        tvUserEmail.setText(email);
     }
 
-    public static void getUserCoins(String userID) {
+    public void getUserCoins(String userID) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(userID);
 
         userRef.get()
@@ -173,15 +175,16 @@ public class ProfileActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         //get the "coins" field from the document
 
-                        Long userCoins = documentSnapshot.getLong("coins");
+                        userCoins = documentSnapshot.getLong("coins");
                         if (userCoins != null) {
+                            updateCoinText();
                             Log.d("TAG", "User has " + userCoins + " coins.");
                         } else {
                             Log.d("TAG", "Coins field is not found in the document.");
                         }
                         //update
 
-                        updateCoinText(userCoins);
+
 
                     } else {
                         Log.d("TAG", "User document does not exist");
@@ -190,9 +193,9 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
     }
 
-    private static void updateCoinText(Long coinBalance){
-
-        txtCoin.setText(String.valueOf(coinBalance));
+    private void updateCoinText(){
+        txtCoin =  findViewById(R.id.txtCoinBalance);
+        txtCoin.setText(String.valueOf(userCoins));
     }
 
 
