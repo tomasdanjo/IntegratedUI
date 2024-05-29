@@ -26,6 +26,8 @@ public class ProfileActivity extends AppCompatActivity {
     String UID;
     TextView tvUserUsername, tvUserEmail;
     Button btnEditUserInformation;
+
+    static String username;
     private static int totalCats, totalFinishedTasks;
 
     @Override
@@ -55,6 +57,8 @@ public class ProfileActivity extends AppCompatActivity {
 //        });
 
         fetchUserInfo(UID);
+        fetchUserCats(UID);
+//        fetchUserTasks(UID);
     }
 
     private void updateUsername(String userId, String newUsername) {
@@ -85,9 +89,8 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Log.d("TAG", "User document fetched successfully");
-                        String username = documentSnapshot.getString("username");
-                        String email = documentSnapshot.getString("email");
-                        updateUIWithProfile(username,userId);
+                        username = documentSnapshot.getString("username");
+                        fetchUserCats(userId);
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }
@@ -103,9 +106,11 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
 
-                        List<Object> cats = (List<Object>) documentSnapshot.get("cats");
+                        List<Map<String, Object>> cats = (List<Map<String, Object>>) documentSnapshot.get("cats");
                         if (cats != null) {
                             totalCats = cats.size();
+                            Log.d("SIMON!!!!!", String.valueOf(totalCats));
+                            fetchUserTasks(userId);
                         }else{
                             totalCats = 0;
                         }
@@ -122,9 +127,10 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
 
-                        List<Object> tasks = (List<Object>) documentSnapshot.get("tasks");
+                        List<Map<String, String>> tasks = (List<Map<String, String>>) documentSnapshot.get("tasks");
                         if (tasks != null) {
                             totalFinishedTasks = tasks.size();
+                            updateUIWithProfile(userId);
                         }else{
                             totalFinishedTasks = 0;
                         }
@@ -137,9 +143,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-    private void updateUIWithProfile(String username, String userId) {
-        fetchUserCats(userId);
-        fetchUserTasks(userId);
+    private void updateUIWithProfile(String userId) {
 
 
         TextView tvUserUsername = findViewById(R.id.username);
