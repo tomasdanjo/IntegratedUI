@@ -17,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,6 +25,10 @@ public class MyCatCollection extends AppCompatActivity {
 
     TextView txtCoin;
     Long userCoins;
+
+    static FirebaseFirestore firebaseFirestore;
+    FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,12 @@ public class MyCatCollection extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+//        UID = mAuth.getCurrentUser().getUid();
+        UID ="YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+
 
 
         getUserBalance(UID);
