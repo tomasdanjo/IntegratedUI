@@ -34,9 +34,7 @@ public class MyCatCollection extends AppCompatActivity {
             }
         });
 
-        TextView txtCoin = findViewById(R.id.txtCoinBalance);
 
-        ProfileActivity.getUserCoins(txtCoin);
 
 
     }

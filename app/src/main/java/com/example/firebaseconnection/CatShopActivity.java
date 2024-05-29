@@ -45,6 +45,7 @@ public class CatShopActivity extends AppCompatActivity {
 
     public static GridLayout catsGrid;
     public static ConstraintLayout catShop;
+    TextView txtCoin;
 
     public ArrayList<Cat> cats;
     @Override
@@ -86,9 +87,8 @@ public class CatShopActivity extends AppCompatActivity {
         fetchUserCats();
 
 
-        TextView txtCoin = findViewById(R.id.txtCoinBalance);
-        ProfileActivity.getUserCoins(txtCoin);
-
+        txtCoin = findViewById(R.id.txtCoinBalance);
+        ProfileActivity.getUserCoins(UID);
 //        ivCatImage = findViewById(R.id.ivCatImage);
 //
 //        tvCatName = findViewById(R.id.tvCatName);
