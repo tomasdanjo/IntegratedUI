@@ -15,9 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -146,8 +143,8 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         TextView tvUserUsername = findViewById(R.id.username);
-        TextView tvTotalPaws = findViewById(R.id.tvTotalTasksFinished);
-        TextView tvTotalTasks = findViewById(R.id.tvTotalTasksFinished);
+        TextView tvTotalPaws = findViewById(R.id.tvTotalCats);
+        TextView tvTotalTasks = findViewById(R.id.tvTotalTasks);
 
         tvUserUsername.setText(username);
         tvTotalPaws.setText(String.valueOf(totalCats));

@@ -188,7 +188,7 @@
                                 android:textSize="@dimen/font_size_medium" />
 
                             <TextView
-                                android:id="@+id/tvTotalTasksFinished"
+                                android:id="@+id/tvTotalCats"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/nunito_extrabold"
@@ -219,7 +219,7 @@
                                 android:textSize="@dimen/font_size_medium" />
 
                             <TextView
-                                android:id="@+id/tvTotalTasksFinished"
+                                android:id="@+id/tvTotalTasks"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/nunito_extrabold"
