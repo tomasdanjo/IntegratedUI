@@ -298,6 +298,7 @@ public class Task extends AppCompatActivity {
             });
 
 
+
         });
 
         ImageView deleteButtonImageView = new ImageView(context);
@@ -347,15 +348,23 @@ public class Task extends AppCompatActivity {
             etTaskDuration.setText(String.valueOf(taskDuration));
             tbTaskMode.setChecked(taskMode);
 
-            String newTaskName = etTaskTitle.getText().toString();
-            String newTaskDate = etTaskDate.getText().toString();
-            Long newDuration = Long.parseLong(etTaskDuration.getText().toString());
-            boolean newTaskMode = tbTaskMode.isChecked();
+            LinearLayout btnEditSave = popupView.findViewById(R.id.btnEditSave);
+            btnEditSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String newTaskName = etTaskTitle.getText().toString();
+                    String newTaskDate = etTaskDate.getText().toString();
+                    Long newDuration = Long.parseLong(etTaskDuration.getText().toString());
+                    boolean newTaskMode = tbTaskMode.isChecked();
 
-            TaskListActivity.updateTaskInUser(UID, taskName, newTaskName, newDuration, newTaskDate,newTaskMode);
+                    TaskListActivity.updateTaskInUser(UID, taskName, newTaskName, newDuration, newTaskDate,newTaskMode);
 
-            editTaskPopup.dismiss();
-            TaskListActivity.fetchTasks(UID);
+                    editTaskPopup.dismiss();
+                    TaskListActivity.fetchTasks(UID);
+                }
+            });
+
+
         });
 
         ImageView editButtonImageView = new ImageView(context);
