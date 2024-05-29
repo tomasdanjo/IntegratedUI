@@ -1,5 +1,7 @@
 package com.example.firebaseconnection;
 
+import com.google.firebase.Timestamp;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -25,6 +28,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -45,12 +49,17 @@ public class TaskListActivity extends AppCompatActivity {
     private String UID;
 
     private List<Map<String, Object>> tasksList;
+
+    private ArrayList<Task> tasks;
+
+    LinearLayout tasksLinearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         //methods:
         //create task (addTaskToUser), read task (fetchTasks),
         //update task (updateTaskInUser), delete task (deleteTaskFromUser)
+        tasks = new ArrayList<>();
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -61,23 +70,15 @@ public class TaskListActivity extends AppCompatActivity {
             return insets;
         });
 
+        btnAdd = findViewById(R.id.btnAddTask);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        UID = mAuth.getCurrentUser().getUid();
+        UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
 
-        //get scrollview(vertical)
-        //add all taskCards sa scrollview
-
-
-        TaskName = findViewById(R.id.tvTaskName);
-        TaskDate = findViewById(R.id.tvTaskDate);
-        TaskMode = findViewById(R.id.tvTaskMode);
-        TaskCoins = findViewById(R.id.tvTaskCoins);
-        btnAdd = findViewById(R.id.btnAddTask);
-        btnEdit = findViewById(R.id.btnEdit);
-        btnDelete = findViewById(R.id.btnDelete);
-
+        tasksLinearLayout = findViewById(R.id.tasksLinearLayout);
+        generateTasks();
 
         tasksList = new ArrayList<>();
 
@@ -129,88 +130,86 @@ public class TaskListActivity extends AppCompatActivity {
 
         });
 
-        btnEdit.setOnClickListener(v->{
-            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = inflater.inflate(R.layout.popup_edit_task, null);
+//        btnEdit.setOnClickListener(v->{
+//            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//            View popupView = inflater.inflate(R.layout.popup_edit_task, null);
+//
+//            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+//            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//            PopupWindow editTaskPopUp = new PopupWindow(popupView, width, height, true);
+//
+//            editTaskPopUp.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
+//
+//
+//            EditText etTaskTitle, etTaskDate,etTaskDuration;
+//            ToggleButton tbTaskMode = findViewById(R.id.toggleButtonTaskMode);
+//            etTaskTitle = findViewById(R.id.editTextTaskTitle);
+//
+//            etTaskDate = findViewById(R.id.editTextDate);
+//            etTaskDuration = findViewById(R.id.editTextTime);
+//
+//
+//
+//            LinearLayout btnSave = findViewById(R.id.btnEditSave);
+//            btnSave.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//                    Date date = null;
+//                    try {
+//                        date = dateFormat.parse(etTaskDate.getText().toString());
+//                    } catch (ParseException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//
+//                    // Create a Timestamp object from the parsed Date object
+//                    Timestamp newTaskDate = new Timestamp(Instant.ofEpochSecond(date.getTime()));
+//
+//
+//                    String oldTaskName = "Scooby Doo PAPA";
+//
+//                    String newTaskName = etTaskTitle.getText().toString();
+//                    String taskDuration = etTaskDuration.getText().toString();
+//                    String newTaskMode = tbTaskMode.isChecked()?"Focus":"Chill";
+//                    updateTaskInUser(UID, oldTaskName, newTaskName, taskDuration,newTaskDate, newTaskMode);
+//
+//                }
+//            });
+//        });
+//
+//        btnDelete.setOnClickListener(v->{
+//            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//            View popupView = inflater.inflate(R.layout.popup_delete_task, null);
+//
+//            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+//            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//            PopupWindow deleteTaskPopUp = new PopupWindow(popupView, width, height, true);
+//
+//            deleteTaskPopUp.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
+//
+//            LinearLayout btnYes, btnNo;
+//            btnYes = findViewById(R.id.btnDeleteYes);
+//            btnNo = findViewById(R.id.btnDeleteNo);
+//
+//            btnYes.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    String taskNameToDelete = "Updated Task Name";
+//                    deleteTaskFromUser(UID, taskNameToDelete);
+//                }
+//            });
+//
+//            btnNo.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    deleteTaskPopUp.dismiss();
+//                }
+//            });
+//
+//
+//        });
 
-            int width = ViewGroup.LayoutParams.MATCH_PARENT;
-            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            PopupWindow editTaskPopUp = new PopupWindow(popupView, width, height, true);
-
-            editTaskPopUp.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
-
-
-            EditText etTaskTitle, etTaskDate,etTaskDuration;
-            ToggleButton tbTaskMode = findViewById(R.id.toggleButtonTaskMode);
-            etTaskTitle = findViewById(R.id.editTextTaskTitle);
-
-            etTaskDate = findViewById(R.id.editTextDate);
-            etTaskDuration = findViewById(R.id.editTextTime);
-
-
-
-            LinearLayout btnSave = findViewById(R.id.btnEditSave);
-            btnSave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = null;
-                    try {
-                        date = dateFormat.parse(etTaskDate.getText().toString());
-                    } catch (ParseException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    // Create a Timestamp object from the parsed Date object
-                    Timestamp newTaskDate = new Timestamp(Instant.ofEpochSecond(date.getTime()));
-
-
-                    String oldTaskName = "Scooby Doo PAPA";
-
-                    String newTaskName = etTaskTitle.getText().toString();
-                    String taskDuration = etTaskDuration.getText().toString();
-                    String newTaskMode = tbTaskMode.isChecked()?"Focus":"Chill";
-                    updateTaskInUser(UID, oldTaskName, newTaskName, taskDuration,newTaskDate, newTaskMode);
-
-                }
-            });
-        });
-
-        btnDelete.setOnClickListener(v->{
-            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = inflater.inflate(R.layout.popup_delete_task, null);
-
-            int width = ViewGroup.LayoutParams.MATCH_PARENT;
-            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            PopupWindow deleteTaskPopUp = new PopupWindow(popupView, width, height, true);
-
-            deleteTaskPopUp.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
-
-            LinearLayout btnYes, btnNo;
-            btnYes = findViewById(R.id.btnDeleteYes);
-            btnNo = findViewById(R.id.btnDeleteNo);
-
-            btnYes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String taskNameToDelete = "Updated Task Name";
-                    deleteTaskFromUser(UID, taskNameToDelete);
-                }
-            });
-
-            btnNo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteTaskPopUp.dismiss();
-                }
-            });
-
-
-        });
-
-
-
-        fetchTasks(UID);
+        fetchTasks("YkbW5nnkv1aLDXUvEYxZDMB1oj03");
 
     }
 
@@ -322,14 +321,17 @@ public class TaskListActivity extends AppCompatActivity {
 
 
     private void updateUIWithTasks() {
-        if (!tasksList.isEmpty()) {
-            TaskName.setText(Objects.requireNonNull(tasksList.get(0).get("taskName")).toString());
-            Log.i("TAG", "SUCCESS");
-        } else {
-            Log.i("TAG", "EMPTY LIST");
-            TaskName.setText("wa uie");
-        }
-        Log.i("TAG", Integer.toString(tasksList.size()));
+//        if (!tasksList.isEmpty()) {
+//            TaskName.setText(Objects.requireNonNull(tasksList.get().get("taskName")).toString());
+//            Log.i("TAG", "SUCCESS");
+//        } else {
+//            Log.i("TAG", "EMPTY LIST");
+//            TaskName.setText("wa uie");
+//        }
+//        Log.i("TAG", Integer.toString(tasksList.size()));
+
+        getTasks();
+        generateTasks();
     }
 
     private void deleteTaskFromUser(String userId, String taskNameToDelete) {
@@ -365,6 +367,23 @@ public class TaskListActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching tasks", e));
     }
 
+    public void getTasks() {
+        for (int i = 0; i < tasksList.size(); i++) {
+            String taskName = tasksList.get(i).get("taskName").toString();
+            boolean taskMode = (boolean) tasksList.get(i).get("taskMode");
+            String taskDuration = (String) tasksList.get(i).get("taskDuration");
+            int taskCoins = (int) tasksList.get(i).get("taskCoins");
+            Timestamp taskDate = (Timestamp) tasksList.get(i).get("taskDate");
+            tasks.add(new Task(taskName, taskMode, taskDuration, taskCoins, taskDate));
+        }
+    }
 
+    public void generateTasks() {
+        tasksLinearLayout.removeAllViews();
 
+        System.out.println(tasks.size());
+        for (Task task : tasks) {
+            tasksLinearLayout.addView(task.generate(tasksLinearLayout.getContext()));
+        }
+    }
 }
