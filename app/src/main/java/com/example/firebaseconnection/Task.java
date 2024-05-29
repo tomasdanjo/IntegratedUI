@@ -46,7 +46,7 @@ public class Task extends AppCompatActivity {
     }
 
     @SuppressLint("ResourceType")
-    public LinearLayout generate(Context context) {
+    public LinearLayout generate(Context context, View parentView) {
         // Define dimensions and other resources
         int spacingSmall = context.getResources().getDimensionPixelSize(R.dimen.spacing_small);
         int spacingMedium = context.getResources().getDimensionPixelSize(R.dimen.spacing_medium);
@@ -267,34 +267,32 @@ public class Task extends AppCompatActivity {
 //            UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
 
-            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = LayoutInflater.from(context);
             View popupView = inflater.inflate(R.layout.popup_delete_task, null);
 
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             PopupWindow deleteTaskPopUp = new PopupWindow(popupView, width, height, true);
 
-            deleteTaskPopUp.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
+            // TODO fix null findViewById(R.id.tasks)
+            deleteTaskPopUp.showAtLocation(parentView, Gravity.CENTER_VERTICAL, 0, 0);
 
-            LinearLayout btnYes = findViewById(R.id.btnDeleteYes);
-            LinearLayout btnNo = findViewById(R.id.btnDeleteNo);
+            LinearLayout btnYes = popupView.findViewById(R.id.btnDeleteYes);
+            LinearLayout btnNo = popupView.findViewById(R.id.btnDeleteNo);
 
-//            btnNo.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    deleteTaskPopUp.dismiss();
-//                }
-//            });
-//            btnYes.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    String taskNameToDelete = "Updated Task Name";
-//                    TaskListActivity.deleteTaskFromUser(UID, taskNameToDelete);
-//                }
-//
-//
-//
-//        });
+            btnNo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteTaskPopUp.dismiss();
+                }
+            });
+            btnYes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String taskNameToDelete = "Updated Task Name";
+                    TaskListActivity.deleteTaskFromUser(UID, taskNameToDelete);
+                }
+        });
 
 
         });

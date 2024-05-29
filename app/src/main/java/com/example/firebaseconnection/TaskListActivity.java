@@ -1,8 +1,5 @@
 package com.example.firebaseconnection;
 
-import com.google.firebase.Timestamp;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,33 +9,29 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class TaskListActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -52,7 +45,9 @@ public class TaskListActivity extends AppCompatActivity {
 
     private static ArrayList<Task> tasks;
 
-    static LinearLayout tasksLinearLayout;
+    public static ConstraintLayout tasksConstraintLayout;
+
+    public static LinearLayout tasksLinearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -69,6 +64,8 @@ public class TaskListActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        tasksConstraintLayout = findViewById(R.id.tasks);
 
         btnAdd = findViewById(R.id.btnAddTask);
 
@@ -93,24 +90,26 @@ public class TaskListActivity extends AppCompatActivity {
             createTaskPopup.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
             EditText etTaskTitle, etTaskDate, etDuration;
             ToggleButton tbTaskMode;
-            etTaskTitle = findViewById(R.id.editTextMode);
-            etTaskDate = findViewById(R.id.editTextTaskDate);
-            etDuration = findViewById(R.id.editTextTime);
-            tbTaskMode = findViewById(R.id.toggleMode);
 
-            LinearLayout create_task = findViewById(R.id.createTaskBtn);
+            etTaskTitle = popupView.findViewById(R.id.editTextMode);
+            etTaskDate = popupView.findViewById(R.id.editTextTaskDate);
+            etDuration = popupView.findViewById(R.id.editTextTime);
+            tbTaskMode = popupView.findViewById(R.id.toggleMode);
+
+            LinearLayout create_task = popupView.findViewById(R.id.createTaskBtn);
             create_task.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String taskTitle, taskDateStr,taskDuration,taskMode;
+                    String taskTitle, taskDateStr,taskMode;
+
+                    Long taskDuration;
 
                     taskTitle = etTaskTitle.getText().toString();
                     taskDateStr = etTaskDate.getText().toString();
-                    taskDuration = etDuration.getText().toString();
+                    taskDuration = Long.valueOf(etDuration.getText().toString());
                     taskMode = tbTaskMode.isChecked()?"Focus":"Chill";
 
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                     Date date = null;
                     try {
                         date = dateFormat.parse(taskDateStr);
@@ -119,10 +118,7 @@ public class TaskListActivity extends AppCompatActivity {
                     }
 
                     // Create a Timestamp object from the parsed Date object
-                    Timestamp taskDate = new Timestamp(Instant.ofEpochSecond(date.getTime()));
-
-
-                    addTaskToUser(UID,taskTitle,taskDuration,taskDateStr,tbTaskMode.isChecked());
+                    addTaskToUser(UID,taskTitle,taskDuration, taskDateStr, tbTaskMode.isChecked());
 
                 }
             });
@@ -215,14 +211,14 @@ public class TaskListActivity extends AppCompatActivity {
 
     }
 
-    private void addTaskToUser(String userId, String taskName, String duration, String taskDate, boolean taskMode) {
+    private void addTaskToUser(String userId, String taskName, Long duration, String taskDate, boolean taskMode) {
         //map for the new task
         Map<String, Object> newTask = new HashMap<>();
         newTask.put("taskName", taskName);
         newTask.put("taskDate", taskDate);
         newTask.put("taskMode", taskMode);
         newTask.put("taskDuration",duration);
-        int coins = Integer.parseInt(duration)/2;
+        int coins = Integer.parseInt(String.valueOf(duration))/2;
         newTask.put("taskCoins", coins);
         newTask.put("taskIsDone",false);
 
@@ -251,9 +247,11 @@ public class TaskListActivity extends AppCompatActivity {
                             for (Map<String, Object> task : tasks) {
                                 //get the task details
                                 String taskName = (String) task.get("taskName");
-                                Timestamp taskDate = (Timestamp) task.get("taskDate");
+                                String taskDate = (String) task.get("taskDate");
                                 boolean taskMode = (boolean) task.get("taskMode");
                                 int taskCoins = ((Long) task.get("taskCoins")).intValue();
+                                boolean taskIsDone = ((boolean) task.get("taskIsDone"));
+                                Long taskDuration = (Long) task.get("taskDuration");
 
                                 //create a new map to hold the task details
                                 Map<String, Object> taskMap = new HashMap<>();
@@ -261,6 +259,8 @@ public class TaskListActivity extends AppCompatActivity {
                                 taskMap.put("taskDate", taskDate);
                                 taskMap.put("taskMode", taskMode);
                                 taskMap.put("taskCoins", taskCoins);
+                                taskMap.put("taskIsDone", taskIsDone);
+                                taskMap.put("taskDuration", taskDuration);
 
                                 //add the task map to the tasksList
                                 tasksList.add(taskMap);
@@ -285,7 +285,7 @@ public class TaskListActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateTaskInUser(String userId, String oldTaskName, String newTaskName, String duration, Timestamp newTaskDate, String newTaskMode) {
+    private void updateTaskInUser(String userId, String oldTaskName, String newTaskName, String duration, String newTaskDate, String newTaskMode) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
 
         userRef.get()
@@ -373,9 +373,9 @@ public class TaskListActivity extends AppCompatActivity {
         for (int i = 0; i < tasksList.size(); i++) {
             String taskName = tasksList.get(i).get("taskName").toString();
             boolean taskMode = (boolean) tasksList.get(i).get("taskMode");
-            String taskDuration = (String) tasksList.get(i).get("taskDuration");
+            Long taskDuration = (Long) tasksList.get(i).get("taskDuration");
             int taskCoins = (int) tasksList.get(i).get("taskCoins");
-            Timestamp taskDate = (Timestamp) tasksList.get(i).get("taskDate");
+            String taskDate = (String) tasksList.get(i).get("taskDate");
             tasks.add(new Task(taskName, taskMode, taskDuration, taskCoins, taskDate));
         }
     }
@@ -385,7 +385,7 @@ public class TaskListActivity extends AppCompatActivity {
 
         System.out.println(tasks.size());
         for (Task task : tasks) {
-            tasksLinearLayout.addView(task.generate(tasksLinearLayout.getContext()));
+            tasksLinearLayout.addView(task.generate(tasksLinearLayout.getContext(), tasksConstraintLayout));
         }
     }
 }
