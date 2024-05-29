@@ -32,12 +32,12 @@ public class Task extends AppCompatActivity {
 
     private boolean taskMode;
 
-    private String taskDuration;
+    private Long taskDuration;
     private int taskCoins;
-    private Timestamp taskDate;
+    private String taskDate;
 
 
-    public Task(String taskName, boolean taskMode, String taskDuration, int taskCoins, Timestamp taskDate) {
+    public Task(String taskName, boolean taskMode, Long taskDuration, int taskCoins, String taskDate) {
         this.taskName = taskName;
         this.taskMode = taskMode;
         this.taskDuration = taskDuration;
@@ -157,7 +157,7 @@ public class Task extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        durationTextView.setText(taskDuration);
+        durationTextView.setText(String.valueOf(taskDuration));
         durationTextView.setTypeface(ResourcesCompat.getFont(context, R.font.nunito_bold));
 
         durationLayout.addView(durationImageView);

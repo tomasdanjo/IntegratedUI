@@ -119,9 +119,7 @@ public class TaskListActivity extends AppCompatActivity {
                     }
 
                     // Create a Timestamp object from the parsed Date object
-                    Timestamp taskDate = new Timestamp(Instant.ofEpochSecond(date.getTime()));
-
-                    addTaskToUser(UID,taskTitle,taskDuration, taskDate, tbTaskMode.isChecked());
+                    addTaskToUser(UID,taskTitle,taskDuration, taskDateStr, tbTaskMode.isChecked());
 
                 }
             });
@@ -250,9 +248,11 @@ public class TaskListActivity extends AppCompatActivity {
                             for (Map<String, Object> task : tasks) {
                                 //get the task details
                                 String taskName = (String) task.get("taskName");
-                                Timestamp taskDate = (Timestamp) task.get("taskDate");
+                                String taskDate = (String) task.get("taskDate");
                                 boolean taskMode = (boolean) task.get("taskMode");
                                 int taskCoins = ((Long) task.get("taskCoins")).intValue();
+                                boolean taskIsDone = ((boolean) task.get("taskIsDone"));
+                                Long taskDuration = (Long) task.get("taskDuration");
 
                                 //create a new map to hold the task details
                                 Map<String, Object> taskMap = new HashMap<>();
@@ -260,6 +260,8 @@ public class TaskListActivity extends AppCompatActivity {
                                 taskMap.put("taskDate", taskDate);
                                 taskMap.put("taskMode", taskMode);
                                 taskMap.put("taskCoins", taskCoins);
+                                taskMap.put("taskIsDone", taskIsDone);
+                                taskMap.put("taskDuration", taskDuration);
 
                                 //add the task map to the tasksList
                                 tasksList.add(taskMap);
@@ -284,7 +286,7 @@ public class TaskListActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateTaskInUser(String userId, String oldTaskName, String newTaskName, String duration, Timestamp newTaskDate, String newTaskMode) {
+    private void updateTaskInUser(String userId, String oldTaskName, String newTaskName, String duration, String newTaskDate, String newTaskMode) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
 
         userRef.get()
@@ -372,9 +374,9 @@ public class TaskListActivity extends AppCompatActivity {
         for (int i = 0; i < tasksList.size(); i++) {
             String taskName = tasksList.get(i).get("taskName").toString();
             boolean taskMode = (boolean) tasksList.get(i).get("taskMode");
-            String taskDuration = (String) tasksList.get(i).get("taskDuration");
+            Long taskDuration = (Long) tasksList.get(i).get("taskDuration");
             int taskCoins = (int) tasksList.get(i).get("taskCoins");
-            Timestamp taskDate = (Timestamp) tasksList.get(i).get("taskDate");
+            String taskDate = (String) tasksList.get(i).get("taskDate");
             tasks.add(new Task(taskName, taskMode, taskDuration, taskCoins, taskDate));
         }
     }
