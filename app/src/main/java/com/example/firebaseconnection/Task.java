@@ -264,7 +264,7 @@ public class Task extends AppCompatActivity {
             // TODO delete button
             firebaseFirestore = FirebaseFirestore.getInstance();
             mAuth = FirebaseAuth.getInstance();
-            UID = mAuth.getCurrentUser().getUid();
+            UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
 
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
