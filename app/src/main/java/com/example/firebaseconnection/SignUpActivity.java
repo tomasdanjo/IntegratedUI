@@ -12,9 +12,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import android.provider.Contacts;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,8 +52,11 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseDatabase database;
     private FirebaseAuth mAuth;
     FirebaseFirestore firebaseFirestore;
+    ImageView checkbox;
     static String UID = null;
     static boolean isRegistered = false;
+    boolean agreedToPrivacyPolicy = false;
+    TextView txtPrivacyPolicy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +72,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        txtPrivacyPolicy = findViewById(R.id.txtPrivacyPolicy);
 
         btnSignUp = findViewById(R.id.btnSignUp);
+        checkbox = findViewById(R.id.checkbox);
         signUpName = findViewById(R.id.fieldInputName);
         signUpUsername = findViewById(R.id.fieldInputUsername);
         signUpEmail = findViewById(R.id.fieldInputEmail);
@@ -71,6 +83,10 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         btnSignUp.setOnClickListener(v -> {
+            if (!agreedToPrivacyPolicy) {
+                Toast.makeText(this, "Please agree to the privacy policy.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             String name,username,email,password;
             name = signUpName.getText().toString();
             username = signUpUsername.getText().toString();
@@ -79,7 +95,39 @@ public class SignUpActivity extends AppCompatActivity {
             registerAccount(name, username, email, password);
         });
 
+        checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                agreedToPrivacyPolicy = !agreedToPrivacyPolicy;
+                if (!agreedToPrivacyPolicy) {
+                    checkbox.setImageResource(R.drawable.button_white);
+                } else {
+                    checkbox.setImageResource(R.drawable.button_white_filled);
+                }
+            }
+        });
 
+        txtPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.popup_privacy_policy, null);
+
+                int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                PopupWindow privacyPolicyPopup = new PopupWindow(popupView, width, height, true);
+
+                privacyPolicyPopup.showAtLocation(findViewById(R.id.main), Gravity.CENTER_VERTICAL, 0, 0);
+
+                LinearLayout btnDone = popupView.findViewById(R.id.btnDone);
+                btnDone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        privacyPolicyPopup.dismiss();
+                    }
+                });
+            }
+        });
     }
 
     private void onCompleteRegistration(boolean isSuccessful, FirebaseUser user, String username, String email, String name) {

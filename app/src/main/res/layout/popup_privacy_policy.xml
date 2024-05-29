@@ -81,6 +81,7 @@
                 android:textSize="@dimen/font_size_regular" />
 
             <LinearLayout
+                android:id="@+id/btnDone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/spacing_small"
