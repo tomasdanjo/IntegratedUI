@@ -1,10 +1,10 @@
 package com.example.firebaseconnection;
 
+import com.google.firebase.Timestamp;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,11 +20,21 @@ public class Task extends AppCompatActivity {
     private String taskName;
 
     private boolean taskMode;
-    private int taskDuration;
+    private String taskDuration;
     private int taskCoins;
-    private Date taskDate;
+    private Timestamp taskDate;
 
-    public LinearLayout generateLayout(Context context) {
+
+    public Task(String taskName, boolean taskMode, String taskDuration, int taskCoins, Timestamp taskDate) {
+        this.taskName = taskName;
+        this.taskMode = taskMode;
+        this.taskDuration = taskDuration;
+        this.taskCoins = taskCoins;
+        this.taskDate = taskDate;
+    }
+
+    @SuppressLint("ResourceType")
+    public LinearLayout generate(Context context) {
         // Define dimensions and other resources
         int spacingSmall = context.getResources().getDimensionPixelSize(R.dimen.spacing_small);
         int spacingMedium = context.getResources().getDimensionPixelSize(R.dimen.spacing_medium);
@@ -51,6 +61,10 @@ public class Task extends AppCompatActivity {
         ));
         topInnerLayout.setOrientation(LinearLayout.HORIZONTAL);
         topInnerLayout.setGravity(Gravity.CENTER);
+        topInnerLayout.setClickable(true); // Make clickable
+        topInnerLayout.setOnClickListener(v -> {
+            // Handle click event
+        });
 
         TextView titleTextView = new TextView(context);
         titleTextView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -62,13 +76,16 @@ public class Task extends AppCompatActivity {
         titleTextView.setTextColor(Color.WHITE);
         titleTextView.setTextSize(fontSizeLarge);
         titleTextView.setTypeface(ResourcesCompat.getFont(context, R.font.nunito_extrabold));
+        titleTextView.setTextSize(fontSizeLarge);
 
         ImageView arrowImageView = new ImageView(context);
         arrowImageView.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        ImageViewCompat.setImageTintList(arrowImageView, ContextCompat.getColorStateList(context, R.drawable.icon_arrow_down_big));
+
+
+//        ImageViewCompat.setImageTintList(arrowImageView, ContextCompat.getColorStateList(context, R.drawable.icon_arrow_down_big));
 
         topInnerLayout.addView(titleTextView);
         topInnerLayout.addView(arrowImageView);
@@ -81,7 +98,7 @@ public class Task extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        dateTextView.setText((CharSequence) taskDate);
+        dateTextView.setText((taskDate.toString()));
         dateTextView.setTextColor(Color.WHITE);
         dateTextView.setTextSize(fontSizeRegular);
 
@@ -96,6 +113,10 @@ public class Task extends AppCompatActivity {
         middleLayout.setOrientation(LinearLayout.HORIZONTAL);
         middleLayout.setPadding(spacingSmall, spacingVerySmall, spacingSmall, spacingVerySmall);
         middleLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_white));
+        middleLayout.setClickable(true); // Make clickable
+        middleLayout.setOnClickListener(v -> {
+            // Handle click event
+        });
 
         // First inner middle LinearLayout
         LinearLayout durationLayout = new LinearLayout(context);
@@ -107,6 +128,10 @@ public class Task extends AppCompatActivity {
         durationLayout.setOrientation(LinearLayout.HORIZONTAL);
         durationLayout.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
         durationLayout.setPadding(0, 0, 0, borderWidth);
+        durationLayout.setClickable(true); // Make clickable
+        durationLayout.setOnClickListener(v -> {
+            // Handle click event
+        });
 
         ImageView durationImageView = new ImageView(context);
         durationImageView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -114,7 +139,7 @@ public class Task extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
         durationImageView.setPadding(0, 0, spacingVerySmall, 0);
-        ImageViewCompat.setImageTintList(durationImageView, ContextCompat.getColorStateList(context, R.drawable.icon_duration));
+//        ImageViewCompat.setImageTintList(durationImageView, ContextCompat.getColorStateList(context, R.drawable.icon_duration));
 
         TextView durationTextView = new TextView(context);
         durationTextView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -137,6 +162,10 @@ public class Task extends AppCompatActivity {
         modeLayout.setOrientation(LinearLayout.HORIZONTAL);
         modeLayout.setGravity(Gravity.CENTER);
         modeLayout.setPadding(0, 0, 0, borderWidth);
+        modeLayout.setClickable(true); // Make clickable
+        modeLayout.setOnClickListener(v -> {
+            // Handle click event
+        });
 
         ImageView modeImageView = new ImageView(context);
         modeImageView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -144,7 +173,7 @@ public class Task extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
         modeImageView.setPadding(0, 0, spacingVerySmall, 0);
-        ImageViewCompat.setImageTintList(modeImageView, ContextCompat.getColorStateList(context, R.drawable.icon_mode));
+//        ImageViewCompat.setImageTintList(modeImageView, ContextCompat.getColorStateList(context, R.drawable.icon_mode));
 
         TextView modeTextView = new TextView(context);
         modeTextView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -168,6 +197,10 @@ public class Task extends AppCompatActivity {
         coinLayout.setOrientation(LinearLayout.HORIZONTAL);
         coinLayout.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
         coinLayout.setPadding(0, 0, 0, borderWidth);
+        coinLayout.setClickable(true); // Make clickable
+        coinLayout.setOnClickListener(v -> {
+            // Handle click event
+        });
 
         ImageView coinImageView = new ImageView(context);
         coinImageView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -175,14 +208,14 @@ public class Task extends AppCompatActivity {
                 20
         ));
         coinImageView.setPadding(0, 0, spacingVerySmall, 0);
-        ImageViewCompat.setImageTintList(coinImageView, ContextCompat.getColorStateList(context, R.drawable.icon_coin));
+//        ImageViewCompat.setImageTintList(coinImageView, ContextCompat.getColorStateList(context, R.drawable.icon_coin));
 
         TextView coinTextView = new TextView(context);
         coinTextView.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        coinTextView.setText(taskCoins);
+        coinTextView.setText(String.valueOf(taskCoins));
         coinTextView.setTypeface(ResourcesCompat.getFont(context, R.font.nunito_bold));
 
         coinLayout.addView(coinImageView);
@@ -201,6 +234,10 @@ public class Task extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
         bottomLayout.setOrientation(LinearLayout.HORIZONTAL);
+        bottomLayout.setClickable(true); // Make clickable
+        bottomLayout.setOnClickListener(v -> {
+            // Handle click event
+        });
 
         // First button
         LinearLayout deleteButtonLayout = new LinearLayout(context);
@@ -211,6 +248,10 @@ public class Task extends AppCompatActivity {
         deleteButtonLayout.setOrientation(LinearLayout.HORIZONTAL);
         deleteButtonLayout.setPadding(spacingSmall, spacingVerySmall, spacingSmall, spacingVerySmall);
         deleteButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_red));
+        deleteButtonLayout.setClickable(true); // Make clickable
+        deleteButtonLayout.setOnClickListener(v -> {
+            // Handle click event
+        });
 
         ImageView deleteButtonImageView = new ImageView(context);
         deleteButtonImageView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -218,7 +259,7 @@ public class Task extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
         deleteButtonImageView.setPadding(0, 0, borderWidth, borderWidth);
-        ImageViewCompat.setImageTintList(deleteButtonImageView, ContextCompat.getColorStateList(context, R.drawable.icon_delete));
+//        ImageViewCompat.setImageTintList(deleteButtonImageView, ContextCompat.getColorStateList(context, R.drawable.icon_delete));
 
         deleteButtonLayout.addView(deleteButtonImageView);
 
@@ -230,7 +271,11 @@ public class Task extends AppCompatActivity {
         ));
         editButtonLayout.setOrientation(LinearLayout.HORIZONTAL);
         editButtonLayout.setPadding(spacingSmall, spacingVerySmall, spacingSmall, spacingVerySmall);
-        editButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_yellow));
+        editButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
+        editButtonLayout.setClickable(true); // Make clickable
+        editButtonLayout.setOnClickListener(v -> {
+            // Handle click event
+        });
 
         ImageView editButtonImageView = new ImageView(context);
         editButtonImageView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -238,40 +283,23 @@ public class Task extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
         editButtonImageView.setPadding(0, 0, borderWidth, borderWidth);
-        ImageViewCompat.setImageTintList(editButtonImageView, ContextCompat.getColorStateList(context, R.drawable.icon_edit));
+//        ImageViewCompat.setImageTintList(editButtonImageView, ContextCompat.getColorStateList(context, R.drawable.icon_edit));
 
         editButtonLayout.addView(editButtonImageView);
 
         // Third button
         LinearLayout startButtonLayout = new LinearLayout(context);
         startButtonLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
         ));
         startButtonLayout.setOrientation(LinearLayout.HORIZONTAL);
-        startButtonLayout.setGravity(Gravity.CENTER);
         startButtonLayout.setPadding(spacingSmall, spacingVerySmall, spacingSmall, spacingVerySmall);
         startButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_green));
-
-        TextView startButtonTextView = new TextView(context);
-        startButtonTextView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
-        startButtonTextView.setText("START TASK");
-        startButtonTextView.setTextColor(Color.WHITE);
-        startButtonTextView.setTypeface(ResourcesCompat.getFont(context, R.font.nunito_black));
-
-        ImageView startButtonImageView = new ImageView(context);
-        startButtonImageView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
-        ImageViewCompat.setImageTintList(startButtonImageView, ContextCompat.getColorStateList(context, R.drawable.icon_arrow_right_thick));
-
-        startButtonLayout.addView(startButtonTextView);
-        startButtonLayout.addView(startButtonImageView);
+        startButtonLayout.setClickable(true); // Make clickable
+        startButtonLayout.setOnClickListener(v -> {
+            // Handle click event
+        });
 
         bottomLayout.addView(deleteButtonLayout);
         bottomLayout.addView(editButtonLayout);
@@ -281,5 +309,4 @@ public class Task extends AppCompatActivity {
 
         return mainLayout;
     }
-
 }
