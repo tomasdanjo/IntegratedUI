@@ -1,6 +1,5 @@
 package com.example.firebaseconnection;
 
-import static com.example.firebaseconnection.ProfileActivity.userCoins;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -88,8 +87,7 @@ public class CatShopActivity extends AppCompatActivity {
         fetchUserCats();
 
 
-        TextView txtCoin = findViewById(R.id.txtCoinBalance);
-        txtCoin.setText(String.valueOf(userCoins));
+        getUserBalance(UID);
 
 //        ivCatImage = findViewById(R.id.ivCatImage);
 //
@@ -320,5 +318,37 @@ public class CatShopActivity extends AppCompatActivity {
         for (Cat cat : cats) {
             catsGrid.addView(cat.generate(catsGrid.getContext(), catShop));
         }
+    }
+
+    public void getUserBalance(String userID) {
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference userRef = firebaseFirestore.collection("users").document(userID);
+
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        //get the "coins" field from the document
+
+                        userCoins = documentSnapshot.getLong("coins");
+                        if (userCoins != null) {
+                            updateCoinText();
+                            Log.d("TAG", "User has " + userCoins + " coins.");
+                        } else {
+                            Log.d("TAG", "Coins field is not found in the document.");
+                        }
+                        //update
+
+
+
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
+    }
+
+    private void updateCoinText(){
+        TextView txtCoin =  findViewById(R.id.txtCoinBalance);
+        txtCoin.setText(String.valueOf(userCoins));
     }
 }
