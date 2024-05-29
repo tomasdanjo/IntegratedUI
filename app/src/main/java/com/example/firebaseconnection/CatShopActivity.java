@@ -45,7 +45,7 @@ public class CatShopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cat_shop);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.tasks), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -54,12 +54,11 @@ public class CatShopActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         UID = mAuth.getCurrentUser().getUid();
-        catShopList  = new ArrayList<>();
-        ivCatImage = findViewById(R.id.ivCatImage);
+        //catShopList  = new ArrayList<>();
+        //ivCatImage = findViewById(R.id.ivCatImage);
 
-        tvCatName = findViewById(R.id.tvCatName);
-        btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
-        btnRedirectToProfile = findViewById(R.id.btnRedirectToProfile);
+        //tvCatName = findViewById(R.id.tvCatName);
+        //btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
 
         btnPurchaseCat.setOnClickListener(v->{
             getUserCoins();
@@ -159,7 +158,6 @@ public class CatShopActivity extends AppCompatActivity {
 
     private void updateUIWithCats() {
         if (!catShopList.isEmpty()) {
-
             String catName = (String) catShopList.get(9).get("catName");
             String catImageUrl = (String) catShopList.get(9).get("catImageURL");
 
@@ -276,13 +274,13 @@ public class CatShopActivity extends AppCompatActivity {
         //index sa catShopList. if naa ang usersCatsList sacatShopList
         //then idisable ang button
 
-        Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
+        //Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
         btnPurchaseCat.setText("purchased");
         btnPurchaseCat.setEnabled(false);
     }
 
     private void updateUIDisableButton2() {
-        Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
+        //Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
         btnPurchaseCat.setText("purchased");
         btnPurchaseCat.setEnabled(false);
     }
