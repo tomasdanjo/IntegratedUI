@@ -11,10 +11,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -319,7 +321,16 @@ public class Task extends AppCompatActivity {
         editButtonLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.button_blue));
         editButtonLayout.setClickable(true); // Make clickable
         editButtonLayout.setOnClickListener(v -> {
+            firebaseFirestore = FirebaseFirestore.getInstance();
+            mAuth = FirebaseAuth.getInstance();
+//            UID = mAuth.getCurrentUser().getUid();
+            UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
             // TODO Edit naa diri
+
+
+
+
+
             LayoutInflater inflater = LayoutInflater.from(context);
             View popupView = inflater.inflate(R.layout.popup_edit_task, null);
 
@@ -328,6 +339,27 @@ public class Task extends AppCompatActivity {
             PopupWindow editTaskPopup = new PopupWindow(popupView, width, height, true);
 
             editTaskPopup.showAtLocation(parentView, Gravity.CENTER_VERTICAL, 0, 0);
+
+            EditText etTaskTitle, etTaskDate,etTaskDuration;
+            ToggleButton tbTaskMode = findViewById(R.id.toggleButtonTaskMode);
+            etTaskTitle = findViewById(R.id.editTextTaskTitle);
+            etTaskDate = findViewById(R.id.editTextDate);
+            etTaskDuration = findViewById(R.id.editTextTime);
+
+            etTaskTitle.setText(taskName);
+            etTaskDate.setText(taskDate);
+            etTaskDuration.setText(String.valueOf(taskDuration));
+            tbTaskMode.setChecked(taskMode);
+
+            String newTaskName = etTaskTitle.getText().toString();
+            String newTaskDate = etTaskDate.getText().toString();
+            boolean newTaskMode = tbTaskMode.isChecked();
+
+            TaskListActivity.updateTaskInUser(UID, taskName, newTaskName,newTaskName, newTaskDate,newTaskMode);
+
+            editTaskPopup.dismiss();
+
+
         });
 
         ImageView editButtonImageView = new ImageView(context);
