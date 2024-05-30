@@ -21,6 +21,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -36,34 +38,30 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class TaskListActivity extends AppCompatActivity {
+public class TasksActivity extends AppCompatActivity {
+    private static TasksActivity instance;
     private FirebaseAuth mAuth;
     private static FirebaseFirestore firebaseFirestore;
-    private TextView TaskName, TaskDate, TaskMode, TaskCoins;
-    private LinearLayout btnAdd, btnEdit, btnDelete;
+    private LinearLayout btnAdd;
     private Map<String, Object> user;
     private String UID;
 
     private static List<Map<String, Object>> tasksList;
 
     private static ArrayList<Task> tasks;
-
+    static RecyclerView tasksRecyclerView;
     public static ConstraintLayout tasksConstraintLayout;
 
-    public static LinearLayout tasksLinearLayout;
+    static TextView txtCoin;
 
-    static  TextView txtCoin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        //methods:
-        //create task (addTaskToUser), read task (fetchTasks),
-        //update task (updateTaskInUser), delete task (deleteTaskFromUser)
         tasks = new ArrayList<>();
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_task_list);
+        setContentView(R.layout.activity_5_tasks);
+        instance = this;
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.tasks), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -74,24 +72,20 @@ public class TaskListActivity extends AppCompatActivity {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(TaskListActivity.this, Menu.class);
+                Intent i = new Intent(TasksActivity.this, MenuActivity.class);
                 startActivity(i);
             }
         });
-
-        tasksConstraintLayout = findViewById(R.id.tasks);
-
-        btnAdd = findViewById(R.id.btnAddTask);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
-
-        tasksLinearLayout = findViewById(R.id.tasksLinearLayout);
-        generateTasks();
-
+        tasksConstraintLayout = findViewById(R.id.tasks);
+        tasksRecyclerView = findViewById(R.id.tasksRecyclerView);
         tasksList = new ArrayList<>();
+
+        btnAdd = findViewById(R.id.btnAddTask);
 
         btnAdd.setOnClickListener(v -> {
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -137,97 +131,19 @@ public class TaskListActivity extends AppCompatActivity {
                     createTaskPopup.dismiss();
                 }
             });
-
-
-
-
         });
-
-//        btnEdit.setOnClickListener(v->{
-//            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//            View popupView = inflater.inflate(R.layout.popup_edit_task, null);
-//
-//            int width = ViewGroup.LayoutParams.MATCH_PARENT;
-//            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-//            PopupWindow editTaskPopUp = new PopupWindow(popupView, width, height, true);
-//
-//            editTaskPopUp.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
-//
-//
-//            EditText etTaskTitle, etTaskDate,etTaskDuration;
-//            ToggleButton tbTaskMode = findViewById(R.id.toggleButtonTaskMode);
-//            etTaskTitle = findViewById(R.id.editTextTaskTitle);
-//
-//            etTaskDate = findViewById(R.id.editTextDate);
-//            etTaskDuration = findViewById(R.id.editTextTime);
-//
-//
-//
-//            LinearLayout btnSave = findViewById(R.id.btnEditSave);
-//            btnSave.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//                    Date date = null;
-//                    try {
-//                        date = dateFormat.parse(etTaskDate.getText().toString());
-//                    } catch (ParseException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//
-//                    // Create a Timestamp object from the parsed Date object
-//                    Timestamp newTaskDate = new Timestamp(Instant.ofEpochSecond(date.getTime()));
-//
-//
-//                    String oldTaskName = "Scooby Doo PAPA";
-//
-//                    String newTaskName = etTaskTitle.getText().toString();
-//                    String taskDuration = etTaskDuration.getText().toString();
-//                    String newTaskMode = tbTaskMode.isChecked()?"Focus":"Chill";
-//                    updateTaskInUser(UID, oldTaskName, newTaskName, taskDuration,newTaskDate, newTaskMode);
-//
-//                }
-//            });
-//        });
-//
-//        btnDelete.setOnClickListener(v->{
-//            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//            View popupView = inflater.inflate(R.layout.popup_delete_task, null);
-//
-//            int width = ViewGroup.LayoutParams.MATCH_PARENT;
-//            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-//            PopupWindow deleteTaskPopUp = new PopupWindow(popupView, width, height, true);
-//
-//            deleteTaskPopUp.showAtLocation(findViewById(R.id.tasks), Gravity.CENTER_VERTICAL, 0, 0);
-//
-//            LinearLayout btnYes, btnNo;
-//            btnYes = findViewById(R.id.btnDeleteYes);
-//            btnNo = findViewById(R.id.btnDeleteNo);
-//
-//            btnYes.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    String taskNameToDelete = "Updated Task Name";
-//                    deleteTaskFromUser(UID, taskNameToDelete);
-//                }
-//            });
-//
-//            btnNo.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    deleteTaskPopUp.dismiss();
-//                }
-//            });
-//
-//
-//        });
-
         fetchTasks(UID);
-
         getUserBalance(UID);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 
-
+    public static TasksActivity getInstance() {
+        return instance;
     }
 
     private void addTaskToUser(String userId, String taskName, Long duration, String taskDate, boolean taskMode) {
@@ -250,6 +166,35 @@ public class TaskListActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Log.e("TAG", "Error adding task", e);
                 });
+    }
+
+    public static void deleteTaskFromUser(String userId, String taskNameToDelete) {
+        DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<Map<String, Object>> tasks = (List<Map<String, Object>>) documentSnapshot.get("tasks");
+                        if (tasks != null) {
+                            for (Iterator<Map<String, Object>> iterator = tasks.iterator(); iterator.hasNext();) {
+                                Map<String, Object> task = iterator.next();
+                                String taskName = (String) task.get("taskName");
+                                if (taskName.equals(taskNameToDelete)) {
+                                    iterator.remove();
+                                    break;
+                                }
+                            }
+                            userRef.update("tasks", tasks)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("TAG", "Task deleted successfully");
+                                        fetchTasks(userId);
+                                    })
+                                    .addOnFailureListener(e -> Log.e("TAG", "Error deleting task", e));
+                        }
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("TAG", "Error fetching tasks", e));
     }
 
     public static void fetchTasks(String userId) {
@@ -326,11 +271,10 @@ public class TaskListActivity extends AppCompatActivity {
                                     break;
                                 }
                             }
-                            //update the user document with the modified tasks list
                             userRef.update("tasks", tasks)
                                     .addOnSuccessListener(aVoid -> {
                                         Log.d("TAG", "Task updated successfully");
-                                        fetchTasks(userId); // Re-fetch tasks to update local list and UI
+                                        fetchTasks(userId);
                                     })
                                     .addOnFailureListener(e -> Log.e("TAG", "Error updating task", e));
                         }
@@ -343,70 +287,27 @@ public class TaskListActivity extends AppCompatActivity {
 
 
     private static void updateUIWithTasks() {
-//        if (!tasksList.isEmpty()) {
-//            TaskName.setText(Objects.requireNonNull(tasksList.get().get("taskName")).toString());
-//            Log.i("TAG", "SUCCESS");
-//        } else {
-//            Log.i("TAG", "EMPTY LIST");
-//            TaskName.setText("wa uie");
-//        }
-//        Log.i("TAG", Integer.toString(tasksList.size()));
-
         getTasks();
         generateTasks();
-    }
-
-    public static void deleteTaskFromUser(String userId, String taskNameToDelete) {
-
-        DocumentReference userRef = firebaseFirestore.collection("users").document(userId);
-
-        userRef.get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        List<Map<String, Object>> tasks = (List<Map<String, Object>>) documentSnapshot.get("tasks");
-                        if (tasks != null) {
-                            // Find the task to delete
-                            for (Iterator<Map<String, Object>> iterator = tasks.iterator(); iterator.hasNext();) {
-                                Map<String, Object> task = iterator.next();
-                                String taskName = (String) task.get("taskName");
-                                if (taskName.equals(taskNameToDelete)) {
-                                    //remove the task from the list
-                                    iterator.remove();
-                                    break;
-                                }
-                            }
-                            userRef.update("tasks", tasks)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Log.d("TAG", "Task deleted successfully");
-                                        fetchTasks(userId); // Re-fetch tasks to update local list and UI
-                                    })
-                                    .addOnFailureListener(e -> Log.e("TAG", "Error deleting task", e));
-                        }
-                    } else {
-                        Log.d("TAG", "User document does not exist");
-                    }
-                })
-                .addOnFailureListener(e -> Log.e("TAG", "Error fetching tasks", e));
     }
 
     public static void getTasks() {
         tasks.clear();
         for (int i = 0; i < tasksList.size(); i++) {
             String taskName = tasksList.get(i).get("taskName").toString();
-            boolean taskMode = (boolean) tasksList.get(i).get("taskMode");
-            Long taskDuration = (Long) tasksList.get(i).get("taskDuration");
-            int taskCoins = (int) tasksList.get(i).get("taskCoins");
             String taskDate = (String) tasksList.get(i).get("taskDate");
-            tasks.add(new Task(taskName, taskMode, taskDuration, taskCoins, taskDate));
+            Long taskDuration = (Long) tasksList.get(i).get("taskDuration");
+            boolean taskMode = (boolean) tasksList.get(i).get("taskMode");
+            int taskCoins = (int) tasksList.get(i).get("taskCoins");
+            tasks.add(new Task(taskName, taskDate, taskDuration, (taskMode) ? "Focus" : "Chill", taskCoins));
         }
     }
 
     public static void generateTasks() {
-        tasksLinearLayout.removeAllViews();
-
-        for (Task task : tasks) {
-            tasksLinearLayout.addView(task.generate(tasksLinearLayout.getContext(), tasksConstraintLayout));
-        }
+        getTasks();
+        RecyclerViewAdapterTask adapterTask = new RecyclerViewAdapterTask(getInstance(), tasks);
+        tasksRecyclerView.setAdapter(adapterTask);
+        tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getInstance()));
     }
 
     public void getUserBalance(String userID) {
@@ -416,8 +317,6 @@ public class TaskListActivity extends AppCompatActivity {
         userRef.get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        //get the "coins" field from the document
-
                         userCoins = documentSnapshot.getLong("coins");
                         if (userCoins != null) {
                             updateCoinText();
@@ -425,10 +324,6 @@ public class TaskListActivity extends AppCompatActivity {
                         } else {
                             Log.d("TAG", "Coins field is not found in the document.");
                         }
-                        //update
-
-
-
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }

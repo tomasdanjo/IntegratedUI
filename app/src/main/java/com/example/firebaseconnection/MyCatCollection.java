@@ -24,7 +24,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class MyCatCollection extends AppCompatActivity {
@@ -44,7 +43,7 @@ public class MyCatCollection extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_my_cat_collection);
+        setContentView(R.layout.activity_8_my_collection);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -55,7 +54,7 @@ public class MyCatCollection extends AppCompatActivity {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MyCatCollection.this, Menu.class);
+                Intent i = new Intent(MyCatCollection.this, MenuActivity.class);
                 startActivity(i);
             }
         });
@@ -73,7 +72,7 @@ public class MyCatCollection extends AppCompatActivity {
         main = findViewById(R.id.main);
         catsGrid = findViewById(R.id.catsGrid);
 
-        for (Map<String, Object> map : CatShopActivity.userCatsList) {
+        for (Map<String, Object> map : PawShopActivity.userCatsList) {
             String catImageURL = (String) map.get("catImageURL");
             String catName = (String) map.get("catName");
             cats.add(new Cat(catImageURL, catName, null, null));

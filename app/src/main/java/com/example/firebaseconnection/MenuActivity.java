@@ -1,13 +1,9 @@
 package com.example.firebaseconnection;
 
-import static com.example.firebaseconnection.CatShopActivity.firebaseFirestore;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,9 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.firebase.firestore.DocumentReference;
-
-public class Menu extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity {
 
 //    public static long coinBalance;
 
@@ -26,7 +20,7 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.activity_4_menu);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -37,7 +31,7 @@ public class Menu extends AppCompatActivity {
         btnTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Menu.this,TaskListActivity.class);
+                Intent i = new Intent(MenuActivity.this, TasksActivity.class);
                 startActivity(i);
             }
         });
@@ -46,7 +40,7 @@ public class Menu extends AppCompatActivity {
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Menu.this, ProfileActivity.class);
+                Intent i = new Intent(MenuActivity.this, ProfileActivity.class);
                 startActivity(i);
             }
         });
@@ -56,7 +50,7 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                TODO add intent to cat collection
-                Intent i = new Intent(Menu.this,MyCatCollection.class);
+                Intent i = new Intent(MenuActivity.this,MyCatCollection.class);
                 startActivity(i);
 
 
@@ -67,7 +61,7 @@ public class Menu extends AppCompatActivity {
         btnShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Menu.this,CatShopActivity.class);
+                Intent i = new Intent(MenuActivity.this, PawShopActivity.class);
                 startActivity(i);
             }
         });
@@ -76,7 +70,7 @@ public class Menu extends AppCompatActivity {
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Menu.this, SettingsActivity.class);
+                Intent i = new Intent(MenuActivity.this, SettingsActivity.class);
                 startActivity(i);
             }
         });

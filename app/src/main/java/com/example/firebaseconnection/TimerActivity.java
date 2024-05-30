@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class Timer extends AppCompatActivity {
+public class TimerActivity extends AppCompatActivity {
 
     private TextView timerTextView;
     LinearLayout btnPurrsueLater;
@@ -46,7 +45,7 @@ public class Timer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_timer);
+        setContentView(R.layout.activity_6_timer);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.timer), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

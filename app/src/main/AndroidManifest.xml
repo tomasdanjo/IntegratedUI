@@ -18,7 +18,7 @@
             android:name=".MyCatCollection"
             android:exported="false" />
         <activity
-            android:name=".Splash"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,10 +27,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Menu"
+            android:name=".MenuActivity"
             android:exported="false" />
         <activity
-            android:name=".Timer"
+            android:name=".TimerActivity"
             android:exported="false">
         </activity>
         <activity
@@ -38,15 +38,15 @@
             android:exported="false">
         </activity>
         <activity
-            android:name=".CatShopActivity"
+            android:name=".PawShopActivity"
             android:exported="false">
         </activity>
         <activity
-            android:name=".TaskListActivity"
+            android:name=".TasksActivity"
             android:exported="false">
         </activity>
         <activity
-            android:name=".LogInActivity"
+            android:name=".SignInActivity"
             android:exported="false">
         </activity>
         <activity

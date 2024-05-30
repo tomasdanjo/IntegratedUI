@@ -3,7 +3,6 @@ package com.example.firebaseconnection;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -187,7 +186,7 @@ public class Cat {
         purchaseText.setPadding(0, 0, context.getResources().getDimensionPixelSize(R.dimen.border_width), context.getResources().getDimensionPixelSize(R.dimen.border_width));
         purchaseButtonLayout.addView(purchaseText);
 
-        if (contains(CatShopActivity.userCatsList, catName)) {
+        if (contains(PawShopActivity.userCatsList, catName)) {
             purchaseText.setText("Purchased");
             purchaseButtonLayout.setEnabled(false);
         } else {
@@ -216,7 +215,7 @@ public class Cat {
                     purchasePawButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            CatShopActivity.getUserCoins(catName);
+                            PawShopActivity.getUserCoins(catName);
                             purchasePawPopUp.dismiss();
                         }
                     });
