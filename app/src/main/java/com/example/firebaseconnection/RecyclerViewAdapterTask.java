@@ -149,6 +149,10 @@ public class RecyclerViewAdapterTask extends RecyclerView.Adapter<RecyclerViewAd
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(btnStart.getContext(), TimerActivity.class);
+                    String taskModeIntent = mode.getText().toString();
+
+                    intent.putExtra("taskModeIntent", taskModeIntent);
+                    intent.putExtra("taskDurationIntent", duration.getText().toString());
                     btnStart.getContext().startActivity(intent);
                 }
             });

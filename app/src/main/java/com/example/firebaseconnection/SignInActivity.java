@@ -20,7 +20,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LogInActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
     EditText loginUsername, loginPassword;
     LinearLayout btnLogin;
     TextView signUpRedirection;
@@ -30,7 +30,7 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_3_sign_in);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -66,11 +66,11 @@ public class LogInActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         System.out.println("Log-in Successful!");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(LogInActivity.this, "Log-in successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LogInActivity.this, Menu.class);
+                        Toast.makeText(SignInActivity.this, "Log-in successful", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignInActivity.this, MenuActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(LogInActivity.this, "Log-in failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInActivity.this, "Log-in failed", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

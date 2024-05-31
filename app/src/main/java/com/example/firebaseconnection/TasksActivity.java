@@ -45,13 +45,12 @@ public class TasksActivity extends AppCompatActivity {
     private LinearLayout btnAdd;
     private Map<String, Object> user;
     private String UID;
-
+    private TextView tvModeDisplay, txtTimer;
     private static List<Map<String, Object>> tasksList;
 
     private static ArrayList<Task> tasks;
     static RecyclerView tasksRecyclerView;
     public static ConstraintLayout tasksConstraintLayout;
-
     static TextView txtCoin;
 
     @Override
@@ -154,6 +153,8 @@ public class TasksActivity extends AppCompatActivity {
         newTask.put("taskMode", taskMode);
         newTask.put("taskDuration",duration);
         int coins = Integer.parseInt(String.valueOf(duration))/2;
+
+        if(coins == 0) coins = 1;
         newTask.put("taskCoins", coins);
         newTask.put("taskIsDone",false);
 

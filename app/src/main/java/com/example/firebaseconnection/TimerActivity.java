@@ -30,10 +30,9 @@ import java.util.Random;
 
 public class TimerActivity extends AppCompatActivity {
 
-    private TextView timerTextView;
+    private TextView timerTextView, tvModeDisplay;
     LinearLayout btnPurrsueLater;
     private CountDownTimer countDownTimer;
-
     private Long timeLeftInMillis, userCoins, newCoins;
     private boolean isTimerRunning;
     FirebaseFirestore firebaseFirestore;
@@ -54,10 +53,17 @@ public class TimerActivity extends AppCompatActivity {
 
         timerTextView = findViewById(R.id.txtTimer);
         btnPurrsueLater = findViewById(R.id.btnPurrsueLater);
+        tvModeDisplay = findViewById(R.id.tvModeDisplay);
         firebaseFirestore = FirebaseFirestore.getInstance();
         UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
         userCatsList = new ArrayList<>();
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            tvModeDisplay.setText("You are in " + extras.getString("taskModeIntent") + " mode.");
+            timerTextView.setText(extras.getString("taskDurationIntent"));
+        }
 
         btnPurrsueLater.setOnClickListener(v ->{
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -78,6 +84,7 @@ public class TimerActivity extends AppCompatActivity {
                 isTimerRunning = false;
                 timerTextView.setText("00:00");
                 onTimerFinish();
+                btnPurrsueLater.setEnabled(false);
                 fetchUserCats();
                 //cat punishment
                 //intent
@@ -89,7 +96,9 @@ public class TimerActivity extends AppCompatActivity {
             });
         });
 
-        int time = 1;
+
+
+        int time = Integer.parseInt(timerTextView.getText().toString());
 
         newCoins = (long) ((time == 1) ? 1: time/2);
 
@@ -113,6 +122,7 @@ public class TimerActivity extends AppCompatActivity {
                 timerTextView.setText("00:00");
                 getUserCoins();
                 onTimerFinish();
+
             }
         }.start();
         isTimerRunning = true;
