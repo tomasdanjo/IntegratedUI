@@ -209,7 +209,7 @@ public class Cat {
                     purchasePawButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            PawShopActivity.getUserCoins(catName);
+//                            PawShopActivity.getUserCoins(catName);
                             purchasePawPopUp.dismiss();
                         }
                     });

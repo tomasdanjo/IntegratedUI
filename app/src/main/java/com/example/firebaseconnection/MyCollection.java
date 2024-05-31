@@ -12,11 +12,9 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.gridlayout.widget.GridLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,19 +23,19 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MyCollection extends AppCompatActivity {
     private static MyCollection instance;
     TextView txtCoin;
     Long userCoins;
-
     static FirebaseFirestore firebaseFirestore;
-
-    ArrayList<Paw> paws;
-
-    GridLayout catsGrid;
-    RecyclerView pawsRecyclerView;
+    static ArrayList<Paw> paws;
+    static RecyclerView pawsRecyclerView;
     FirebaseAuth mAuth;
+    static List<Map<String, Object>> userCatsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,24 +63,11 @@ public class MyCollection extends AppCompatActivity {
 //        UID = mAuth.getCurrentUser().getUid();
         UID ="YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
-
-
-        getUserBalance(UID);
-
+        userCatsList = new ArrayList<>();
         paws = new ArrayList<>();
+        getUserBalance(UID);
+        fetchUserCats();
         pawsRecyclerView = findViewById(R.id.pawsRecyclerView);
-//        catsGrid = findViewById(R.id.catsGrid);
-//
-//        for (Map<String, Object> map : PawShopActivity.userCatsList) {
-//            String catImageURL = (String) map.get("catImageURL");
-//            String catName = (String) map.get("catName");
-//            paws.add(new Cat(catImageURL, catName, null, null));
-//        }
-//
-//        for (Cat cat : paws) {
-//            catsGrid.addView(cat.generateWithoutButtons(catsGrid.getContext(), main));
-//        }
-
         generatePaws();
     }
 
@@ -94,6 +79,43 @@ public class MyCollection extends AppCompatActivity {
 
     public static MyCollection getInstance() {
         return instance;
+    }
+
+    public static void fetchUserCats(){
+//        UID = mAuth.getCurrentUser().getUid();
+        DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
+        userRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<Map<String, Object>> cats = (List<Map<String, Object>>) documentSnapshot.get("cats");
+                        if (cats != null) {
+                            userCatsList.clear();
+                            for (Map<String, Object> cat : cats) {
+                                String catImageURL = (String) cat.get("catImageURL");
+                                String catName = (String) cat.get("catName");
+
+                                Map<String, Object> taskMap = new HashMap<>();
+                                taskMap.put("catImageURL", catImageURL);
+                                taskMap.put("catName", catName);
+
+                                userCatsList.add(taskMap);
+                                paws.add(new Paw(catName, catImageURL, null, null));
+
+                                Log.i("TAG", "Size " + userCatsList.size());
+                                Log.d("TAG", "catImageURL: " + catImageURL);
+                                Log.d("TAG", "catName: " + catName);
+                            }
+                            generatePaws();
+                        } else {
+                            Log.d("TAG", "No tasks found");
+                        }
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("TAG", "Error fetching tasks", e);
+                });
     }
 
     public void getUserBalance(String userID) {
@@ -123,15 +145,17 @@ public class MyCollection extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
     }
 
-    public void getPaws() {
+    public static void getPaws() {
         paws.clear();
-        for (int i = 0; i < PawShopActivity.userCatsList.size(); i++) {
-
+        for (Map<String, Object> map : userCatsList) {
+            String catImageURL = (String) map.get("catImageURL");
+            String catName = (String) map.get("catName");
+            paws.add(new Paw(catName, catImageURL, null, null));
         }
     }
 
-    public void generatePaws() {
-        getPaws();
+    public static void generatePaws() {
+        Log.d("Lookie here Lookie here", String.valueOf(paws.size()));
         RecyclerViewAdapterPaw adapterTask = new RecyclerViewAdapterPaw(getInstance(), paws);
         pawsRecyclerView.setAdapter(adapterTask);
         pawsRecyclerView.setLayoutManager(new LinearLayoutManager(getInstance()));

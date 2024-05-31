@@ -40,8 +40,8 @@ public class PawShopActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static Long userCoins;
     private static Long newUserCoins;
-    public ArrayList<Paw> paws;
-    RecyclerView pawsRecyclerView;
+    public static ArrayList<Paw> paws;
+    static RecyclerView pawsRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +107,7 @@ public class PawShopActivity extends AppCompatActivity {
         return instance;
     }
 
-    private void fetchCats(String documentId) {
+    private static void fetchCats(String documentId) {
         //reference to the cat document
         DocumentReference catRef = firebaseFirestore.collection("cats").document(documentId);
 
@@ -134,7 +134,7 @@ public class PawShopActivity extends AppCompatActivity {
                                 catMap.put("catRarity", catRarity);
 
                                 // Add the cat map to the catShopList
-
+                                paws.add(new Paw(catName, catImageUrl, catPrice, catRarity));
                                 Log.d("TAG", "Cat Name: " + catName);
                                 Log.d("TAG", "Cat Image URL: " + catImageUrl);
                                 Log.d("TAG", "Cat Price: " + catPrice);
@@ -198,7 +198,7 @@ public class PawShopActivity extends AppCompatActivity {
         Log.i("TAG", "Total cats: " + catShopList.size());
     }
 
-    public static void getUserCoins(String catName) {
+    public static void getUserCoins(String catName, Long price) {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         userRef.get()
@@ -211,7 +211,7 @@ public class PawShopActivity extends AppCompatActivity {
                         } else {
                             Log.d("TAG", "Coins field is not found in the document.");
                         }
-                        checkCoinBalance(catName, userCoins, (Long) catShopList.get(0).get("catPrice"));
+                        checkCoinBalance(catName, userCoins, price);
                     } else {
                         Log.d("TAG", "User document does not exist");
                     }
@@ -279,21 +279,9 @@ public class PawShopActivity extends AppCompatActivity {
             });
     }
 
-    public void getPaws() {
-        paws.clear();
-        for (int i = 0; i < catShopList.size(); i++) {
-            String catName = (String) catShopList.get(i).get("catName");
-            String catImageURL = (String) catShopList.get(i).get("catImageURL");
-            Long catPrice = (Long) catShopList.get(i).get("catPrice");
-            Long catRarity = (Long) catShopList.get(i).get("catRarity");
-            paws.add(new Paw(catName, catImageURL, catPrice, catRarity));
-        }
-    }
-
-    public void generatePaws() {
-        getPaws();
-        RecyclerViewAdapterPaw adapterTask = new RecyclerViewAdapterPaw(getInstance(), paws);
-        pawsRecyclerView.setAdapter(adapterTask);
+    public static void generatePaws() {
+        RecyclerViewAdapterPaw adapterPaw = new RecyclerViewAdapterPaw(getInstance(), paws);
+        pawsRecyclerView.setAdapter(adapterPaw);
         pawsRecyclerView.setLayoutManager(new LinearLayoutManager(getInstance()));
     }
 
