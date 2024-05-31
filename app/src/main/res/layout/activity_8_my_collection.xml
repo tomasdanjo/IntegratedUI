@@ -86,6 +86,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/btnPawShop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_green"
@@ -119,32 +120,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_blue"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_small">
-
-                <TextView
-                    android:id="@+id/textView28"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nunito_bold"
-                    android:text="See Owned"
-                    android:textColor="@color/white" />
-
-                <ImageView
-                    android:id="@+id/imageView16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_small"
-                    android:layout_marginRight="@dimen/border_width"
-                    android:layout_weight="1"
-                    android:src="@drawable/icon_arrow_right_thin" />
-            </LinearLayout>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

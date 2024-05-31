@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,14 +32,12 @@ public class PawShopActivity extends AppCompatActivity {
     static List<Map<String, Object>> userCatsList;
     private final String documentId = "xv6JGkDrmpJMylgUIeEz";
     private static String UID;
-    private TextView tvCatName;
-    private Button btnPurchaseCat, btnRedirectToProfile;
-    private ImageView ivCatImage;
     private FirebaseAuth mAuth;
     private static Long userCoins;
     private static Long newUserCoins;
     public static ArrayList<Paw> paws;
     static RecyclerView pawsRecyclerView;
+    LinearLayout btnMyCollection;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +52,16 @@ public class PawShopActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
+
+        btnMyCollection = findViewById(R.id.btnMyCollection);
+
+        btnMyCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(PawShopActivity.this, MyCollection.class);
+                startActivity(i);
+            }
+        });
 
         paws = new ArrayList<>();
         pawsRecyclerView = findViewById(R.id.pawsRecyclerView);
@@ -76,25 +77,7 @@ public class PawShopActivity extends AppCompatActivity {
         UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
 
         fetchUserCats();
-
-
         getUserBalance(UID);
-
-//        ivCatImage = findViewById(R.id.ivCatImage);
-//
-//        tvCatName = findViewById(R.id.tvCatName);
-//        btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
-//        btnRedirectToProfile = findViewById(R.id.btnRedirectToProfile);
-//
-//        btnPurchaseCat.setOnClickListener(v->{
-//            getUserCoins();
-//        });
-//
-//        btnRedirectToProfile.setOnClickListener(v->{
-//            Intent intent = new Intent(CatShopActivity.this, ProfileActivity.class);
-//            startActivity(intent);
-//        });
-
     }
 
     @Override
@@ -193,7 +176,6 @@ public class PawShopActivity extends AppCompatActivity {
             generatePaws();
         } else {
             Log.i("TAG", "EMPTY LIST");
-            tvCatName.setText("No cats available");
         }
         Log.i("TAG", "Total cats: " + catShopList.size());
     }
@@ -282,7 +264,7 @@ public class PawShopActivity extends AppCompatActivity {
     public static void generatePaws() {
         RecyclerViewAdapterPaw adapterPaw = new RecyclerViewAdapterPaw(getInstance(), paws);
         pawsRecyclerView.setAdapter(adapterPaw);
-        pawsRecyclerView.setLayoutManager(new LinearLayoutManager(getInstance()));
+        pawsRecyclerView.setLayoutManager(new GridLayoutManager(getInstance(), 2));
     }
 
     public void getUserBalance(String userID) {

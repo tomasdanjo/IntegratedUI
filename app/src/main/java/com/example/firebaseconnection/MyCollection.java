@@ -36,6 +36,7 @@ public class MyCollection extends AppCompatActivity {
     static RecyclerView pawsRecyclerView;
     FirebaseAuth mAuth;
     static List<Map<String, Object>> userCatsList;
+    LinearLayout btnPawShop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,14 @@ public class MyCollection extends AppCompatActivity {
         });
 
         LinearLayout btnMenu = findViewById(R.id.btnMenu);
+        btnPawShop = findViewById(R.id.btnPawShop);
+        btnPawShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MyCollection.this, PawShopActivity.class);
+                startActivity(i);
+            }
+        });
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
