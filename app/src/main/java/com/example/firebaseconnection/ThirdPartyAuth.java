@@ -30,6 +30,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ThirdPartyAuth extends AppCompatActivity{
     FirebaseAuth auth;
@@ -83,4 +88,5 @@ public class ThirdPartyAuth extends AppCompatActivity{
     public String getGoogleMail() {
         return googleMail;
     }
+
 }

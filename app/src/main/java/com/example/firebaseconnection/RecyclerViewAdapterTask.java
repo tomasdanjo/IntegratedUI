@@ -20,7 +20,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 public class RecyclerViewAdapterTask extends RecyclerView.Adapter<RecyclerViewAdapterTask.MyViewHolder> {
-    FirebaseFirestore firebaseFirestore;
     Context context;
     ArrayList<Task> tasks;
 
@@ -44,89 +43,6 @@ public class RecyclerViewAdapterTask extends RecyclerView.Adapter<RecyclerViewAd
         holder.duration.setText(String.valueOf(tasks.get(position).duration));
         holder.mode.setText(tasks.get(position).mode);
         holder.reward.setText(String.valueOf(tasks.get(position).reward));
-
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LayoutInflater inflater = LayoutInflater.from(holder.btnDelete.getContext());
-                View popupView = inflater.inflate(R.layout.popup_delete_task, null);
-
-                int width = ViewGroup.LayoutParams.MATCH_PARENT;
-                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                PopupWindow deleteTaskPopUp = new PopupWindow(popupView, width, height, true);
-
-                deleteTaskPopUp.showAtLocation(holder.btnDelete.getRootView(), Gravity.CENTER_VERTICAL, 0, 0);
-
-                LinearLayout btnYes = popupView.findViewById(R.id.btnDeleteYes);
-                LinearLayout btnNo = popupView.findViewById(R.id.btnDeleteNo);
-                TextView txtDeleteTask = popupView.findViewById(R.id.txtDeleteTask);
-
-                txtDeleteTask.setText("Delete " + holder.name.getText().toString() + "?");
-
-                btnNo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteTaskPopUp.dismiss();
-                    }
-                });
-                btnYes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        TasksActivity.deleteTaskFromUser("YkbW5nnkv1aLDXUvEYxZDMB1oj03", holder.name.getText().toString());
-                        deleteTaskPopUp.dismiss();
-                    }
-                });
-            }
-        });
-
-        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LayoutInflater inflater = LayoutInflater.from(holder.btnEdit.getContext());
-                View popupView = inflater.inflate(R.layout.popup_edit_task, null);
-
-                int width = ViewGroup.LayoutParams.MATCH_PARENT;
-                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                PopupWindow editTaskPopup = new PopupWindow(popupView, width, height, true);
-
-                editTaskPopup.showAtLocation(holder.btnEdit.getRootView(), Gravity.CENTER_VERTICAL, 0, 0);
-
-                EditText etTaskTitle, etTaskDate,etTaskDuration;
-                ToggleButton tbTaskMode = popupView.findViewById(R.id.toggleButtonTaskMode);
-                etTaskTitle = popupView.findViewById(R.id.editTextTaskTitle);
-                etTaskDate = popupView.findViewById(R.id.editTextDate);
-                etTaskDuration = popupView.findViewById(R.id.editTextTime);
-
-                etTaskTitle.setText(holder.name.getText().toString());
-                etTaskDate.setText(holder.date.getText().toString());
-                etTaskDuration.setText(holder.duration.getText().toString());
-                tbTaskMode.setChecked(holder.mode.getText().toString().equals("Focus"));
-
-                LinearLayout btnEditSave = popupView.findViewById(R.id.btnEditSave);
-                btnEditSave.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        firebaseFirestore = FirebaseFirestore.getInstance();
-                        String UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
-                        String newTaskName = etTaskTitle.getText().toString();
-                        String newTaskDate = etTaskDate.getText().toString();
-                        Long newDuration = Long.parseLong(etTaskDuration.getText().toString());
-                        boolean newTaskMode = tbTaskMode.isChecked();
-                        TasksActivity.updateTaskInUser(UID, holder.name.getText().toString(), newTaskName, newDuration, newTaskDate,newTaskMode);
-                        editTaskPopup.dismiss();
-                        TasksActivity.fetchTasks(UID);
-                    }
-                });
-            }
-        });
-
-        holder.btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(holder.btnStart.getContext(), TimerActivity.class);
-                holder.btnStart.getContext().startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -135,6 +51,7 @@ public class RecyclerViewAdapterTask extends RecyclerView.Adapter<RecyclerViewAd
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
+        FirebaseFirestore firebaseFirestore;
         TextView name;
         TextView date;
         TextView duration;
@@ -146,15 +63,99 @@ public class RecyclerViewAdapterTask extends RecyclerView.Adapter<RecyclerViewAd
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.taskName);
-            date = itemView.findViewById(R.id.taskDate);
-            duration = itemView.findViewById(R.id.taskDuration);
-            mode = itemView.findViewById(R.id.taskMode);
-            reward = itemView.findViewById(R.id.taskReward);
+
+            name = itemView.findViewById(R.id.name);
+            date = itemView.findViewById(R.id.date);
+            duration = itemView.findViewById(R.id.duration);
+            mode = itemView.findViewById(R.id.mode);
+            reward = itemView.findViewById(R.id.reward);
 
             btnDelete = itemView.findViewById(R.id.btnDelete);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnStart = itemView.findViewById(R.id.btnStart);
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LayoutInflater inflater = LayoutInflater.from(btnDelete.getContext());
+                    View popupView = inflater.inflate(R.layout.popup_delete_task, null);
+
+                    int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    PopupWindow deleteTaskPopUp = new PopupWindow(popupView, width, height, true);
+
+                    deleteTaskPopUp.showAtLocation(btnDelete.getRootView(), Gravity.CENTER_VERTICAL, 0, 0);
+
+                    LinearLayout btnYes = popupView.findViewById(R.id.btnDeleteYes);
+                    LinearLayout btnNo = popupView.findViewById(R.id.btnDeleteNo);
+
+                    btnNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deleteTaskPopUp.dismiss();
+                        }
+                    });
+                    btnYes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            TasksActivity.deleteTaskFromUser("YkbW5nnkv1aLDXUvEYxZDMB1oj03", name.getText().toString());
+                            deleteTaskPopUp.dismiss();
+                        }
+                    });
+                }
+            });
+
+            btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LayoutInflater inflater = LayoutInflater.from(btnEdit.getContext());
+                    View popupView = inflater.inflate(R.layout.popup_edit_task, null);
+
+                    int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    PopupWindow editTaskPopup = new PopupWindow(popupView, width, height, true);
+
+                    editTaskPopup.showAtLocation(btnEdit.getRootView(), Gravity.CENTER_VERTICAL, 0, 0);
+
+                    EditText etTaskTitle, etTaskDate,etTaskDuration;
+                    ToggleButton tbTaskMode = popupView.findViewById(R.id.toggleButtonTaskMode);
+                    etTaskTitle = popupView.findViewById(R.id.editTextTaskTitle);
+                    etTaskDate = popupView.findViewById(R.id.editTextDate);
+                    etTaskDuration = popupView.findViewById(R.id.editTextTime);
+
+                    etTaskTitle.setText(name.getText().toString());
+                    etTaskDate.setText(date.getText().toString());
+                    etTaskDuration.setText(duration.getText().toString());
+                    tbTaskMode.setChecked(mode.getText().toString().equals("Focus"));
+
+                    LinearLayout btnEditSave = popupView.findViewById(R.id.btnEditSave);
+                    btnEditSave.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            firebaseFirestore = FirebaseFirestore.getInstance();
+                            String UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+                            String newTaskName = etTaskTitle.getText().toString();
+                            String newTaskDate = etTaskDate.getText().toString();
+                            Long newDuration = Long.parseLong(etTaskDuration.getText().toString());
+                            boolean newTaskMode = tbTaskMode.isChecked();
+                            TasksActivity.updateTaskInUser(UID, name.getText().toString(), newTaskName, newDuration, newTaskDate,newTaskMode);
+                            editTaskPopup.dismiss();
+                            TasksActivity.fetchTasks(UID);
+                        }
+                    });
+                }
+            });
+
+            btnStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(btnStart.getContext(), TimerActivity.class);
+                    String taskModeIntent = mode.getText().toString();
+
+                    intent.putExtra("taskModeIntent", taskModeIntent);
+                    intent.putExtra("taskDurationIntent", duration.getText().toString());
+                    btnStart.getContext().startActivity(intent);
+                }
+            });
         }
     }
 }
