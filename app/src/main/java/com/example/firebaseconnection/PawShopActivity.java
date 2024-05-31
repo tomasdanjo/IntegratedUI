@@ -65,6 +65,7 @@ public class PawShopActivity extends AppCompatActivity {
 
         paws = new ArrayList<>();
         pawsRecyclerView = findViewById(R.id.pawsRecyclerView);
+        pawsRecyclerView.addItemDecoration(new GridSpacingItemDecoration(this, 2, R.dimen.spacing_small, false));
         firebaseFirestore = FirebaseFirestore.getInstance();
         catShopList  = new ArrayList<>();
         userCatsList = new ArrayList<>();

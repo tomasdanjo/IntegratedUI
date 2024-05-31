@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,6 +77,7 @@ public class MyCollection extends AppCompatActivity {
         getUserBalance(UID);
         fetchUserCats();
         pawsRecyclerView = findViewById(R.id.pawsRecyclerView);
+        pawsRecyclerView.addItemDecoration(new GridSpacingItemDecoration(this, 2, R.dimen.spacing_small, false));
         generatePaws();
     }
 
@@ -167,7 +168,7 @@ public class MyCollection extends AppCompatActivity {
         Log.d("Lookie here Lookie here", String.valueOf(paws.size()));
         RecyclerViewAdapterPaw adapterTask = new RecyclerViewAdapterPaw(getInstance(), paws);
         pawsRecyclerView.setAdapter(adapterTask);
-        pawsRecyclerView.setLayoutManager(new LinearLayoutManager(getInstance()));
+        pawsRecyclerView.setLayoutManager(new GridLayoutManager(getInstance(), 2));
     }
 
     private void updateCoinText(){
