@@ -1,22 +1,12 @@
 package com.example.firebaseconnection;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import android.provider.Contacts;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,16 +14,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.AuthResult;
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -41,9 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -57,18 +42,19 @@ public class SignUpActivity extends AppCompatActivity {
     static boolean isRegistered = false;
     boolean agreedToPrivacyPolicy = false;
     TextView txtPrivacyPolicy;
+    TextView txtSignIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_2_sign_up);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_2_sign_up);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -80,6 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUpUsername = findViewById(R.id.fieldInputUsername);
         signUpEmail = findViewById(R.id.fieldInputEmail);
         signUpPassword = findViewById(R.id.fieldInputPassword);
+        txtSignIn = findViewById(R.id.txtSignIn);
 
 
         btnSignUp.setOnClickListener(v -> {
@@ -93,6 +80,14 @@ public class SignUpActivity extends AppCompatActivity {
             email = signUpEmail.getText().toString();
             password = signUpPassword.getText().toString();
             registerAccount(name, username, email, password);
+        });
+
+        txtSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+                startActivity(intent);
+            }
         });
 
         checkbox.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +128,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void onCompleteRegistration(boolean isSuccessful, FirebaseUser user, String username, String email, String name) {
         if (isSuccessful && user != null) {
             addUserToFirestore(user.getUid(), email, username, name);
-            Intent intent = new Intent(SignUpActivity.this, LogInActivity.class);
+            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
             startActivity(intent);
         } else {
             Toast.makeText(SignUpActivity.this, "Registration failed.", Toast.LENGTH_SHORT).show();

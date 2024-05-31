@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -63,7 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SettingsActivity.this, Menu.class);
+                Intent i = new Intent(SettingsActivity.this, MenuActivity.class);
                 startActivity(i);
             }
         });
@@ -116,7 +115,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                Intent i = new Intent(SettingsActivity.this, LogInActivity.class);
+                Intent i = new Intent(SettingsActivity.this, SignInActivity.class);
                 startActivity(i);
             }
         });
