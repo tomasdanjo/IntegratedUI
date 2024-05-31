@@ -159,7 +159,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView23"
+                    android:id="@+id/tvModeDisplay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_red"

@@ -60,7 +60,8 @@ public class TimerActivity extends AppCompatActivity {
         userCatsList = new ArrayList<>();
 
         Bundle extras = getIntent().getExtras();
-        if(extras != null){
+        if (extras != null){
+            Log.d("Simon", extras.getString("taskModeIntent"));
             tvModeDisplay.setText("You are in " + extras.getString("taskModeIntent") + " mode.");
             timerTextView.setText(extras.getString("taskDurationIntent"));
         }
