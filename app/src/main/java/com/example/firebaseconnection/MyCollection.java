@@ -70,7 +70,7 @@ public class MyCollection extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 //        UID = mAuth.getCurrentUser().getUid();
-        UID ="YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+        UID =SignInActivity.UID;
 
         userCatsList = new ArrayList<>();
         paws = new ArrayList<>();

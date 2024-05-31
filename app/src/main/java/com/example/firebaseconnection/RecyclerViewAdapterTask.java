@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -69,7 +70,7 @@ public class RecyclerViewAdapterTask extends RecyclerView.Adapter<RecyclerViewAd
                 btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        TasksActivity.deleteTaskFromUser("YkbW5nnkv1aLDXUvEYxZDMB1oj03", holder.name.getText().toString());
+                        TasksActivity.deleteTaskFromUser(SignInActivity.UID, holder.name.getText().toString());
                         deleteTaskPopUp.dismiss();
                     }
                 });
@@ -98,13 +99,20 @@ public class RecyclerViewAdapterTask extends RecyclerView.Adapter<RecyclerViewAd
                 etTaskDate.setText(holder.date.getText().toString());
                 etTaskDuration.setText(holder.duration.getText().toString());
                 tbTaskMode.setChecked(holder.mode.getText().toString().equals("Focus"));
+                ImageView btnClosePopup = popupView.findViewById(R.id.btnClosePopup);
+                btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editTaskPopup.dismiss();
+                    }
+                });
 
                 LinearLayout btnEditSave = popupView.findViewById(R.id.btnEditSave);
                 btnEditSave.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         firebaseFirestore = FirebaseFirestore.getInstance();
-                        String UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+                        String UID = SignInActivity.UID;
                         String newTaskName = etTaskTitle.getText().toString();
                         String newTaskDate = etTaskDate.getText().toString();
                         Long newDuration = Long.parseLong(etTaskDuration.getText().toString());
@@ -120,12 +128,43 @@ public class RecyclerViewAdapterTask extends RecyclerView.Adapter<RecyclerViewAd
         holder.btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.btnStart.getContext(), TimerActivity.class);
-                String taskModeIntent = holder.mode.getText().toString();
+                LayoutInflater inflater = LayoutInflater.from(holder.btnEdit.getContext());
+                View popupView = inflater.inflate(R.layout.popup_start_task, null);
 
-                intent.putExtra("taskModeIntent", taskModeIntent);
-                intent.putExtra("taskDurationIntent", holder.duration.getText().toString());
-                holder.btnStart.getContext().startActivity(intent);
+                int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                PopupWindow startTaskPopup = new PopupWindow(popupView, width, height, true);
+
+                startTaskPopup.showAtLocation(holder.btnEdit.getRootView(), Gravity.CENTER_VERTICAL, 0, 0);
+
+                LinearLayout btnYes = popupView.findViewById(R.id.btnYes);
+                LinearLayout btnNo = popupView.findViewById(R.id.btnNo);
+                TextView txtStartingTask = popupView.findViewById(R.id.txtStartingTask);
+                txtStartingTask.setText("Start " + holder.name.getText().toString() + "?");
+
+                btnYes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(holder.btnStart.getContext(), TimerActivity.class);
+                        String taskModeIntent = holder.mode.getText().toString();
+                        String taskNameIntent = holder.name.getText().toString();
+                        String taskRewardIntent = holder.reward.toString();
+
+                        intent.putExtra("taskNameIntent", taskNameIntent);
+                        intent.putExtra("taskModeIntent", taskModeIntent);
+                        intent.putExtra("taskRewardIntent", taskRewardIntent);
+                        intent.putExtra("taskDurationIntent", holder.duration.getText().toString());
+                        holder.btnStart.getContext().startActivity(intent);
+                        startTaskPopup.dismiss();
+                    }
+                });
+
+                btnNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startTaskPopup.dismiss();
+                    }
+                });
             }
         });
     }

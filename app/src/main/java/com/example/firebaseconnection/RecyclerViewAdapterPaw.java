@@ -66,11 +66,20 @@ public class RecyclerViewAdapterPaw extends RecyclerView.Adapter<RecyclerViewAda
                 ImageView pawImage = popupView.findViewById(R.id.pawImage);
                 TextView pawPrice = popupView.findViewById(R.id.pawPrice);
                 TextView pawRarity = popupView.findViewById(R.id.pawRarity);
+                ImageView btnClosePopup = popupView.findViewById(R.id.btnClosePopup);
 
                 pawName.setText(holder.name.getText().toString());
                 pawImage.setImageDrawable(holder.image.getDrawable());
                 pawPrice.setText(holder.price.getText().toString());
                 pawRarity.setText(holder.rarity.getText().toString());
+
+                btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        purchasePawPopUp.dismiss();
+                    }
+                });
+
 
                 LinearLayout purchasePawButton = popupView.findViewById(R.id.purchasePawButton);
                 purchasePawButton.setOnClickListener(new View.OnClickListener() {

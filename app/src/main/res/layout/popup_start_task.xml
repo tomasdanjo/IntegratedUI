@@ -50,7 +50,7 @@
             android:padding="@dimen/spacing_medium">
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/txtStartingTask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -64,6 +64,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/btnYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
@@ -86,6 +87,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btnNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/spacing_small"

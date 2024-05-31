@@ -4,12 +4,17 @@ package com.example.firebaseconnection;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +41,7 @@ public class PawShopActivity extends AppCompatActivity {
     private static Long userCoins;
     private static Long newUserCoins;
     public static ArrayList<Paw> paws;
+    public static ConstraintLayout main;
     static RecyclerView pawsRecyclerView;
     LinearLayout btnMyCollection;
     @Override
@@ -52,6 +58,8 @@ public class PawShopActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        main = findViewById(R.id.main);
 
         btnMyCollection = findViewById(R.id.btnMyCollection);
 
@@ -75,7 +83,7 @@ public class PawShopActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 //        UID = mAuth.getCurrentUser().getUid();
-        UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+        UID = SignInActivity.UID;
 
         fetchUserCats();
         getUserBalance(UID);
@@ -203,9 +211,27 @@ public class PawShopActivity extends AppCompatActivity {
     }
 
     private static void checkCoinBalance(String catName, Long userCoins, Long catFee){
-        assert userCoins >= catFee;
-        newUserCoins = userCoins - catFee;
-        updateUserCoins(catName, newUserCoins);
+        if (userCoins >= catFee) {
+            newUserCoins = userCoins - catFee;
+            updateUserCoins(catName, newUserCoins);
+        } else {
+            LayoutInflater inflater = LayoutInflater.from(getInstance());
+            View popupView = inflater.inflate(R.layout.popup_insufficient_coins, null);
+
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            PopupWindow insufficientCoinsPopup = new PopupWindow(popupView, width, height, true);
+
+            insufficientCoinsPopup.showAtLocation(main, Gravity.CENTER_VERTICAL, 0, 0);
+            LinearLayout btnOkay = popupView.findViewById(R.id.btnOkay);
+
+            btnOkay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    insufficientCoinsPopup.dismiss();
+                }
+            });
+        }
     }
 
     private static void updateUserCoins(String catName, Long newUserCoins) {

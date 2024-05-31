@@ -54,7 +54,7 @@
                     android:layout_marginEnd="@dimen/negative_border_width"
                     android:background="@drawable/input_icon"
                     android:paddingHorizontal="@dimen/spacing_small"
-                    android:src="@drawable/icon_user"
+                    android:src="@drawable/icon_email"
                     tools:ignore="DuplicateIds" />
 
                 <EditText
@@ -64,7 +64,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/input"
                     android:ems="10"
-                    android:hint="Username"
+                    android:hint="Email"
                     android:inputType="text"
                     android:paddingHorizontal="@dimen/spacing_small"
                     android:textColor="@color/blue_dark"
@@ -103,6 +103,7 @@
                     android:hint="Password"
                     android:inputType="textPassword"
                     android:paddingHorizontal="@dimen/spacing_small"
+                    android:textColor="@color/blue_dark"
                     android:textColorHint="@color/blue_dark" />
 
             </LinearLayout>

@@ -78,7 +78,7 @@ public class TasksActivity extends AppCompatActivity {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+        UID = SignInActivity.UID;
 
         tasksConstraintLayout = findViewById(R.id.tasks);
         tasksRecyclerView = findViewById(R.id.tasksRecyclerView);

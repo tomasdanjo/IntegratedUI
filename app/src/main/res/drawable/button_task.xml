@@ -3,22 +3,19 @@
         <layer-list>
             <item android:left="@dimen/border_width" android:top="@dimen/border_width">
                 <shape>
-                    <corners android:radius="@dimen/border_radius" />
+                    <corners android:radius="@dimen/border_radius"
+                        android:topLeftRadius="@dimen/border_radius_big"
+                        android:bottomRightRadius="@dimen/border_radius_big"/>
                     <solid android:color="@color/blue_dark" />
                 </shape>
             </item>
             <item android:bottom="@dimen/border_width" android:right="@dimen/border_width">
                 <shape>
-                    <solid android:color="@color/white"/>
+                    <solid android:color="#2C3E50"/>
                     <stroke android:width="@dimen/border_width" android:color="@color/blue_dark" />
-                    <corners android:radius="@dimen/border_radius" />
-                </shape>
-            </item>
-            <item android:left="@dimen/spacing_very_small" android:right="@dimen/spacing_very_small"
-                android:top="@dimen/spacing_very_small" android:bottom="@dimen/spacing_very_small">
-                <shape>
-                    <corners android:radius="@dimen/border_width" />
-                    <solid android:color="@color/blue_light" />
+                    <corners android:radius="@dimen/border_radius"
+                        android:topLeftRadius="@dimen/border_radius_big"
+                        android:bottomRightRadius="@dimen/border_radius_big"/>
                 </shape>
             </item>
         </layer-list>

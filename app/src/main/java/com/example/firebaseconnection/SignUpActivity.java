@@ -166,6 +166,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         ArrayList badgeList = new ArrayList();
         userData.put("badge", badgeList);
+        userData.put("coins", 14);
 
 
         if (firebaseFirestore == null) {

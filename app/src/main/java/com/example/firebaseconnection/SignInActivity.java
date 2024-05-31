@@ -23,8 +23,10 @@ import com.google.firebase.auth.FirebaseUser;
 public class SignInActivity extends AppCompatActivity {
     EditText loginUsername, loginPassword;
     LinearLayout btnLogin;
-    TextView signUpRedirection;
+    TextView txtSignUp;
     private FirebaseAuth mAuth;
+
+    public static String UID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +42,19 @@ public class SignInActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnSignUp);
         loginUsername = findViewById(R.id.fieldInputUsername);
         loginPassword = findViewById(R.id.fieldInputPassword);
+        txtSignUp = findViewById(R.id.txtSignUp);
 
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
+        UID = mAuth.getUid();
+
+        txtSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btnLogin.setOnClickListener(v -> {
 
