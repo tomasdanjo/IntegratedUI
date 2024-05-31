@@ -2,6 +2,7 @@ package com.example.firebaseconnection;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -29,6 +31,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class TimerActivity extends AppCompatActivity {
+    public static TimerActivity instance;
 
     private TextView timerTextView, tvModeDisplay;
     LinearLayout btnPurrsueLater;
@@ -36,7 +39,11 @@ public class TimerActivity extends AppCompatActivity {
     private Long timeLeftInMillis, userCoins, newCoins;
     private boolean isTimerRunning;
     FirebaseFirestore firebaseFirestore;
+    public ConstraintLayout main;
     String UID;
+    TextView txtStartedTask;
+    public static String taskName;
+    public static String taskReward;
 
     private List<Map<String, Object>> userCatsList;
 
@@ -45,17 +52,19 @@ public class TimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_6_timer);
+        instance = this;
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.timer), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        txtStartedTask = findViewById(R.id.txtStartedTask);
         timerTextView = findViewById(R.id.txtTimer);
         btnPurrsueLater = findViewById(R.id.btnPurrsueLater);
         tvModeDisplay = findViewById(R.id.tvModeDisplay);
         firebaseFirestore = FirebaseFirestore.getInstance();
-        UID = "YkbW5nnkv1aLDXUvEYxZDMB1oj03";
+        UID = SignInActivity.UID;
 
         userCatsList = new ArrayList<>();
 
@@ -64,6 +73,9 @@ public class TimerActivity extends AppCompatActivity {
             Log.d("Simon", extras.getString("taskModeIntent"));
             tvModeDisplay.setText("You are in " + extras.getString("taskModeIntent") + " mode.");
             timerTextView.setText(extras.getString("taskDurationIntent"));
+            txtStartedTask.setText(extras.getString("taskNameIntent"));
+            taskName = extras.getString("taskNameIntent");
+            taskReward = extras.getString("taskReward");
         }
 
         btnPurrsueLater.setOnClickListener(v ->{
@@ -81,14 +93,16 @@ public class TimerActivity extends AppCompatActivity {
             LinearLayout btnPurrsueNo = popupView.findViewById(R.id.btnPurrsueNo);
 
             btnPurrsueYes.setOnClickListener(x ->{
-                timerPopup.dismiss();
+
                 isTimerRunning = false;
                 timerTextView.setText("00:00");
                 onTimerFinish();
                 btnPurrsueLater.setEnabled(false);
                 fetchUserCats();
-                //cat punishment
-                //intent
+
+                Intent intent = new Intent(btnPurrsueYes.getContext(), TasksActivity.class);
+                btnPurrsueYes.getContext().startActivity(intent);
+                timerPopup.dismiss();
             });
 
             btnPurrsueNo.setOnClickListener(x ->{
@@ -106,7 +120,26 @@ public class TimerActivity extends AppCompatActivity {
 
         Long milliseconds = timeLeftInMillis = time * 60 * 1000L;
         startTimer();
-        startLockTaskMode();
+        if (extras.getString("taskModeIntent").equals("Focus")) {
+            startLockTaskMode();
+        } else {
+            startChillTaskMode();
+            tvModeDisplay.setBackgroundResource(R.drawable.button_green);
+        }
+    }
+
+    public static TimerActivity getInstance() {
+        return instance;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isTimerRunning) {
+            // Prevent back navigation if the timer is running
+            Log.d("TimerActivity", "Back button pressed but timer is running.");
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void startTimer() {
@@ -124,9 +157,38 @@ public class TimerActivity extends AppCompatActivity {
                 getUserCoins();
                 onTimerFinish();
 
+                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.popup_task_finished, null);
+
+                int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                PopupWindow doneTimerPopup = new PopupWindow(popupView, width, height, true);
+
+                TextView txtTaskFinished = popupView.findViewById(R.id.txtTaskFinished);
+                TextView txtCoinReward = popupView.findViewById(R.id.txtCoinReward);
+
+                txtTaskFinished.setText(taskName);
+                txtCoinReward.setText(taskReward);
+
+                doneTimerPopup.showAtLocation(findViewById(R.id.timer), Gravity.CENTER_VERTICAL, 0, 0);
             }
         }.start();
         isTimerRunning = true;
+    }
+
+    private void startChillTaskMode() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_task_finished, null);
+
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        PopupWindow taskFinishedPopup = new PopupWindow(popupView, width, height, true);
+
+        LinearLayout btnDismissPawsome = popupView.findViewById(R.id.btnDismissPawsome);
+
+        btnDismissPawsome.setOnClickListener(x ->{
+            taskFinishedPopup.dismiss();
+        });
     }
 
     private void startLockTaskMode() {

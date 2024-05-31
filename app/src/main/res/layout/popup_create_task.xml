@@ -38,7 +38,7 @@
                 android:textSize="@dimen/font_size_large" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/btnClosePopup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/icon_close" />
@@ -85,7 +85,8 @@
                     android:hint="Enter task title"
                     android:inputType="text"
                     android:paddingLeft="@dimen/spacing_small"
-                    android:paddingRight="@dimen/spacing_small" />
+                    android:paddingRight="@dimen/spacing_small"
+                    android:textColor="@color/blue_dark" />
             </LinearLayout>
 
             <LinearLayout
@@ -122,7 +123,8 @@
                     android:hint="Enter task date"
                     android:inputType="date"
                     android:paddingLeft="@dimen/spacing_small"
-                    android:paddingRight="@dimen/spacing_small" />
+                    android:paddingRight="@dimen/spacing_small"
+                    android:textColor="@color/blue_dark" />
 
             </LinearLayout>
 
@@ -160,7 +162,8 @@
                     android:hint="Enter task duration"
                     android:inputType="time"
                     android:paddingLeft="@dimen/spacing_small"
-                    android:paddingRight="@dimen/spacing_small" />
+                    android:paddingRight="@dimen/spacing_small"
+                    android:textColor="@color/blue_dark" />
 
             </LinearLayout>
             <LinearLayout
@@ -183,7 +186,7 @@
                     android:paddingTop="@dimen/spacing_very_small"
                     android:paddingRight="@dimen/spacing_small"
                     android:paddingBottom="@dimen/spacing_very_small"
-                    android:text="Chill"
+                    android:text="Focus"
                     android:textColor="@color/white" />
 
                 <ToggleButton
