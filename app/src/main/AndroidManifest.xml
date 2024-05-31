@@ -12,10 +12,10 @@
         android:theme="@style/Theme.FirebaseConnection"
         tools:targetApi="31">
         <activity
-            android:name=".DashboardTotals"
+            android:name=".UserDashboard"
             android:exported="false" />
         <activity
-            android:name=".MyCatCollection"
+            android:name=".MyCollection"
             android:exported="false" />
         <activity
             android:name=".SplashActivity"

@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.gridlayout.widget.GridLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,6 +27,7 @@ import java.util.Map;
 
 
 public class PawShopActivity extends AppCompatActivity {
+    private static PawShopActivity instance;
 
     static FirebaseFirestore firebaseFirestore;
     private static List<Map<String, Object>> catShopList;
@@ -39,17 +40,14 @@ public class PawShopActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static Long userCoins;
     private static Long newUserCoins;
-
-    public static GridLayout catsGrid;
-    public static ConstraintLayout catShop;
-
-    public ArrayList<Cat> cats;
+    public ArrayList<Paw> paws;
+    RecyclerView pawsRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_7_paw_shop);
-
+        instance = this;
         LinearLayout btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,17 +62,14 @@ public class PawShopActivity extends AppCompatActivity {
 //            return insets;
 //        });
 
-        cats = new ArrayList<>();
-        catShop = findViewById(R.id.catShop);
-        catsGrid = findViewById(R.id.catsGrid);
+        paws = new ArrayList<>();
+        pawsRecyclerView = findViewById(R.id.pawsRecyclerView);
         firebaseFirestore = FirebaseFirestore.getInstance();
         catShopList  = new ArrayList<>();
         userCatsList = new ArrayList<>();
 
 
         fetchCats(documentId);
-
-//        generateCats();
 
         mAuth = FirebaseAuth.getInstance();
 //        UID = mAuth.getCurrentUser().getUid();
@@ -100,6 +95,16 @@ public class PawShopActivity extends AppCompatActivity {
 //            startActivity(intent);
 //        });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
+
+    public static PawShopActivity getInstance() {
+        return instance;
     }
 
     private void fetchCats(String documentId) {
@@ -130,12 +135,12 @@ public class PawShopActivity extends AppCompatActivity {
 
                                 // Add the cat map to the catShopList
 
-                                catsGrid.addView(new Cat(catImageUrl, catName, catPrice, catRarity).generate(catsGrid.getContext(), catShop));
                                 Log.d("TAG", "Cat Name: " + catName);
                                 Log.d("TAG", "Cat Image URL: " + catImageUrl);
                                 Log.d("TAG", "Cat Price: " + catPrice);
                                 Log.d("TAG", "Cat Rarity: " + catRarity);
                             }
+                            generatePaws();
                         } else {
                             Log.d("TAG", "No cats found");
                         }
@@ -185,7 +190,7 @@ public class PawShopActivity extends AppCompatActivity {
 
     private void updateUIWithCats() {
         if (!catShopList.isEmpty()) {
-
+            generatePaws();
         } else {
             Log.i("TAG", "EMPTY LIST");
             tvCatName.setText("No cats available");
@@ -249,71 +254,47 @@ public class PawShopActivity extends AppCompatActivity {
 
         //update cats field
         userRef.update("cats", FieldValue.arrayUnion(newCat))
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("TAG", "Cat added successfully");
-                    fetchUserInfo();
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("TAG", "Error adding cat", e);
-                });
+            .addOnSuccessListener(aVoid -> {
+                Log.d("TAG", "Cat added successfully");
+                fetchUserInfo();
+            })
+            .addOnFailureListener(e -> {
+                Log.e("TAG", "Error adding cat", e);
+            });
     }
 
     private static void fetchUserInfo() {
         DocumentReference userRef = firebaseFirestore.collection("users").document(UID);
 
         userRef.get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        Log.d("TAG", "User document fetched successfully");
-//                        updateUIDisableButton();
-                    } else {
-                        Log.d("TAG", "User document does not exist");
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("TAG", "Error fetching user document", e);
-                });
+            .addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    Log.d("TAG", "User document fetched successfully");
+                } else {
+                    Log.d("TAG", "User document does not exist");
+                }
+            })
+            .addOnFailureListener(e -> {
+                Log.e("TAG", "Error fetching user document", e);
+            });
     }
 
-
-
-//    private void updateUIDisableButton() {
-//        //disable button for users' purchased cats
-//
-//        //an array of buttons guro nya each index sa button kay same ug
-//        //index sa catShopList. if naa ang usersCatsList sacatShopList
-//        //then idisable ang button
-//
-//        Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
-//        btnPurchaseCat.setText("purchased");
-//        btnPurchaseCat.setEnabled(false);
-//    }
-//
-//    private void updateUIDisableButton2() {
-//        Button btnPurchaseCat = findViewById(R.id.btnPurchaseCat);
-//        btnPurchaseCat.setText("purchased");
-//        btnPurchaseCat.setEnabled(false);
-//    }
-
-
-    public void getCats() {
-        cats.clear();
+    public void getPaws() {
+        paws.clear();
         for (int i = 0; i < catShopList.size(); i++) {
-            Log.d("SIMON", "Sasdd");
+            String catName = (String) catShopList.get(i).get("catName");
             String catImageURL = (String) catShopList.get(i).get("catImageURL");
-            String catName = (String) catShopList.get(i).get("catImageURL");
             Long catPrice = (Long) catShopList.get(i).get("catPrice");
             Long catRarity = (Long) catShopList.get(i).get("catRarity");
-            cats.add(new Cat(catImageURL, catName, catPrice, catRarity));
+            paws.add(new Paw(catName, catImageURL, catPrice, catRarity));
         }
     }
 
-    public void generateCats() {
-        getCats();
-        catsGrid.removeAllViews();
-        for (Cat cat : cats) {
-            catsGrid.addView(cat.generate(catsGrid.getContext(), catShop));
-        }
+    public void generatePaws() {
+        getPaws();
+        RecyclerViewAdapterPaw adapterTask = new RecyclerViewAdapterPaw(getInstance(), paws);
+        pawsRecyclerView.setAdapter(adapterTask);
+        pawsRecyclerView.setLayoutManager(new LinearLayoutManager(getInstance()));
     }
 
     public void getUserBalance(String userID) {

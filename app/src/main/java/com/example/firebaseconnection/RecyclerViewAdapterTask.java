@@ -64,11 +64,11 @@ public class RecyclerViewAdapterTask extends RecyclerView.Adapter<RecyclerViewAd
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            name = itemView.findViewById(R.id.name);
-            date = itemView.findViewById(R.id.date);
-            duration = itemView.findViewById(R.id.duration);
-            mode = itemView.findViewById(R.id.mode);
-            reward = itemView.findViewById(R.id.reward);
+            name = itemView.findViewById(R.id.taskName);
+            date = itemView.findViewById(R.id.taskDate);
+            duration = itemView.findViewById(R.id.taskDuration);
+            mode = itemView.findViewById(R.id.taskMode);
+            reward = itemView.findViewById(R.id.taskReward);
 
             btnDelete = itemView.findViewById(R.id.btnDelete);
             btnEdit = itemView.findViewById(R.id.btnEdit);

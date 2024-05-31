@@ -1,7 +1,6 @@
 package com.example.firebaseconnection;
 
 
-
 import static com.example.firebaseconnection.ProfileActivity.UID;
 
 import android.content.Intent;
@@ -18,25 +17,26 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.gridlayout.widget.GridLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-public class MyCatCollection extends AppCompatActivity {
-
+public class MyCollection extends AppCompatActivity {
+    private static MyCollection instance;
     TextView txtCoin;
     Long userCoins;
 
     static FirebaseFirestore firebaseFirestore;
 
-    ArrayList<Cat> cats;
+    ArrayList<Paw> paws;
 
-    ConstraintLayout main;
     GridLayout catsGrid;
+    RecyclerView pawsRecyclerView;
     FirebaseAuth mAuth;
 
     @Override
@@ -44,6 +44,7 @@ public class MyCatCollection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_8_my_collection);
+        instance = this;
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -54,7 +55,7 @@ public class MyCatCollection extends AppCompatActivity {
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MyCatCollection.this, MenuActivity.class);
+                Intent i = new Intent(MyCollection.this, MenuActivity.class);
                 startActivity(i);
             }
         });
@@ -68,20 +69,31 @@ public class MyCatCollection extends AppCompatActivity {
 
         getUserBalance(UID);
 
-        cats = new ArrayList<>();
-        main = findViewById(R.id.main);
-        catsGrid = findViewById(R.id.catsGrid);
+        paws = new ArrayList<>();
+        pawsRecyclerView = findViewById(R.id.pawsRecyclerView);
+//        catsGrid = findViewById(R.id.catsGrid);
+//
+//        for (Map<String, Object> map : PawShopActivity.userCatsList) {
+//            String catImageURL = (String) map.get("catImageURL");
+//            String catName = (String) map.get("catName");
+//            paws.add(new Cat(catImageURL, catName, null, null));
+//        }
+//
+//        for (Cat cat : paws) {
+//            catsGrid.addView(cat.generateWithoutButtons(catsGrid.getContext(), main));
+//        }
 
-        for (Map<String, Object> map : PawShopActivity.userCatsList) {
-            String catImageURL = (String) map.get("catImageURL");
-            String catName = (String) map.get("catName");
-            cats.add(new Cat(catImageURL, catName, null, null));
-        }
+        generatePaws();
+    }
 
-        for (Cat cat : cats) {
-            catsGrid.addView(cat.generateWithoutButtons(catsGrid.getContext(), main));
-        }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 
+    public static MyCollection getInstance() {
+        return instance;
     }
 
     public void getUserBalance(String userID) {
@@ -111,9 +123,22 @@ public class MyCatCollection extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("TAG", "Error fetching user document", e));
     }
 
+    public void getPaws() {
+        paws.clear();
+        for (int i = 0; i < PawShopActivity.userCatsList.size(); i++) {
+
+        }
+    }
+
+    public void generatePaws() {
+        getPaws();
+        RecyclerViewAdapterPaw adapterTask = new RecyclerViewAdapterPaw(getInstance(), paws);
+        pawsRecyclerView.setAdapter(adapterTask);
+        pawsRecyclerView.setLayoutManager(new LinearLayoutManager(getInstance()));
+    }
+
     private void updateCoinText(){
         txtCoin =  findViewById(R.id.txtCoinBalance);
         txtCoin.setText(String.valueOf(userCoins));
     }
-
 }

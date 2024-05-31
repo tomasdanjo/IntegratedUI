@@ -50,7 +50,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                TODO add intent to cat collection
-                Intent i = new Intent(MenuActivity.this,MyCatCollection.class);
+                Intent i = new Intent(MenuActivity.this, MyCollection.class);
                 startActivity(i);
 
 

@@ -2,7 +2,6 @@ package com.example.firebaseconnection;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +12,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
-
-import com.bumptech.glide.Glide;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 import java.util.Map;
@@ -71,7 +66,6 @@ public class Cat {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         pawImage.setBackground(ContextCompat.getDrawable(context, R.drawable.button_white));
         String catImageResource = catImageURL.replace(".svg", "");
-        Log.d("stimon", catImageResource);
         catImageResource = catImageResource.toLowerCase();
         int resId = context.getResources().getIdentifier(catImageResource, "drawable", context.getPackageName());
         if (resId != 0) {
